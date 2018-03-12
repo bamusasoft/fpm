@@ -1,0 +1,58 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style  x:Key="SaveButtonStyle" TargetType="RibbonButton">
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter Property="LargeImageSource" Value="Images/EnSave.png"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="LargeImageSource" Value="Images/DisSave.jpg"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style  x:Key="NewButtonStyle" TargetType="RibbonButton">
+        <Setter Property="LargeImageSource" Value="Images/AddNew.png"/>
+    </Style>
+    <Style  x:Key="PrintButtonStyle" TargetType="RibbonButton">
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter Property="LargeImageSource" Value="Images/EnPrint.png"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="LargeImageSource" Value="Images/DisPrint.png"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style  x:Key="DeleteButtonStyle" TargetType="RibbonButton">
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter Property="LargeImageSource" Value="Images/EnDel.png"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="LargeImageSource" Value="Images/DisDel.jpg"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style  x:Key="SearchButtonStyle" TargetType="RibbonButton">
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter Property="LargeImageSource" Value="Images/EnSearch.png"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="LargeImageSource" Value="Images/DisSearch.png"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style  x:Key="FlagButtonStyle" TargetType="RibbonButton">
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter Property="LargeImageSource" Value="Images/EnFlag.png"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="LargeImageSource" Value="Images/DisFlag.png"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary>

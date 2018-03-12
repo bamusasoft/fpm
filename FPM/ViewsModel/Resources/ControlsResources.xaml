@@ -1,0 +1,149 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                    xmlns:System="clr-namespace:System;assembly=mscorlib"
+                    xmlns:wpfToolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+                    xmlns:converters="clr-namespace:Fbm.ViewsModel.Converters" 
+                    xmlns:p="clr-namespace:Fbm.ViewsModel.Properties">
+  <converters:MaskLiteralsConverter x:Key="LiteralConverter" />
+  <converters:MaskDateConverter x:Shared="False" x:Key="DateConverter" />
+  <converters:AddDateMaskConverter x:Shared="False" x:Key="AddMaskConverter" />
+  <converters:NumberToEmptyConverter x:Shared="False" x:Key="NumToEmptyConverter" />
+    
+    <SolidColorBrush x:Key="PrimaryColor-Brush" Color="#FFFF9000" />
+  <SolidColorBrush x:Key="ButtonBackground-Brush" Color="#FFB4B4B4" />
+  <SolidColorBrush x:Key="Header-Brush" Color="#FF5E5E5E" />
+  <SolidColorBrush x:Key="Focus-Brush" Color="#FF4B4B4B" />
+  <SolidColorBrush x:Key="Border-Brush" Color="#FF9B9B9B" />
+  <SolidColorBrush x:Key="Over-Brush" Color="#FFCACACA" />
+  <SolidColorBrush x:Key="Background-Brush" Color="#FF7A7A7A" />
+  <LinearGradientBrush x:Key="Brush_HeaderBackground" StartPoint="0.5,0" EndPoint="0.5,1">
+    <GradientStop Color="#66000088" Offset="0" />
+    <GradientStop Color="#BB000088" Offset="1" />
+  </LinearGradientBrush>
+  <DataTemplate x:Key="EditMaskedCellTemplate">
+   <wpfToolkit:MaskedTextBox Mask="## /##/ ####" 
+                             Value="{Binding Path=DateDue, UpdateSourceTrigger=PropertyChanged,
+                             Converter={StaticResource LiteralConverter}}"
+                             FocusManager.FocusedElement="{Binding RelativeSource={RelativeSource Self}}" />
+  </DataTemplate>
+    <DataTemplate x:Key="ShowMaskedCellTemplate">
+        <TextBlock Text="{Binding Path=DateDue, UpdateSourceTrigger=PropertyChanged,
+            Converter={StaticResource AddMaskConverter}}"/>
+    </DataTemplate>
+  <Style x:Key="FocusedColumnHeader" TargetType="DataGridColumnHeader">
+    <Setter Property="Background">
+      <Setter.Value>
+        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+          <GradientStop Color="#FFE5E2E0" Offset="0.138" />
+          <GradientStop Color="#FFF6792F" Offset="1" />
+        </LinearGradientBrush>
+      </Setter.Value>
+    </Setter>
+
+  </Style>
+  <Style x:Key="NonFocusedColumnHeader" TargetType="DataGridColumnHeader">
+    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrush}}" />
+  </Style>
+  <Style x:Key="FocusedRowHeader" TargetType="DataGridRowHeader">
+    <Setter Property="Background">
+      <Setter.Value>
+        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+          <GradientStop Color="#FFE5E2E0" Offset="0.138" />
+          <GradientStop Color="#FFF6792F" Offset="1" />
+        </LinearGradientBrush>
+      </Setter.Value>
+    </Setter>
+
+  </Style>
+  <Style x:Key="NonFocusedRowHeader" TargetType="DataGridRowHeader">
+    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrush}}" />
+  </Style>
+
+  <DataTemplate x:Key="RegistrationMaskedCell">
+        <wpfToolkit:MaskedTextBox IncludeLiteralsInValue="False" Mask="## /##/ ####"
+                               Value="{Binding Path=RegistredAt, Converter={StaticResource DateConverter}}" />
+  </DataTemplate>
+  <DataTemplate x:Key="DateDueMaskedCell">
+        <wpfToolkit:MaskedTextBox IncludeLiteralsInValue="False" Mask="## /##/ ####"
+                               Value="{Binding Path=DateDue, Converter={StaticResource DateConverter}}" />
+  </DataTemplate>
+
+  <Style x:Key="DialogFocusStyle" TargetType="Border">
+    <Setter Property="Background">
+      <Setter.Value>
+        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+          <GradientStop Color="#FFACC4D6" Offset="0.964" />
+          <GradientStop Color="White" Offset="0.023" />
+        </LinearGradientBrush>
+      </Setter.Value>
+    </Setter>
+
+  </Style>
+    <Style TargetType="TextBox">
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Background" Value="#FFFFFFFF" />
+        <Setter Property="Foreground" Value="#FF000000" />
+        <Setter Property="Padding" Value="2" />
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFA3AEB9" Offset="0" />
+                    <GradientStop Color="#FF8399A9" Offset="0.375" />
+                    <GradientStop Color="#FF718597" Offset="0.375" />
+                    <GradientStop Color="#FF617584" Offset="1" />
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Validation.ErrorTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <DockPanel LastChildFill="True">
+                        <Border Background="Red" DockPanel.Dock="Right" Margin="2,0,0,0" Width="20" Height="20" CornerRadius="10"
+                    ToolTip="{Binding ElementName=customAdorner, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">
+                            <TextBlock Text="!" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"
+                         Foreground="White"></TextBlock>
+                        </Border>
+                        <AdornedElementPlaceholder Name="customAdorner" VerticalAlignment="Center">
+                            <Border BorderBrush="Red" BorderThickness="1" />
+                        </AdornedElementPlaceholder>
+                    </DockPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="wpfToolkit:MaskedTextBox">
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Background" Value="#FFFFFFFF" />
+        <Setter Property="Foreground" Value="#FF000000" />
+        <Setter Property="Padding" Value="2" />
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFA3AEB9" Offset="0" />
+                    <GradientStop Color="#FF8399A9" Offset="0.375" />
+                    <GradientStop Color="#FF718597" Offset="0.375" />
+                    <GradientStop Color="#FF617584" Offset="1" />
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Validation.ErrorTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <DockPanel LastChildFill="True">
+                        <Border Background="Red" DockPanel.Dock="Right" Margin="2,0,0,0" Width="20" Height="20" CornerRadius="10"
+                    ToolTip="{Binding ElementName=customAdorner, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">
+                            <TextBlock Text="!" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"
+                         Foreground="White"></TextBlock>
+                        </Border>
+                        <AdornedElementPlaceholder Name="customAdorner" VerticalAlignment="Center">
+                            <Border BorderBrush="Red" BorderThickness="1" />
+                        </AdornedElementPlaceholder>
+                    </DockPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+   
+
+</ResourceDictionary>

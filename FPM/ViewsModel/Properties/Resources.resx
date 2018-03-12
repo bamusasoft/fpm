@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="InvalidFamilyMemberCode" xml:space="preserve">
+    <value>خطأ في رقم المستحق</value>
+  </data>
+  <data name="LoansView_InsufBalance" xml:space="preserve">
+    <value>رصيد الإلتزام لا يمكن أن يكون مديناً</value>
+  </data>
+  <data name="LoansView_LoanTypeMissing" xml:space="preserve">
+    <value>يجب تحديد نوع الإلتزام</value>
+  </data>
+  <data name="LoansView_LoanYearMissing" xml:space="preserve">
+    <value>يجب تحديد سنة الخصم</value>
+  </data>
+  <data name="LoansView_MemberMissing" xml:space="preserve">
+    <value>يجب ادخال بيانات المستحق</value>
+  </data>
+  <data name="LoansView_PaySeqMissing" xml:space="preserve">
+    <value>يجب تحديد دفعة الخصم</value>
+  </data>
+  <data name="LoanTypesView_InvalidCode" xml:space="preserve">
+    <value>كود الإلتزام يجب ان يتكون من رقمين على الأقل</value>
+  </data>
+  <data name="LoanTypesView_MissingDescription" xml:space="preserve">
+    <value>يجب ادخال وصف لنوع الإلتزام</value>
+  </data>
+  <data name="PeriodView_InconsistentStartEndDate" xml:space="preserve">
+    <value>لا يمكن لتاريخ الانتهاء ان يسبق تاريخ البداية</value>
+  </data>
+  <data name="PeriodView_InvalidEndDate" xml:space="preserve">
+    <value>خطأ في تاريخ الإنتهاء</value>
+  </data>
+  <data name="PeriodView_InvalidStartDate" xml:space="preserve">
+    <value>خطأ في تاريخ البداية</value>
+  </data>
+  <data name="PeriodView_YearPartNotMatch" xml:space="preserve">
+    <value>تاريخ البدائية والنهاية يجب ان يكون في نفس السنة</value>
+  </data>
+  <data name="PromptForDeleteMsg" xml:space="preserve">
+    <value>هل تريد حذف البيانات؟</value>
+  </data>
+  <data name="PromptForSaveMsg" xml:space="preserve">
+    <value>هل تريد الخروج بدون حفظ؟</value>
+  </data>
+  <data name="PaymentSeqView_ExceedingSeqNo" xml:space="preserve">
+    <value>اقصى حد للدفعات المسموح بها 12</value>
+  </data>
+  <data name="PaymentView_PaySeqMissing" xml:space="preserve">
+    <value>يجب ادخال تسلسل الصرفية</value>
+  </data>
+  <data name="PaymentView_PayYearMissing" xml:space="preserve">
+    <value>يجب ادخال سنة الصرفية</value>
+  </data>
+  <data name="MemberPaymentView_NoPaymentSequ" xml:space="preserve">
+    <value>لا توجد دفعات لهذه السنة</value>
+  </data>
+  <data name="PeriodView_AlreadyRegistredYear" xml:space="preserve">
+    <value>سبق تسجيل هذه السنة</value>
+  </data>
+  <data name="PeriodView_InvalidPeriodStatus" xml:space="preserve">
+    <value>لا يمكن ان يكون هناك اكثر من سنة حالية</value>
+  </data>
+  <data name="PeriodView_PeriodStutsMissing" xml:space="preserve">
+    <value>يجب تحديد حالة السنة</value>
+  </data>
+  <data name="LoansView_ExistMemberLoan" xml:space="preserve">
+    <value>سبق تسجيل التزام من هذا النوع للمستحق على هذه الصرفية</value>
+  </data>
+  <data name="DbErrorMsg" xml:space="preserve">
+    <value>غير قار على جلب البيانات راجع التفاصيل التالية:</value>
+  </data>
+  <data name="LoansView_DescriptionMissing" xml:space="preserve">
+    <value>يجب إدخال وصف مختصر للألتزام</value>
+  </data>
+  <data name="LoansView_ZeroloanAmount" xml:space="preserve">
+    <value>ادخل مبلغ الإلتزام</value>
+  </data>
+  <data name="OptionView_PromptForCloseYear" xml:space="preserve">
+    <value>هل تريد إغلاق السنة الحالية؟</value>
+  </data>
+  <data name="PeriodView_CannotSelectCloseStatus" xml:space="preserve">
+    <value>لايمكن إغلاق السنة من هنا
+فضلاً قم بإغلاقها من خلال الخيارات</value>
+  </data>
+  <data name="InvalidPaymentNo" xml:space="preserve">
+    <value>خطأ في رقم الدفعة</value>
+  </data>
+  <data name="PeriodView_YearSeqMissing" xml:space="preserve">
+    <value>يجب على الأقل اضافة دفعة لهذه السنة</value>
+  </data>
+  <data name="SyncMembersView_FamilyDbMissing" xml:space="preserve">
+    <value>يجب تحديد مسار قاعدة بيانات المستحقين</value>
+  </data>
+</root>

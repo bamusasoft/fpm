@@ -1,0 +1,21 @@
+﻿<Window x:Class="FlopManager.Shell"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:prism="http://www.codeplex.com/prism"
+        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        mc:Ignorable="d"
+        Title="الشاشة الرئيسية" Height="700" Width="1100" WindowStartupLocation="CenterScreen" FlowDirection="RightToLeft"
+        Background="#FFEEEEF2">
+    <Grid x:Name="LayoutRoot">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Expander Grid.Column="0" ExpandDirection="Right" Header="القائمة" IsExpanded="True">
+          <TreeView  prism:RegionManager.RegionName="MainNavigationRegion" BorderBrush="Teal" BorderThickness="2"/> 
+        </Expander>
+        <ad:DockingManager x:Name="DockingManager" Grid.Column="1" prism:RegionManager.RegionName="MainContentRegion"/>
+    </Grid>
+</Window>

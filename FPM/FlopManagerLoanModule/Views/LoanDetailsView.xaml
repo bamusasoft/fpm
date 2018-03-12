@@ -1,0 +1,122 @@
+﻿<UserControl x:Class="FlopManagerLoanModule.Views.LoanDetailsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:prism="http://www.codeplex.com/prism"
+             xmlns:custom="clr-namespace:FlopManager.Services.CustomPopupActions;assembly=FlopManager.Services"
+             xmlns:local="clr-namespace:FlopManagerLoanModule.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="700" FlowDirection="RightToLeft">
+    <i:Interaction.Triggers>
+        <prism:InteractionRequestTrigger SourceObject="{Binding ConfirmationRequest, Mode=OneWay}">
+            <custom:MyPopupWindowAction IsModal="True" />
+        </prism:InteractionRequestTrigger>
+        <prism:InteractionRequestTrigger SourceObject="{Binding NotificationRequest, Mode=OneWay}">
+            <custom:MyPopupWindowAction IsModal="True"/>
+        </prism:InteractionRequestTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ToolBarTray Grid.Row="0" Orientation="Horizontal" >
+            <ToolBar BorderThickness="0" SnapsToDevicePixels="True" >
+                <Button Command="{Binding AddNewCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                    <StackPanel Orientation="Horizontal">
+                        <ContentControl Content="{StaticResource AddNewImage}"  Margin="0,0,5,0"/>
+                        <TextBlock Text="جديد"/>
+                    </StackPanel>
+                </Button>
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey} }"/>
+                <Button Command="{Binding SaveCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                    <StackPanel Orientation="Horizontal">
+                        <ContentControl Content="{StaticResource EnSaveImage}"  Margin="0,0,5,0"/>
+                        <TextBlock Text="حفظ"/>
+                    </StackPanel>
+                </Button>
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey} }"/>
+            </ToolBar>
+        </ToolBarTray>
+        <Grid Grid.Row="1" IsEnabled="{Binding CanEditLoan}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Margin="10" TextWrapping="Wrap" Text="رقم الإلتزام"  />
+            <TextBox Grid.Row="0" Grid.Column="1" Margin="10" Text="{Binding LoanNo, UpdateSourceTrigger=LostFocus}">
+                <TextBox.InputBindings>
+                    <KeyBinding Command="{Binding GenerateLoanNoCommand}" Key="Enter"/>
+                </TextBox.InputBindings>
+            </TextBox>
+            <TextBlock Grid.Row="0" Grid.Column="2" Margin="10" TextWrapping="Wrap" Text="حالة الإلتزام"  />
+            <TextBlock Grid.Row="0" Grid.Column="3" Margin="10" 
+                	TextWrapping="Wrap" Text="{Binding LoanStatus}" FontSize="20" FontWeight="Bold" Foreground="Red" />
+            <TextBlock Grid.Column="0" HorizontalAlignment="Left" Margin="10,10,10,10" TextWrapping="Wrap" Text="رقم المستحق" VerticalAlignment="Bottom" Grid.Row="1"/>
+            <TextBox x:Name="MemeberCodeTextBox" Text="{Binding Member.Code, UpdateSourceTrigger=LostFocus}" 
+                	Margin="10" TextWrapping="Wrap" TabIndex="0" Grid.Row="1" Grid.Column="1">
+                <TextBox.InputBindings>
+                    <KeyBinding Command="{Binding AddMemberCommand}" CommandParameter="{Binding ElementName=MemeberCodeTextBox, Path=Text}" Key="Enter"/>
+                </TextBox.InputBindings>
+            </TextBox>
+            <TextBlock  Grid.Column="2" Margin="10" TextWrapping="Wrap" Text="اسم المستحق" Grid.Row="1" />
+            <TextBox Grid.Column="3" Margin="10" Text="{Binding Member.FullName}"
+                	TextWrapping="Wrap" IsEnabled="False" Grid.Row="1" />
+            <TextBlock Margin="10" TextWrapping="Wrap" Text="نوع الإلتزام"  Grid.Row="2" Grid.Column="0"/>
+            <ComboBox x:Name="CmbLoansTypes" ItemsSource="{Binding LoansTypes}"  SelectedItem="{Binding SelectedLoanType}" 
+                      DisplayMemberPath="LoanDescription" IsSynchronizedWithCurrentItem="True" TabIndex="1" Grid.Column="1" Grid.Row="2" Margin="10"/>
+                          
+            <TextBlock Margin="10" TextWrapping="Wrap" Text="سنة الإلتزام" Grid.Row="3" Grid.Column="0"/>
+            <ComboBox ItemsSource="{Binding Years}" DisplayMemberPath="Year"
+                	SelectedItem="{Binding SelectedLoanYear}" x:Name="CmbLoansYears"
+                	Margin="10" TabIndex="2" Grid.Column="1" Grid.Row="3" IsSynchronizedWithCurrentItem="True" />
+                          
+            <TextBlock Margin="10" TextWrapping="Wrap" Text="دفعة الإلتزام"  Grid.Row="4" Grid.Column="0"/>
+            <ComboBox ItemsSource="{Binding PaymentSequences}" IsSynchronizedWithCurrentItem="True" SelectedItem="{Binding SelectedSequence}" 
+                      DisplayMemberPath="SequenceDescription" x:Name="CmbLoansSeq" TabIndex="3" Grid.Column="1" Grid.Row="4" Margin="10"/> 
+                      
+            <Rectangle Grid.ColumnSpan="4" Fill="#FF171715" HorizontalAlignment="Stretch" Height="4" 
+                	Margin="0" Stroke="#FFE0D4D4" 
+                	VerticalAlignment="Top" Width="Auto" Grid.Row="6" Grid.Column="0"/>
+            <TextBlock Margin="10" TextWrapping="Wrap" Text="ملاحظات" Height="16" Width="50" Grid.Row="8" Grid.Column="0" />
+            <TextBox Text="{Binding Remarks, UpdateSourceTrigger=PropertyChanged}"
+                	Margin="10" TextWrapping="Wrap" TabIndex="6" Grid.Row="8" Grid.Column="1"   Grid.ColumnSpan="3" Padding="2" AcceptsReturn="True"/>
+            <TextBlock Margin="10" TextWrapping="Wrap" Text="الوصف"  Grid.Row="5" VerticalAlignment="Center" Grid.Column="0"/>
+            <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
+                	Margin="10" TextWrapping="Wrap" TabIndex="4" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" AcceptsReturn="True"/>
+            <Grid Grid.Column="1" Grid.ColumnSpan="3" Margin="10" Grid.Row="7">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="المبلغ" Margin="10"/>
+                <TextBlock Grid.Column="2" Text="المسدد" Margin="10"/>
+                <TextBlock Grid.Column="4" Text="الرصيد" Margin="10"/>
+                <TextBox Grid.Column="1" Text="{Binding Amount, StringFormat=F2}" Margin="10" TabIndex="5"/>
+                <TextBox Grid.Column="3" Text="{Binding Paid, StringFormat=F2, Mode=OneWay}" IsEnabled="False" Margin="10"/>
+                <TextBox Grid.Column="5" Text="{Binding Balance, StringFormat=F2, Mode=OneWay}" IsEnabled="False" Margin="10"/>
+            </Grid>
+        </Grid>
+
+    </Grid>
+</UserControl>

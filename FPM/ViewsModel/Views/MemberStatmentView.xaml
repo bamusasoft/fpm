@@ -1,0 +1,78 @@
+﻿<Window x:Class="Fbm.ViewsModel.Views.MemberStatmentView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="كشف حساب مستحق" Height="600" Width="850" FlowDirection="RightToLeft" Language="ar-SA"
+        FontFamily="Simplified Arabic" FontSize="15" FontWeight="Bold" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Ribbon Grid.Row="0" Background="#FFD3D7DA" >
+            <RibbonTab x:Name="homeTab" Header="عام" >
+                <RibbonGroup Header="بحث">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="رقم المستحق"/>
+                        <RibbonTextBox Grid.Column="1" x:Name="txtMemberCode"/>
+                        <TextBlock Grid.Column="2" Text="العام"/>
+                        <RibbonComboBox Grid.Column="3">
+                            <RibbonGallery SelectedItem="{Binding Path=SelectedYear}" MaxColumnCount="1">
+                                <RibbonGalleryCategory ItemsSource="{Binding Years }" DisplayMemberPath="YearPart"/>
+                            </RibbonGallery>
+                        </RibbonComboBox> 
+                        <RibbonButton Grid.Column="4" Command="{Binding SearchCommand}" 
+                                      Style="{StaticResource SearchButtonStyle}"/>
+                    </Grid>
+                </RibbonGroup>
+                <RibbonGroup Header="تحرير">
+                    <RibbonButton Style="{StaticResource PrintButtonStyle}" Command="{Binding PrintCommand}"/>
+                </RibbonGroup>
+            </RibbonTab>
+        </Ribbon>
+    <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="94*"/>
+                <ColumnDefinition Width="265*"/>
+                <ColumnDefinition Width="100*"/>
+                <ColumnDefinition Width="375*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Margin="10" TextWrapping="Wrap" Text="الإسم"/>
+            <TextBlock Margin="0,10,10,0" TextWrapping="Wrap" Text="صافي المنصرف حتى تاريخه" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" Grid.ColumnSpan="2" FontSize="20" Height="33" Width="185"/>
+            <TextBlock Margin="10,3,10,0" TextWrapping="Wrap" Text="التفاصيل" VerticalAlignment="Top" Grid.Row="3" FontSize="20" Height="33"/>
+            <Rectangle Grid.ColumnSpan="4" Fill="#FFF4F4F5" Margin="0" Grid.Row="2" Stroke="Black"/>
+            <Rectangle Grid.ColumnSpan="4" Fill="#FFF4F4F5" Margin="0" Grid.Row="4" Stroke="Black"/>
+            <TextBox Margin="10" TextWrapping="Wrap" Text="{Binding Path=Statment.MemberName, Mode=OneWay}" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3" FontSize="20"/>
+            <TextBox Margin="10" TextWrapping="Wrap" Text="{Binding Path=Statment.TotalNetPayment, Mode=OneWay, StringFormat=F2}" Grid.Column="3" Grid.Row="1" FontSize="20" Background="#FF38AC25"/>
+            <DataGrid Margin="10" Grid.Row="5" GridLinesVisibility="Horizontal" Grid.ColumnSpan="4"
+                      AutoGenerateColumns="False" CanUserAddRows="False"
+                      ItemsSource="{Binding Statment.DetailsCollection}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding RegistrationDate, Mode=OneWay}" Header="التاريخ"/>
+                    <DataGridTextColumn Binding="{Binding PaymentSequence, Mode=OneWay}" Header="رقم الصرفية"/>
+                    <DataGridTextColumn Binding="{Binding PaymentAmount, StringFormat=F2, Mode=OneWay}" Header="مبلغ الصرفية"/>
+                    <DataGridTextColumn Binding="{Binding MemberShares, Mode=OneWay}" Header="عدد الأسهم"/>
+                    <DataGridTextColumn Binding="{Binding PaymentTotal, StringFormat=F2, Mode=OneWay}" Header="الإجمالي"/>
+                    <DataGridTextColumn Binding="{Binding LoanAmount, StringFormat=F2, Mode=OneWay}" Header="مبلغ الإلتزام"/>
+                    <DataGridTextColumn Binding="{Binding LoanDescription, Mode=OneWay}" Header="الوصف" Width="*"/>
+                    <DataGridTextColumn Binding="{Binding PaymentNetAmount, StringFormat=F2, Mode=OneWay}" Header="صافي المنصرف"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+        </Grid>
+    </Grid>
+</Window>

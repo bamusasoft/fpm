@@ -1,0 +1,56 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wpfToolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" x:Class="Fbm.ViewsModel.Views.LoanTypesView"
+        Title="تسجيل انواع الإلتزامات" Height="300" Width="450" 
+        FlowDirection="RightToLeft" Language="ar-SA" Topmost="True" WindowStartupLocation="CenterScreen" 
+        FontFamily="Simplified Arabic" FontSize="14" FontWeight="Bold">
+    <Window.InputBindings>
+        <KeyBinding Key="Escape" Command="{Binding AddNewCommand}"/>
+    </Window.InputBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+<Ribbon Grid.Row="0" Background="#FFD3D7DA">
+            <RibbonTab x:Name="homeTab" Header="عام">
+                <RibbonGroup Header="عام">
+                    <RibbonButton Style="{StaticResource NewButtonStyle}"
+                                  Command="{Binding AddNewCommand}"/>
+                    <RibbonButton Style="{StaticResource SaveButtonStyle}"
+                                  Command="{Binding SaveCommand}"/>
+                </RibbonGroup>
+            </RibbonTab>
+            <RibbonTab x:Name="searchTab" Header="بحث">
+                <RibbonGroup Header="بحث">
+                    <UniformGrid>
+                        <wpfToolkit:WatermarkTextBox Text="{Binding SearchField, UpdateSourceTrigger=PropertyChanged}"
+                                                     MinWidth="150"/>
+                        <RibbonButton Style="{StaticResource SearchButtonStyle}"
+                                      Command="{Binding SearchCommand}"/>
+                    </UniformGrid>
+                </RibbonGroup>
+            </RibbonTab>
+        </Ribbon>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition  Height="Auto"/>
+                <RowDefinition Height="Auto" />
+
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="الرمز" VerticalAlignment="Center" Margin="5,10"/>
+            <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtCode" Text="{Binding Code, UpdateSourceTrigger=PropertyChanged}" Margin="10,10,250,10" VerticalAlignment="Center" HorizontalContentAlignment="Center" Padding="0,2,0,0"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="الوصف" VerticalAlignment="Center" Margin="5,10"/>
+            <TextBox Grid.Column="1" Margin="10,10,75,10" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Center"
+                     Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Padding="0"/>
+        </Grid>
+    </Grid>
+</Window>

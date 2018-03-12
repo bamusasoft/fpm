@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="FlopManagerLoanModule.Views.LoanTypesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:prism="http://www.codeplex.com/prism"
+             xmlns:custom="clr-namespace:FlopManager.Services.CustomPopupActions;assembly=FlopManager.Services"
+             mc:Ignorable="d" 
+            d:DesignHeight="400" d:DesignWidth="600" FlowDirection="RightToLeft">
+    <i:Interaction.Triggers>
+        <prism:InteractionRequestTrigger SourceObject="{Binding ConfirmationRequest, Mode=OneWay}">
+            <custom:MyPopupWindowAction IsModal="True" />
+        </prism:InteractionRequestTrigger>
+        <prism:InteractionRequestTrigger SourceObject="{Binding NotificationRequest, Mode=OneWay}">
+            <custom:MyPopupWindowAction IsModal="True"/>
+        </prism:InteractionRequestTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ToolBarTray Grid.Row="0" Orientation="Horizontal" >
+            <ToolBar BorderThickness="0" SnapsToDevicePixels="True" >
+                <Button Command="{Binding AddNewCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                    <StackPanel Orientation="Horizontal">
+                        <ContentControl Content="{StaticResource AddNewImage}"  Margin="0,0,5,0"/>
+                        <TextBlock Text="جديد"/>
+                    </StackPanel>
+                </Button>
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey} }"/>
+                <Button Command="{Binding SaveCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                    <StackPanel Orientation="Horizontal">
+                        <ContentControl Content="{StaticResource EnSaveImage}"  Margin="0,0,5,0"/>
+                        <TextBlock Text="حفظ"/>
+                    </StackPanel>
+                </Button>
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey} }"/>
+            </ToolBar>
+        </ToolBarTray>
+      
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition  Height="Auto"/>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="الرمز" VerticalAlignment="Center" />
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Code, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" HorizontalContentAlignment="Center" />
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="الوصف" VerticalAlignment="Center" />
+            <TextBox Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Center"
+                     Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" />
+        </Grid>
+    </Grid>
+</UserControl>

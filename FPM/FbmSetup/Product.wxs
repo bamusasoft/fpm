@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?dfine PRODUCT="Fpm"?>
+  <?define MAINEXE=$(var.ViewsModel.TargetFileName)?>
+  <?define VERSION=!(bind.FileVersion.$(var.MAINEXE))?>
+  <Product Id="*"
+         Name="Fpm" Language="1033" Version="$(var.VERSION)"
+         Manufacturer="SGE"
+         UpgradeCode="{6F73C95E-E720-44C9-A10C-ED043268974C}">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate />
+    <Icon Id="AppIcon" SourceFile="C:\BaMusaSoft\FamilyPayments\AppLogo.ico"/>
+    <Feature Id="ProductFeature" Title="FpmSetup" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+      <!--<ComponentGroupRef Id="ReportsTemplatesComponents"/>-->
+      <ComponentGroupRef Id="AppShortcut"/>
+    </Feature>
+
+    <UIRef Id="WixUI_Minimal"/>
+
+
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="FamilyPayments">
+          <!--<Directory Id="ReportsTemplatesFolder" Name="Templates"/>-->
+        </Directory>
+
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="Fpm"/>
+      </Directory>
+    </Directory>
+  </Fragment>
+  <Fragment>
+
+
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="CmpDomainModel" Guid="{1EF75249-47C1-437C-99BE-41796F1F7D7C}">
+        <File Id="DomainModel.dll" Source="$(var.DomainModel.TargetPath)" KeyPath="yes"/>
+      </Component>
+      <Component Id="CmpFamilyService" Guid="{DFA06D54-AE49-40DE-AFDE-DEBC22DC0E48}">
+        <File Id="FamilyAppService.dll" Source="$(var.FamilyAppService.TargetPath)" KeyPath="yes"/>
+      </Component>
+      <Component Id="CmpViewsModel" Guid="{EF6E6C35-7C75-43E3-A6DE-36DBFE7B05E7}">
+        <File Id="ViewsModel.exe" Source="$(var.ViewsModel.TargetPath)" KeyPath="yes"/>
+      </Component>
+      <Component Id="CmpEntityFramework" Guid="{8D5E73C2-827F-4D4F-B1BF-87A1DC710A98}">
+        <File Id="EntityFramework.dll" Source="..\ViewsModel\bin\Debug\" KeyPath="yes"/>
+      </Component>
+      <Component Id="CmpViewModelConfig" Guid="{836D4A9D-2566-41F7-94FA-534F1B5FD426}">
+        <File Id="ViewsModel.exe.config" Source="..\ViewsModel\bin\Debug\" KeyPath="yes"/>
+      </Component>
+      <Component Id="CmpWpfToolkitExtended" Guid="{E389D65A-3EFD-41D6-99D8-A0462CDC13BB}">
+        <File Id="WPFToolkit.Extended.dll" Source="..\ViewsModel\bin\Debug\" KeyPath="yes"/>
+      </Component>
+    </ComponentGroup>
+
+    <!--<ComponentGroup Id="ReportsTemplatesComponents" Directory="ReportsTemplatesFolder">
+      <Component Id="CmpExcelPeriods" Guid="">
+        <File Id="PeriodSchedules.xltx" Source="C:\VSProjects\JSA\Templates\" KeyPath="yes"/>
+      </Component>
+      <Component Id="CmpExcelContracts" Guid="">
+        <File Id="ContractsReport.xltx" Source="C:\VSProjects\JSA\Templates\" KeyPath="yes"/>
+      </Component>
+    </ComponentGroup>-->
+
+    <ComponentGroup Id="AppShortcut" Directory="ApplicationProgramsFolder">
+      <Component Id="CmpAppShortcut" Guid="{F5614F13-08B1-4A29-B412-85BB405F11EA}">
+        <Shortcut Id="AppStartMenuShortcut"
+                  Name="Fpm"
+                  Description="Manage family members’ regular payments and their loans."
+                  Target="[INSTALLFOLDER]ViewsModel.exe"
+                  WorkingDirectory="ApplicationProgramsFolder"
+                  Icon="AppIcon"/>
+        <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\Microsoft\Fpm" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </ComponentGroup>
+
+  </Fragment>
+
+</Wix>

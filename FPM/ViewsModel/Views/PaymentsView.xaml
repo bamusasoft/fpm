@@ -1,0 +1,93 @@
+﻿<Window x:Class="Fbm.ViewsModel.Views.PaymentsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wpfToolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  mc:Ignorable="d" 
+        Title="الصرفيات" FlowDirection="RightToLeft" Language="ar-SA" FontFamily="Simplified Arabic" 
+        FontSize="14" FontWeight="Bold">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Ribbon Grid.Row="0" Background="#FFD3D7DA">
+            <RibbonTab x:Name="homeTab" Header="عام">
+                <RibbonGroup Header="عام">
+                    <RibbonButton Style="{StaticResource NewButtonStyle}"
+                                  Command="{Binding AddNewCommand}"/>
+                    <RibbonButton Style="{StaticResource SaveButtonStyle}"
+                                  Command="{Binding SaveCommand}"/>
+                    <RibbonButton Style="{StaticResource FlagButtonStyle}"
+                                  Command="{Binding FlagCommand}" ToolTip="إقفال الدفعة"/>
+                </RibbonGroup>
+            </RibbonTab>
+        </Ribbon>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.2*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="0.8*"/>
+            </Grid.ColumnDefinitions>
+            <!--Search Section-->
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <wpfToolkit:WatermarkTextBox Watermark="السنة" x:Name="txtSearchedYear" KeyDown="SearchKeyDown"
+                                             Grid.Row="0"/>
+                <ListBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionMode="Single"
+                         SelectionChanged="PaymentsChanged" x:Name="lstPyaments"
+                         ItemsSource="{Binding YearPayments}" Grid.Row="1">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding PaymentSequence.SequenceDescription}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+
+                </ListBox>
+            </Grid>
+            
+            <!--Splitter Section-->
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Width="5"
+                          VerticalContentAlignment="Stretch" Background="BurlyWood"/>
+            <!--Main Section-->
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Margin="10" TextWrapping="Wrap" Text="السنة"/>
+                <TextBlock Margin="10" TextWrapping="Wrap" Text="رقم الصرفية" Grid.Row="1"/>
+                <TextBlock Margin="10" TextWrapping="Wrap" Text="مبلغ الصرفية" Grid.Row="2"/>
+                <ComboBox Margin="10" Grid.Column="1"
+                      ItemsSource="{Binding PaymentYears}"  DisplayMemberPath="YearPart"
+                      SelectedItem="{Binding PaymentYear}" x:Name="cmbYears"
+                      SelectionChanged="PaymentYearsSelectionChanged"/>
+                <ComboBox Margin="10" Grid.Column="1"
+                      ItemsSource="{Binding PaymentSequences}"  DisplayMemberPath="SequenceDescription"
+                      SelectedItem="{Binding PaymentSequence}"
+                      x:Name="cmbSequences" Grid.Row="1"/>
+                <TextBox Grid.Column="1" Margin="10,10,300,10" x:Name="txtPaymentAmount" TextWrapping="Wrap" 
+                         Text="{Binding PaymentAmount, StringFormat=F2}" Grid.Row="2"/>
+                <TextBlock Margin="10" TextWrapping="Wrap" Text="رقم المرجع"
+                       FontSize="18" Foreground="Red" Grid.Row="3"/>
+                <TextBlock Grid.Column="1" Margin="10" TextWrapping="Wrap" Text="{Binding PaymentNo}"
+            	FontSize="18" Foreground="Red" Grid.Row="3"/>
+
+            </Grid>
+        </Grid>
+        
+        
+    </Grid>
+</Window>

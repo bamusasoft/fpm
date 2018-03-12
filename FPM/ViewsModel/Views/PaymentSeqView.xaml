@@ -1,0 +1,50 @@
+﻿<Window x:Class="Fbm.ViewsModel.Views.PaymentSeqView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wpfToolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  mc:Ignorable="d" 
+        Title="دفعات الصرفية" Height="400" Width="400" FlowDirection="RightToLeft" Language="ar-SA" FontFamily="Simplified Arabic" FontSize="14" FontWeight="Bold">
+    <DockPanel>
+        <Ribbon DockPanel.Dock="Top" Background="#FFD3D7DA">
+            <RibbonTab x:Name="homeTab" Header="عام">
+                <RibbonGroup Header="عام">
+                    <RibbonButton Style="{StaticResource  NewButtonStyle}"
+                                  Command="{Binding AddNewCommand}"/>
+                    <RibbonButton Style="{StaticResource SaveButtonStyle}"
+                                  Command="{Binding SaveCommand}"/>
+                </RibbonGroup>
+            </RibbonTab>
+            <RibbonTab x:Name="searchTab" Header="بحث">
+                <RibbonGroup Header="بحث">
+                    <UniformGrid>
+                        <wpfToolkit:WatermarkTextBox Text="{Binding SearchField, UpdateSourceTrigger=PropertyChanged}"
+                                                     MinWidth="150"/>
+                        <RibbonButton Style="{StaticResource SearchButtonStyle}"
+                                      Command="{Binding SearchCommand}"/>
+                    </UniformGrid>
+
+                </RibbonGroup>
+            </RibbonTab>
+        </Ribbon>
+        <Grid Margin="0,5,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="9*"/>
+                <RowDefinition Height="35*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock HorizontalAlignment="Left" Margin="10,8,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="تسلسل"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" TextWrapping="Wrap" Text="الوصف" VerticalAlignment="Top"/>
+            <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="5" Text="{Binding SequenceNo}"
+                     TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="66" IsEnabled="False"/>
+            <TextBox Grid.Column="1" Margin="5" Grid.Row="1" Text="{Binding SequenceDescription, UpdateSourceTrigger=PropertyChanged}"
+                     TextWrapping="Wrap" Height="35" VerticalContentAlignment="Center" VerticalAlignment="Top"
+                     IsEnabled="False"/>
+        </Grid>
+
+
+    </DockPanel>
+</Window>

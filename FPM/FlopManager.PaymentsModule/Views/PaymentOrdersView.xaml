@@ -1,0 +1,90 @@
+﻿<UserControl x:Class="FlopManager.PaymentsModule.Views.PaymentOrdersView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:prism="http://www.codeplex.com/prism"
+             xmlns:custom="clr-namespace:FlopManager.Services.CustomPopupActions;assembly=FlopManager.Services"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="600" FlowDirection="RightToLeft">
+    <i:Interaction.Triggers>
+        <prism:InteractionRequestTrigger SourceObject="{Binding ConfirmationRequest, Mode=OneWay}">
+            <custom:MyPopupWindowAction IsModal="True" />
+        </prism:InteractionRequestTrigger>
+        <prism:InteractionRequestTrigger SourceObject="{Binding NotificationRequest, Mode=OneWay}">
+            <custom:MyPopupWindowAction IsModal="True"/>
+        </prism:InteractionRequestTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="0.5*"/>
+        </Grid.RowDefinitions>
+        <ToolBarTray Grid.Row="0" Orientation="Horizontal" >
+            <ToolBar BorderThickness="0" SnapsToDevicePixels="True" >
+                <Button Command="{Binding SaveCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                    <StackPanel Orientation="Horizontal">
+                        <ContentControl Content="{StaticResource EnSaveImage}"  Margin="0,0,5,0"/>
+                        <TextBlock Text="حفظ"/>
+                    </StackPanel>
+                </Button>
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey} }"/>
+            </ToolBar>
+        </ToolBarTray>
+        <Grid Margin="5" Grid.Row="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock HorizontalAlignment="Center" Margin="10" TextWrapping="Wrap" Text="رقم المرجع" VerticalAlignment="Center"/>
+            <TextBox x:Name="paymentNoTextBox" Grid.Column="1" Text="{Binding PaymentNo, UpdateSourceTrigger=LostFocus}" Margin="10">
+                <TextBox.InputBindings>
+                    <KeyBinding Command="{Binding CreatePaymentOrderCommand}" CommandParameter="{Binding Text, ElementName=paymentNoTextBox}" Key="Enter"/>
+                </TextBox.InputBindings>
+            </TextBox>
+            <TextBlock HorizontalAlignment="Center" Margin="10" TextWrapping="Wrap" Text="لعام" VerticalAlignment="Center" Grid.Column="2"/>
+            <TextBox Grid.Column="3" TextWrapping="Wrap" Text="{Binding PaymentYear}"  Margin="10" RenderTransformOrigin="2.766,0.892"/>
+            <TextBlock HorizontalAlignment="Center" Margin="10" TextWrapping="Wrap" Text="رقم الدفعة" VerticalAlignment="Center" Grid.Column="4"/>
+            <TextBox Grid.Column="5" TextWrapping="Wrap" Text="{Binding PaymentSequence}" Margin="10" RenderTransformOrigin="2.766,0.892"/>
+        </Grid>
+        <Rectangle  Fill="Silver" HorizontalAlignment="Stretch" Height="2" Stroke="Silver" VerticalAlignment="Stretch" Grid.Row="2" StrokeThickness="2" Margin="0,5"/>
+        <GroupBox Grid.Row="3" Header="التزامات الدفعة الحالية" Margin="5" BorderThickness="2">
+            <DataGrid ItemsSource="{Binding CurrentPaymentLoansInstructions}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="نوع الإلتزام" Binding="{Binding LoanType.LoanDescription}" Width="0.5*" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="سنة الإلتزام" Binding="{Binding PeriodYear.Year}" Width="0.2*" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="نسبة الخصم (% )" Binding="{Binding EarnPercent, UpdateSourceTrigger=PropertyChanged}"
+                                        Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+        <Rectangle Fill="Silver" Height="2" Margin="0,5" Grid.Row="4" Stroke="Silver" VerticalAlignment="Top" StrokeThickness="2" />
+
+        <GroupBox Grid.Row="5" Header="التزامات مستحقة غير مسددة" Margin="5" BorderThickness="2">
+            <DataGrid ItemsSource="{Binding OldDueLoansInstructions}" AutoGenerateColumns="False" CanUserAddRows="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding LoanType.LoanDescription}" Header="نوع الإلتزام" Width="0.5*" IsReadOnly="True"/>
+                    <DataGridTextColumn Binding="{Binding PeriodYear.Year}" Header="سنة الإلتزام" Width="0.2*" IsReadOnly="True"/>
+                    <DataGridTextColumn Binding="{Binding EarnPercent, UpdateSourceTrigger=PropertyChanged}" Header="نسبة الخصم ( % )" Width="*"/>
+
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+
+
+
+    </Grid>
+</UserControl>

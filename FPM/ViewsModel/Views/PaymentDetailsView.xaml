@@ -1,0 +1,156 @@
+﻿<Window x:Class="Fbm.ViewsModel.Views.PaymentDetailsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wpfToolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  mc:Ignorable="d" 
+        Title="تفاصيل الصرفية" FlowDirection="RightToLeft" Language="ar-SA" FontFamily="Simplified Arabic" 
+        FontSize="14" FontWeight="Bold"
+        WindowState="Maximized">
+    <DockPanel>
+        <Ribbon DockPanel.Dock="Top" Background="#FFD3D7DA">
+            <RibbonTab x:Name="homeTab" Header="عام">
+                <RibbonGroup Header="عام">
+                    <RibbonButton Style="{StaticResource NewButtonStyle}"
+                                  Command="{Binding AddNewCommand}"/>
+                    <RibbonButton Style="{StaticResource SaveButtonStyle}"
+                                  Command="{Binding SaveCommand}"/>
+                    
+                </RibbonGroup>
+            </RibbonTab>
+            <RibbonTab x:Name="editTab" Header="تحرير">
+                <RibbonGroup Header="تحرير">
+                    <RibbonButton Style="{StaticResource DeleteButtonStyle}"
+                                  Command="{Binding DeleteCommand}"/>
+
+                    <RibbonButton Style="{StaticResource PrintButtonStyle}"
+                                  Command="{Binding PrintCommand}"/>
+                </RibbonGroup>
+            </RibbonTab>
+            <RibbonTab x:Name="searchTab" Header="بحث">
+                <RibbonGroup Header="النوع" >
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Grid.Row="0" Text="رجال" Margin="3"/>
+                        <TextBlock Grid.Column="2" Grid.Row="0" Text="سيدات" Margin="3"/>
+                        <RibbonCheckBox Grid.Column="1" Grid.Row="0" Margin="3"
+                                        IsChecked="{Binding Criteria.Male}"/>
+                        <RibbonCheckBox Grid.Column="3" Grid.Row="0" Margin="3"
+                                        IsChecked="{Binding Criteria.Female}"/>
+                    </Grid>
+                    
+                </RibbonGroup>
+                <RibbonGroup Header="المستحق">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Grid.Row="0" Text="رقم المستحق" Margin="3"/>
+                        <TextBlock Grid.Column="2" Grid.Row="0" Text="الإسم" Margin="3"/>
+                        <RibbonTextBox Grid.Column="1" Grid.Row="0" Margin="3" TextBoxWidth="100"
+                                       Text="{Binding Criteria.MemberCode, UpdateSourceTrigger=PropertyChanged}"/>
+                        <RibbonTextBox Grid.Column="3" Grid.Row="0" Margin="3" Padding="2" TextBoxWidth="150"
+                                       Text="{Binding Criteria.MemberName, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Grid>
+                    
+
+                </RibbonGroup>
+                <!--To be adde as a feture in next release.-->
+                <!--<RibbonGroup Header="الإلتزام">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Grid.Row="0" Text="مبلغ الإلتزام" Margin="3"/>
+                        <RibbonComboBox Grid.Column="1" Grid.Row="0" Margin="3">
+                            <RibbonGallery SelectedValuePath="Key" MaxColumnCount="1" SelectedValue="{Binding LoanAmountFilter}">
+                                <RibbonGalleryCategory ItemsSource="{Binding ArabicFilterChoices}" 
+                                                        DisplayMemberPath="Value"/>
+                            </RibbonGallery>
+                        </RibbonComboBox>
+                        <RibbonTextBox Grid.Column="2" Grid.Row="0" Margin="3" MinWidth="100"/>
+                    </Grid>
+                </RibbonGroup>
+                <RibbonGroup Header="الإلتزام">
+                    <RibbonButton Style="{StaticResource SearchButtonStyle}"
+                                  Command="{Binding AddNewCommand}"/>
+                    
+                </RibbonGroup>-->
+                
+            </RibbonTab>
+        </Ribbon>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" MinWidth="81"/>
+                    <ColumnDefinition Width="192*"/>
+                    <ColumnDefinition Width="Auto" MinWidth="55"/>
+                    <ColumnDefinition Width="188*"/>
+                    <ColumnDefinition Width="Auto" MinWidth="51"/>
+                    <ColumnDefinition Width="185*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="رقم الصرفية" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtPaymentNo" Grid.Column="1" Grid.Row="0" Text="{Binding PaymentNo}" Margin="10" VerticalContentAlignment="Center"/>
+                <TextBlock Grid.Column="2" Grid.Row="0" Text="الدفعة" HorizontalAlignment="Right" Width="26" VerticalAlignment="Center"/>
+                <TextBox Grid.Column="3" Grid.Row="0" Text="{Binding PaymentSequence}" Margin="10" VerticalContentAlignment="Center" IsEnabled="False" IsReadOnly="True"/>
+                <TextBlock Grid.Column="4" Grid.Row="0" Text="لعام" HorizontalAlignment="Right" Width="17" VerticalAlignment="Center"/>
+                <TextBox Grid.Column="5" Grid.Row="0" Text="{Binding PaymentYear}" Margin="10,10,75,10" VerticalContentAlignment="Center" IsEnabled="False" IsReadOnly="True"/>
+                
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+            <ProgressBar  Grid.Row="1" Grid.Column="0" x:Name="progCounter" HorizontalAlignment="Stretch"  Height="35" Margin="5" VerticalAlignment="Stretch"
+                          Value="{Binding ProgressCounter}"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" x:Name="txtProgCurrent" Text="{Binding ProgCurrent}"/>
+
+            </Grid>
+            <ListView Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  
+                      ItemsSource="{Binding PaymentDetails}" Margin="0,10,0,0" >
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="رقم المستحق" DisplayMemberBinding="{Binding ShareHolderCode, Converter={StaticResource NumToEmptyConverter}}" Width="Auto" />
+                        <GridViewColumn Header="الإسم" DisplayMemberBinding="{Binding ShareHolderName}" Width="Auto"/>
+                        <GridViewColumn Header="العام" DisplayMemberBinding="{Binding PaymentYear}" Width="Auto"/>
+                        <GridViewColumn Header="رقم الصرفية" DisplayMemberBinding="{Binding PaymentSequence}" Width="Auto"/>
+                        <GridViewColumn Header="عدد الأسهم" DisplayMemberBinding="{Binding ShareNo, Converter={StaticResource NumToEmptyConverter}}" Width="Auto"/>
+                        <GridViewColumn Header="مبلغ الصرفية" DisplayMemberBinding="{Binding PaymentAmount, StringFormat=F2, Converter={StaticResource NumToEmptyConverter}}" Width="Auto"/>
+                        <GridViewColumn Header="الإجمالي" DisplayMemberBinding="{Binding TotalPayment, StringFormat=F2, Converter={StaticResource NumToEmptyConverter}}" Width="Auto"/>
+                        <GridViewColumn Header="مبلغ الإلتزام" DisplayMemberBinding="{Binding LoanAmount, StringFormat=F2, Converter={StaticResource NumToEmptyConverter}}" Width="Auto"/>
+                        <GridViewColumn Header="وصف الإلتزام" DisplayMemberBinding="{Binding LoanDescription}" Width="Auto"/>
+                        <GridViewColumn Header="ملاحظات الإلتزام" DisplayMemberBinding="{Binding LoanRemarks}" Width="Auto"/>
+                        <GridViewColumn Header="إجمالي الإلتزامات" DisplayMemberBinding="{Binding LoansTotal, StringFormat=F2, Converter={StaticResource NumToEmptyConverter}}" Width="Auto"/>
+                        <GridViewColumn Header="صافي المنصرف" DisplayMemberBinding="{Binding NetPayments, StringFormat=F2, Converter={StaticResource NumToEmptyConverter}}" Width="Auto"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+        
+    </DockPanel>
+</Window>

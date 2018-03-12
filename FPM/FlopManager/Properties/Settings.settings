@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="FlopManager.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="FamilyDbPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\BaMusaSoft\FamilyPaymentsProject\Family.mdb</Value>
+    </Setting>
+    <Setting Name="UpgradedVersion" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="LogFilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\BaMusaSoft\FamilyPaymentsProject\Log</Value>
+    </Setting>
+    <Setting Name="MemberStatementPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\BaMusaSoft\FamilyPaymentsProject\Book1.xltx</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

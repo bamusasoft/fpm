@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="FlopManagerLoanModule.Views.LoansListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FlopManagerLoanModule.Views"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid Grid.Column="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+
+        </Grid.RowDefinitions>
+        <xctk:WatermarkTextBox  Grid.Row="0" x:Name="txtSearchedMember" Watermark="رقم المستحق" Margin="5,0,0,5" VerticalContentAlignment="Stretch"  />
+        <ListView Grid.Column="0" Grid.Row="1" Margin="5,0,0,0" ItemsSource="{Binding Loans}" IsSynchronizedWithCurrentItem="True">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding LoanNo}" Header="رقم الإلتزام"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding PaymentSequence.SequenceDescription}" Header="الدفعة"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding PeriodYear.Year}" Header="لعام"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding LoanType.LoanDescription}" Header="النوع"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</UserControl>

@@ -1,0 +1,90 @@
+﻿<Window x:Class="Fbm.ViewsModel.Views.PaymentOrdersView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wpfToolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  mc:Ignorable="d" 
+        Title="تعليمات الصرفية" Height="600" Width="650" FlowDirection="RightToLeft" Language="ar-SA" FontFamily="Simplified Arabic" FontSize="14" FontWeight="Bold">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="20*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="19*"/>
+        </Grid.RowDefinitions>
+        <Ribbon Grid.Row="0" Background="#FFD3D7DA">
+            <RibbonTab x:Name="homeTab" Header="عام">
+                <RibbonGroup Header="عام">
+                    <RibbonButton Style="{StaticResource NewButtonStyle}"
+                                  Command="{Binding AddNewCommand}"/>
+                    <RibbonButton Style="{StaticResource SaveButtonStyle}"
+                                  Command="{Binding SaveCommand}"/>
+                </RibbonGroup>
+            </RibbonTab>
+            <RibbonTab x:Name="searchTab" Header="بحث">
+                <RibbonGroup Header="بحث">
+                    <UniformGrid>
+                        <wpfToolkit:WatermarkTextBox Text="{Binding SearchField, UpdateSourceTrigger=PropertyChanged}"
+                                                     MinWidth="150"/>
+                        <RibbonButton Style="{StaticResource SearchButtonStyle}"
+                                      Command="{Binding SearchCommand}"/>
+                    </UniformGrid>
+
+                </RibbonGroup>
+            </RibbonTab>
+        </Ribbon>
+        <Grid Grid.Row="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="170*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="170*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="169*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap" Text="رقم المرجع" VerticalAlignment="Center"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap" Text="لعام" VerticalAlignment="Center" Grid.Column="2"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap" Text="رقم الدفعة" VerticalAlignment="Center" Grid.Column="4"/>
+            <TextBox Grid.Column="1" TextWrapping="Wrap" x:Name="txtPaymentNo"
+                     Text="{Binding PaymentNo}" VerticalAlignment="Center" Margin="10"/>
+            <TextBox Grid.Column="3" TextWrapping="Wrap" Text="{Binding PaymentYear}" VerticalAlignment="Center"  Margin="10,10,60,10" RenderTransformOrigin="2.766,0.892"/>
+            <TextBox Grid.Column="5" TextWrapping="Wrap" Text="{Binding PaymentSequence}" VerticalAlignment="Center" Margin="10" RenderTransformOrigin="2.766,0.892"/>
+             </Grid>
+            <Grid Grid.Row="4">
+                <DataGrid Grid.Row="1" Grid.ColumnSpan="6"
+                      ItemsSource="{Binding CurrentPaymentOrders}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="10">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="نوع الإلتزام" Binding="{Binding LoanType.LoanDescription}" Width="0.5*"/>
+                    <DataGridTextColumn Header="سنة الإلتزام" Binding="{Binding PeriodSetting.YearPart}" Width="0.2*"/>
+                    <DataGridTextColumn Header="نسبة الخصم (% )" Binding="{Binding EarnPercent, UpdateSourceTrigger=PropertyChanged}"
+                                        Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+        
+            </Grid>
+        <Rectangle Fill="Silver" HorizontalAlignment="Stretch" Height="2" Grid.Row="5" Stroke="Silver" VerticalAlignment="Stretch"/>
+        <TextBlock HorizontalAlignment="Stretch" Margin="10,0,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Center"
+                   Text="التزامات سابقة مفتوحة" FontSize="18" Foreground="#FFFF3F00"/>
+        <DataGrid Grid.Row="7" Margin="10" AutoGenerateColumns="False" ItemsSource="{Binding OldLoansOrders}"
+                  CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding LoanType.LoanDescription}" Header="نوع الإلتزام" Width="0.5*"/>
+                <DataGridTextColumn Binding="{Binding PeriodSetting.YearPart}" Header="سنة الإلتزام" Width="0.2*"/>
+                <DataGridTextColumn Binding="{Binding EarnPercent, UpdateSourceTrigger=PropertyChanged}" Header="نسبة الخصم ( % )"
+                                    Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Rectangle Fill="Silver" Height="2" Margin="0" Grid.Row="2" Stroke="Silver" VerticalAlignment="Top"/>
+        <TextBlock Margin="10,10,10,0" Grid.Row="3" TextWrapping="Wrap" Text="التزامات الدفعة الحالية" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="#FF3400FF"/>
+
+
+    </Grid>
+</Window>

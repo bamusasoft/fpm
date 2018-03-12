@@ -1,0 +1,170 @@
+﻿<Window x:Class="Fbm.ViewsModel.Views.PostLoansView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Name="windPostLoans" Title="ترحيل الإلتزامات" FlowDirection="RightToLeft" 
+        Language="ar-SA" FontFamily="Simplified Arabic" FontSize="15" FontWeight="Bold">
+    <Window.Resources>
+        <DataTemplate x:Key="MembersErrorTemplate">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <DataGrid Grid.Row="0" ItemsSource="{Binding ErrorMessage}" CanUserAddRows="False" AutoGenerateColumns="False" >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="الإسم" Binding="{Binding Path=MemberName}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Button Grid.Row="1" HorizontalAlignment="Stretch" Command="{Binding CloseCommand}" Content="Ok"/>
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid x:Name="layoutRoot">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="PostedGridStates">
+                <VisualState x:Name="ShowPostedGrid">
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetName="postedGrid"
+                                         Storyboard.TargetProperty="(DataGrid.RenderTransform).(ScaleTransform.ScaleY)" To="1"
+                                         Duration="0:0:1" AutoReverse="False">
+                            <DoubleAnimation.EasingFunction>
+                                <BackEase Amplitude="0.3" EasingMode="EaseInOut"/>
+                            </DoubleAnimation.EasingFunction>
+                        </DoubleAnimation>
+                        <DoubleAnimation Storyboard.TargetName="postedGrid"
+                                         Storyboard.TargetProperty="(DataGrid.RenderTransform).(ScaleTransform.ScaleX)" To="1"
+                                         Duration="0:0:1" AutoReverse="False"/>
+                        <DoubleAnimation Storyboard.TargetName="windPostLoans"
+                                         Storyboard.TargetProperty="(Window.Height)" To="600"/>
+
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="HidePostedGrid">
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetName="postedGrid"
+                                         Storyboard.TargetProperty="(DataGrid.RenderTransform).(ScaleTransform.ScaleY)" To="0"
+                                         Duration="0:0:1" AutoReverse="False">
+                            <DoubleAnimation.EasingFunction>
+                                <BackEase Amplitude="0.3" EasingMode="EaseInOut"/>
+                            </DoubleAnimation.EasingFunction>
+                        </DoubleAnimation>
+                        <DoubleAnimation Storyboard.TargetName="postedGrid"
+                                         Storyboard.TargetProperty="(DataGrid.RenderTransform).(ScaleTransform.ScaleX)" To="0"
+                                         Duration="0:0:1" AutoReverse="False"/>
+                        <DoubleAnimation Storyboard.TargetName="windPostLoans"
+                                         Storyboard.TargetProperty="(Window.Height)" To="400"/>
+
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+            <VisualStateGroup x:Name="ErrorTemplateState">
+                <VisualState x:Name="ShowError">
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetName="errorContent"
+                                          Storyboard.TargetProperty="(ContentPresenter.RenderTransform).(ScaleTransform.ScaleX)" To="1"
+                                         Duration="0:0:1" AutoReverse="False"/>
+                        <DoubleAnimation Storyboard.TargetName="errorContent"
+                                          Storyboard.TargetProperty="(ContentPresenter.RenderTransform).(ScaleTransform.ScaleY)" To="1"
+                                         Duration="0:0:1" AutoReverse="False"/>
+                    </Storyboard>
+
+                </VisualState>
+                <VisualState x:Name="HideError">
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetName="errorContent"
+                                          Storyboard.TargetProperty="(ContentPresenter.RenderTransform).(ScaleTransform.ScaleX)" To="0"
+                                         Duration="0:0:1" AutoReverse="False"/>
+                        <DoubleAnimation Storyboard.TargetName="errorContent"
+                                          Storyboard.TargetProperty="(ContentPresenter.RenderTransform).(ScaleTransform.ScaleY)" To="0"
+                                         Duration="0:0:1" AutoReverse="False"/>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Ribbon Grid.Row="0" Background="#FFD3D7DA">
+            <RibbonTab x:Name="homeTab" Header="عام">
+                <RibbonGroup Header="عام">
+                    <RibbonButton  Style="{StaticResource NewButtonStyle}"
+                                  Command="{Binding AddNewCommand}"/>
+                    <RibbonButton Style="{StaticResource SaveButtonStyle}"
+                                  Command="{Binding SaveCommand}"/>
+
+                </RibbonGroup>
+            </RibbonTab>
+        </Ribbon>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="27*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="22*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Margin="10,5" TextWrapping="Wrap" Text="التزامات سنة" VerticalAlignment="Center" RenderTransformOrigin="0.198,8.584"/>
+            <ComboBox x:Name="cmbYears"  Grid.Column="1" Margin="10,7,10,3" VerticalAlignment="Center"
+                      ItemsSource="{Binding Years}" DisplayMemberPath="YearPart"
+                      SelectedItem="{Binding SelectedYear}"
+                      SelectionChanged="YearSelectionChanged"/>
+
+            <TextBlock Margin="10,5" TextWrapping="Wrap" Text="رحلها إلى سنة" RenderTransformOrigin="0.198,8.584" Grid.Row="2" VerticalAlignment="Center"/>
+            <ComboBox x:Name="cmbFutureYears" Grid.Column="1" Margin="10,5" VerticalAlignment="Center" Grid.Row="2"
+                      ItemsSource="{Binding FutureYears}" DisplayMemberPath="YearPart" SelectedItem="{Binding SelectedFuture}"
+                      SelectionChanged="FutureSelectionChanged"/>
+            <TextBlock TextWrapping="Wrap" Text="الدفعة" RenderTransformOrigin="0.198,8.584" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Margin="10,5"/>
+            <ComboBox x:Name="cmbSequences" Grid.Column="3" Margin="10,5" VerticalAlignment="Center" Grid.Row="2"
+            	ItemsSource="{Binding PaymentSequences}" DisplayMemberPath="SequenceDescription" SelectedItem="{Binding SelectedSeqeunce}"
+            	SelectionChanged="SequencesChanged"/>
+
+            <DataGrid Margin="10" Grid.Row="1" Grid.ColumnSpan="4" GridLinesVisibility="Horizontal"
+                      ItemsSource="{Binding CurrentLoans}"
+                      CanUserAddRows="False" AutoGenerateColumns="False" RowHeaderWidth="20">
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn Binding="{Binding Selected}" Header="اختيار"/>
+                    <DataGridTextColumn Binding="{Binding MemberName}" Header="الإسم"/>
+                    <DataGridTextColumn Binding="{Binding LoanTypeDescription}" Header="نوع الإلتزام"/>
+                    <DataGridTextColumn Binding="{Binding PeriodYear}" Header="السنة"/>
+                    <DataGridTextColumn Binding="{Binding LoanAmount}" Header="المبلغ"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <TextBlock Margin="10,5" TextWrapping="Wrap" Text="نوع الإلتزام" VerticalAlignment="Center" RenderTransformOrigin="0.198,8.584" Grid.Column="2"/>
+            <ComboBox x:Name="cmbLoanTypes" Grid.Column="3" Margin="10,5" VerticalAlignment="Center"
+                      ItemsSource="{Binding LoanTypes}" DisplayMemberPath="LoanDescription"
+                      SelectedItem="{Binding SelectedLoanType}"
+                      SelectionChanged="LoanTypeSelectionChanged"/>
+            <DataGrid x:Name="postedGrid" Margin="10" Grid.Row="3" Grid.ColumnSpan="4" GridLinesVisibility="Horizontal" 
+                      ItemsSource="{Binding PostedLoans}" CanUserAddRows="False" AutoGenerateColumns="False"
+                       RowHeaderWidth="20">
+                <DataGrid.RenderTransform>
+                    <ScaleTransform ScaleX="0" ScaleY="0"/>
+                </DataGrid.RenderTransform>
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn Binding="{Binding Selected}" Header="اختيار"/>
+                    <DataGridTextColumn Binding="{Binding MemberName}" Header="الإسم"/>
+                    <DataGridTextColumn Binding="{Binding LoanTypeDescription}" Header="نوع الإلتزام"/>
+                    <DataGridTextColumn Binding="{Binding PeriodYear}" Header="السنة"/>
+                    <DataGridTextColumn Binding="{Binding LoanAmount}" Header="المبلغ"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <ContentPresenter x:Name="errorContent" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Grid.RowSpan="4"
+        		ContentTemplate="{StaticResource MembersErrorTemplate}" Content="{Binding RegistredErrorTemplate}">
+                <ContentPresenter.RenderTransform>
+                    <ScaleTransform ScaleX="0" ScaleY="0"/>
+                </ContentPresenter.RenderTransform>
+            </ContentPresenter>
+
+        </Grid>
+
+    </Grid>
+</Window>
