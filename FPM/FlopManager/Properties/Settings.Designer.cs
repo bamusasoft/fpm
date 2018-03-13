@@ -70,5 +70,53 @@ namespace FlopManager.Properties {
                 this["MemberStatementPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LoanStatmPath {
+            get {
+                return ((string)(this["LoanStatmPath"]));
+            }
+            set {
+                this["LoanStatmPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PdfFolderPath {
+            get {
+                return ((string)(this["PdfFolderPath"]));
+            }
+            set {
+                this["PdfFolderPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PaymReportPath {
+            get {
+                return ((string)(this["PaymReportPath"]));
+            }
+            set {
+                this["PaymReportPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowReports {
+            get {
+                return ((bool)(this["ShowReports"]));
+            }
+            set {
+                this["ShowReports"] = value;
+            }
+        }
     }
 }

@@ -12,6 +12,12 @@
         public const string TRANSFER_IN_ARABIC = "حوالة";
         public const string CONFIRM_DELETE_MSG= "هل تريد حذف البيانات؟";
         public const string MEMBER_STATEMENT_PATH = "MemberStatementPath";
+        public const string LOAN_STATM_PATH = "LoanStatmPath";
+        public const string PDF_FOLDER_PATH = "PdfFolderPath";
+        public const string PAYM_REPORT_PATH = "PaymReprotPath";
+        public const string SHOW_REPORT = "ShowReport";
+        public const string LOG_FILE_PATH = "LogFilePath";
+
 
     }
 }

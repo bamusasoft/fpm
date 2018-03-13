@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -9,6 +10,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using FlopManager.Domain;
 using FlopManager.Domain.EF;
+using FlopManager.Services;
 using FlopManager.Services.Helpers;
 using FlopManager.Services.ViewModelInfrastructure;
 using FlopManager.SettingsModule.Properties;
@@ -18,6 +20,8 @@ using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace FlopManager.SettingsModule.ViewModels
 {
+    [Export]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public class OptionsViewModel:EditableViewModelBase
     {
         #region "Fields"
@@ -30,7 +34,7 @@ namespace FlopManager.SettingsModule.ViewModels
         PeriodYear _currentPeriod;
         string _logFileFolder;
         FamilyContext  _unitOfWork;
-        Settings _settings;
+        GlobalConfigService _settings;
 
         DelegateCommand _openMemberStatementCommand;
         DelegateCommand _openLoansStatementCommand;
@@ -40,11 +44,15 @@ namespace FlopManager.SettingsModule.ViewModels
         DelegateCommand _openPayDetailsTemplateCommand;
         DelegateCommand _openFamilyDbCommand;
         #endregion
-
-        public OptionsViewModel()
+        [ImportingConstructor]
+        public OptionsViewModel(ISettings settings)
         {
             WindowLoaded();
-            _settings = Settings.Default;
+            _settings = new GlobalConfigService(settings);
+            CanClose = true;
+            Title = ViewModelsTitles.OPTIONS;
+            Errors = new Dictionary<string, List<string>>();
+            OnStateChanged(ViewModelState.AddNew);
             _unitOfWork = new FamilyContext();
         }
         #region "Events"
@@ -63,30 +71,18 @@ namespace FlopManager.SettingsModule.ViewModels
         #region "Properties"
         public string FamilyDbPath
         {
-            get { return _familyDbPath; }
-            set { SetProperty(ref _familyDbPath, value); }
+            get { return (string) _settings.Get(SettingsNames.FAMILY_DB_PATH); }
+            set { _settings.Update(SettingsNames.FAMILY_DB_PATH, value); }
         }
         public string PayDetailsTemplate
         {
-            get
-            {
-                return _payDetailsTemplate;
-            }
-            set
-            {
-                SetProperty(ref _familyDbPath, value);
-            }
+            get { return (string)_settings.Get(SettingsNames.PAYM_REPORT_PATH); }
+            set { _settings.Update(SettingsNames.PAYM_REPORT_PATH, value); }
         }
         public bool ShowReports
         {
-            get
-            {
-                return _showReports;
-            }
-            set
-            {
-                SetProperty(ref _showReports, value);
-            }
+            get { return (string)_settings.Get(SettingsNames.PAYM_REPORT_PATH); }
+            set { _settings.Update(SettingsNames.PAYM_REPORT_PATH, value); }
 
         }
         public string LogFileFolder

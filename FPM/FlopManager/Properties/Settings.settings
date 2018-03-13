@@ -14,5 +14,17 @@
     <Setting Name="MemberStatementPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\BaMusaSoft\FamilyPaymentsProject\Book1.xltx</Value>
     </Setting>
+    <Setting Name="LoanStatmPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="PdfFolderPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="PaymReportPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ShowReports" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
