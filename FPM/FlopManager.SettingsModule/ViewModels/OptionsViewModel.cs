@@ -22,7 +22,7 @@ namespace FlopManager.SettingsModule.ViewModels
 {
     [Export]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class OptionsViewModel:EditableViewModelBase
+    public class OptionsViewModel : EditableViewModelBase
     {
         #region "Fields"
         string _memberStatmentTemplatePath;
@@ -33,7 +33,7 @@ namespace FlopManager.SettingsModule.ViewModels
         string _familyDbPath;
         PeriodYear _currentPeriod;
         string _logFileFolder;
-        FamilyContext  _unitOfWork;
+        FamilyContext _unitOfWork;
         GlobalConfigService _settings;
 
         DelegateCommand _openMemberStatementCommand;
@@ -47,23 +47,20 @@ namespace FlopManager.SettingsModule.ViewModels
         [ImportingConstructor]
         public OptionsViewModel(ISettings settings)
         {
-            WindowLoaded();
             _settings = new GlobalConfigService(settings);
+            Initialize();
+        }
+        #region "Events"
+
+
+        protected override void Initialize()
+        {
             CanClose = true;
             Title = ViewModelsTitles.OPTIONS;
             Errors = new Dictionary<string, List<string>>();
             OnStateChanged(ViewModelState.AddNew);
             _unitOfWork = new FamilyContext();
-        }
-        #region "Events"
-        void WindowLoaded()
-        {
             ReadValues();
-        }
-
-        protected override void Initialize()
-        {
-            throw new NotImplementedException();
         }
 
         #endregion
@@ -71,30 +68,28 @@ namespace FlopManager.SettingsModule.ViewModels
         #region "Properties"
         public string FamilyDbPath
         {
-            get { return (string) _settings.Get(SettingsNames.FAMILY_DB_PATH); }
-            set { _settings.Update(SettingsNames.FAMILY_DB_PATH, value); }
+            get { return _familyDbPath; }
+            set { SetProperty(ref _familyDbPath, value); }
+
         }
         public string PayDetailsTemplate
         {
-            get { return (string)_settings.Get(SettingsNames.PAYM_REPORT_PATH); }
-            set { _settings.Update(SettingsNames.PAYM_REPORT_PATH, value); }
+            get { return _payDetailsTemplate; }
+            set { SetProperty(ref _payDetailsTemplate, value); }
+
         }
         public bool ShowReports
         {
-            get { return (string)_settings.Get(SettingsNames.PAYM_REPORT_PATH); }
-            set { _settings.Update(SettingsNames.PAYM_REPORT_PATH, value); }
+            get { return _showReports; }
+            set { SetProperty(ref _showReports, value); }
+
 
         }
         public string LogFileFolder
         {
-            get
-            {
-                return _logFileFolder;
-            }
-            set
-            {
-                SetProperty(ref _familyDbPath, value);
-            }
+            get { return _logFileFolder; }
+            set { SetProperty(ref _logFileFolder, value); }
+
         }
         private YearStatus OpenStatus
         {
@@ -108,19 +103,15 @@ namespace FlopManager.SettingsModule.ViewModels
         public string MemberStatmentTemplatePath
         {
             get { return _memberStatmentTemplatePath; }
-            set
-            {
-                SetProperty(ref _memberStatmentTemplatePath, value);
-            }
+            set { SetProperty(ref _memberStatmentTemplatePath, value); }
+
 
         }
         public string LoansStatementTemplatePath
         {
             get { return _loansStatementTemplatePath; }
-            set
-            {
-                SetProperty(ref _loansStatementTemplatePath, value);
-            }
+            set { SetProperty(ref _loansStatementTemplatePath, value); }
+
         }
         public string CurrentYear
         {
@@ -142,10 +133,9 @@ namespace FlopManager.SettingsModule.ViewModels
         public string PdfsFolder
         {
             get { return _pdfsFolder; }
-            set
-            {
-                SetProperty(ref _pdfsFolder, value);
-            }
+            set { SetProperty(ref _pdfsFolder, value); }
+
+
         }
         #endregion
 
@@ -162,7 +152,7 @@ namespace FlopManager.SettingsModule.ViewModels
             }
         }
 
-      
+
 
         public ICommand CloseYearCommand
         {
@@ -238,11 +228,10 @@ namespace FlopManager.SettingsModule.ViewModels
         protected override void Save()
         {
             WriteValues();
-            _settings.Save();
             _unitOfWork.SaveChanges();
         }
 
-        
+
 
         protected override void Delete()
         {
@@ -258,8 +247,6 @@ namespace FlopManager.SettingsModule.ViewModels
         {
             throw new NotImplementedException();
         }
-
-        
 
         protected override void AddNew()
         {
@@ -278,7 +265,7 @@ namespace FlopManager.SettingsModule.ViewModels
 
         public override void OnStateChanged(ViewModelState state)
         {
-            throw new NotImplementedException();
+
         }
 
         protected override bool IsValid()
@@ -329,16 +316,26 @@ namespace FlopManager.SettingsModule.ViewModels
         #region "Helpers"
         void ReadValues()
         {
-            MemberStatmentTemplatePath =  "" ; //      _settings.MemberStatmentTemplatePath;
-            LoansStatementTemplatePath =  "" ; //      _settings.LoansStatementTemplatePath;
-            PdfsFolder =                  "" ; //     _settings.PdfsFolder;
-            LogFileFolder =               "" ; //     _settings.LogFilePath;
-            FamilyDbPath =                "" ; //     _settings.FamilyDbPath;
-            PayDetailsTemplate =          "" ; //     _settings.PaymentDetailsTemplatePath;
-            ShowReports =                 false ; //     _settings.ShowReports;
-            CurrentPeriod =                             GetCurrentYear();
+            FamilyDbPath = (string)_settings.Get(SettingsNames.FAMILY_DB_PATH);
+            PayDetailsTemplate = (string)_settings.Get(SettingsNames.PAYM_REPORT_PATH);
+            ShowReports = (bool)_settings.Get(SettingsNames.SHOW_REPORTS);
+            LogFileFolder = (string)_settings.Get(SettingsNames.LOG_FILE_PATH);
+            MemberStatmentTemplatePath = (string)_settings.Get(SettingsNames.MEMBER_STATEMENT_PATH);
+            LoansStatementTemplatePath = (string)_settings.Get(SettingsNames.LOAN_STATM_PATH);
+            PdfsFolder = (string)_settings.Get(SettingsNames.PDF_FOLDER_PATH);
+            CurrentPeriod = GetCurrentYear();
         }
+        void WriteValues()
+        {
+            _settings.Update(SettingsNames.FAMILY_DB_PATH, FamilyDbPath);
+            _settings.Update(SettingsNames.PAYM_REPORT_PATH, PayDetailsTemplate);
+            _settings.Update(SettingsNames.SHOW_REPORTS, ShowReports);
+            _settings.Update(SettingsNames.LOG_FILE_PATH, LogFileFolder);
+            _settings.Update(SettingsNames.MEMBER_STATEMENT_PATH, MemberStatmentTemplatePath);
+            _settings.Update(SettingsNames.LOAN_STATM_PATH, LoansStatementTemplatePath);
+            _settings.Update(SettingsNames.PDF_FOLDER_PATH, PdfsFolder);
 
+        }
         private PeriodYear GetCurrentYear()
         {
             PeriodYear currnet = null;
@@ -356,16 +353,7 @@ namespace FlopManager.SettingsModule.ViewModels
 
 
         }
-        void WriteValues()
-        {
-            //_settings.MemberStatmentTemplatePath = MemberStatmentTemplatePath;
-            //_settings.LoansStatementTemplatePath = LoansStatementTemplatePath;
-            //_settings.PdfsFolder = PdfsFolder;
-            //_settings.LogFilePath = LogFileFolder;
-            //_settings.PaymentDetailsTemplatePath = PayDetailsTemplate;
-            //_settings.ShowReports = ShowReports;
-            //_settings.FamilyDbPath = FamilyDbPath;
-        }
+
         string OpenFile(string filter)
         {
             OpenFileDialog ofd = new OpenFileDialog();

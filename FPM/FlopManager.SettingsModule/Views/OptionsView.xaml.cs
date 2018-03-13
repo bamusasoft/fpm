@@ -1,5 +1,7 @@
-﻿using System;
+﻿using FlopManager.SettingsModule.ViewModels;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,11 +20,19 @@ namespace FlopManager.SettingsModule.Views
     /// <summary>
     /// Interaction logic for OptionsView.xaml
     /// </summary>
+    [Export("OptionsView")]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class OptionsView : UserControl
     {
         public OptionsView()
         {
             InitializeComponent();
+        }
+        [Import]
+        public OptionsViewModel ViewModel
+        {
+            get { return DataContext as OptionsViewModel; }
+            set { DataContext = value; }
         }
     }
 }

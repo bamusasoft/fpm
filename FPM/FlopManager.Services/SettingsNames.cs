@@ -14,8 +14,8 @@
         public const string MEMBER_STATEMENT_PATH = "MemberStatementPath";
         public const string LOAN_STATM_PATH = "LoanStatmPath";
         public const string PDF_FOLDER_PATH = "PdfFolderPath";
-        public const string PAYM_REPORT_PATH = "PaymReprotPath";
-        public const string SHOW_REPORT = "ShowReport";
+        public const string PAYM_REPORT_PATH = "PaymReportPath";
+        public const string SHOW_REPORTS = "ShowReports";
         public const string LOG_FILE_PATH = "LogFilePath";
 
 

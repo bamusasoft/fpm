@@ -26,7 +26,7 @@ namespace FlopManager.Services
             {
                 throw new ArgumentException("Setting " + settingName + " not found");
             }
-            else if(setting.GetType() != value.GetType())
+            else if( value != null && setting.GetType() != value.GetType())
             {
                 throw new InvalidCastException("Unable to cast value to " + setting.GetType());
             }
@@ -45,5 +45,6 @@ namespace FlopManager.Services
                 throw new ArgumentNullException(nameof(settingName));
             return Settings[settingName];
         }
+        
     }
 }
