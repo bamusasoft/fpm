@@ -49,6 +49,10 @@ namespace FlopManager.Domain.EF
                 .IsFixedLength();
 
             modelBuilder.Entity<LoanPayment>()
+                .Property(e => e.PaymentNo)
+                .IsFixedLength();
+
+            modelBuilder.Entity<LoanPayment>()
                 .Property(e => e.AmountPaid)
                 .HasPrecision(19, 4);
 
@@ -102,6 +106,11 @@ namespace FlopManager.Domain.EF
             modelBuilder.Entity<Payment>()
                 .Property(e => e.Amount)
                 .HasPrecision(19, 4);
+
+            modelBuilder.Entity<Payment>()
+                .HasMany(e => e.LoanPayments)
+                .WithRequired(e => e.Payment)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Payment>()
                 .HasMany(e => e.PaymentInstructions)

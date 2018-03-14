@@ -603,6 +603,7 @@ namespace FlopManager.PaymentsModule.ViewModels
                 DocNo = GenerateLoanPaymentDocNo(),
                 DocDate = paymentTransaction.TransDate,
                 LoanNo = loan.LoanNo,
+                PaymentNo = payment.PaymentNo,
                 TransNo = paymentTransaction.TransNo,
                 AmountPaid = CalculateAmountToPaid(payment, loan),
                 //Add newly after testing

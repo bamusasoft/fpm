@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Data.Entity;
 using System.Linq;
@@ -10,6 +11,7 @@ using FlopManager.Services;
 using FlopManager.Services.Helpers;
 using FlopManager.Services.ViewModelInfrastructure;
 using FlopManagerLoanModule.Properties;
+using Prism.Events;
 using Prism.Logging;
 using Prism.Regions;
 
@@ -33,11 +35,14 @@ namespace FlopManagerLoanModule.ViewModels
         string _description;
         FamilyContext _unitOfWork;
         DbSet<LoanType> _repository;
+        private readonly IEventAggregator _eventAggregator;
+        private ICollectionView _typesList;
+        
         #endregion
-       
 
-        
-        
+
+
+
         #region "Properties"
         public int Code
         {
@@ -57,7 +62,7 @@ namespace FlopManagerLoanModule.ViewModels
                 OnStateChanged(ViewModelState.InEdit);
             }
         }
-
+        public ICollectionView TypesList
        
         #endregion
         #region "Helpers"

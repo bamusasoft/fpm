@@ -12,6 +12,8 @@ namespace FlopManager.Domain
         {
             PaymentInstructions = new HashSet<PaymentInstruction>();
             PaymentTransactions = new HashSet<PaymentTransaction>();
+            LoanPayments = new HashSet<LoanPayment>();
+
         }
 
         [Key]
@@ -41,6 +43,7 @@ namespace FlopManager.Domain
         public virtual PeriodYear PeriodYear { get; set; }
 
         public virtual ICollection<PaymentTransaction> PaymentTransactions { get; set; }
+        public virtual ICollection<LoanPayment> LoanPayments { get; set; }
 
         public static string MaxNo
         {

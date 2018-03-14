@@ -21,6 +21,10 @@ namespace FlopManager.Domain
         [StringLength(6)]
         public string LoanNo { get; set; }
 
+        [Required]
+        [StringLength(6)]
+        public string PaymentNo { get; set; }
+
         public int TransNo { get; set; }
 
         [Column(TypeName = "money")]
@@ -29,6 +33,7 @@ namespace FlopManager.Domain
         public virtual Loan Loan { get; set; }
 
         public virtual PaymentTransaction PaymentTransaction { get; set; }
+        public virtual Payment Payment { get; set; }
     }
 
 }

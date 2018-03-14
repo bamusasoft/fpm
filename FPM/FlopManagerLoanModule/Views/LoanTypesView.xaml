@@ -16,45 +16,65 @@
             <custom:MyPopupWindowAction IsModal="True"/>
         </prism:InteractionRequestTrigger>
     </i:Interaction.Triggers>
-
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <ToolBarTray Grid.Row="0" Orientation="Horizontal" >
-            <ToolBar BorderThickness="0" SnapsToDevicePixels="True" >
-                <Button Command="{Binding AddNewCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                    <StackPanel Orientation="Horizontal">
-                        <ContentControl Content="{StaticResource AddNewImage}"  Margin="0,0,5,0"/>
-                        <TextBlock Text="جديد"/>
-                    </StackPanel>
-                </Button>
-                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey} }"/>
-                <Button Command="{Binding SaveCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                    <StackPanel Orientation="Horizontal">
-                        <ContentControl Content="{StaticResource EnSaveImage}"  Margin="0,0,5,0"/>
-                        <TextBlock Text="حفظ"/>
-                    </StackPanel>
-                </Button>
-                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey} }"/>
-            </ToolBar>
-        </ToolBarTray>
-      
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="0.5*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
             <Grid.RowDefinitions>
-                <RowDefinition  Height="Auto"/>
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="الرمز" VerticalAlignment="Center" />
-            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Code, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" HorizontalContentAlignment="Center" />
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="الوصف" VerticalAlignment="Center" />
-            <TextBox Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Center"
-                     Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" />
+            <ToolBarTray Grid.Row="0" Orientation="Horizontal" >
+                <ToolBar BorderThickness="0" SnapsToDevicePixels="True" >
+                    <Button Command="{Binding AddNewCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                        <StackPanel Orientation="Horizontal">
+                            <ContentControl Content="{StaticResource AddNewImage}"  Margin="0,0,5,0"/>
+                            <TextBlock Text="جديد"/>
+                        </StackPanel>
+                    </Button>
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey} }"/>
+                    <Button Command="{Binding SaveCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                        <StackPanel Orientation="Horizontal">
+                            <ContentControl Content="{StaticResource EnSaveImage}"  Margin="0,0,5,0"/>
+                            <TextBlock Text="حفظ"/>
+                        </StackPanel>
+                    </Button>
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey} }"/>
+                </ToolBar>
+            </ToolBarTray>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition  Height="Auto"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="الرمز" VerticalAlignment="Center" Margin="5" />
+                <TextBox Grid.Row="1" Text="{Binding Code, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" d:LayoutOverrides="Height" Grid.ColumnSpan="2" Margin="5" />
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="الوصف" Margin="5" d:LayoutOverrides="Height" />
+                <TextBox Grid.Row="3" TextWrapping="Wrap"
+                     Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Margin="5" d:LayoutOverrides="Height" Grid.ColumnSpan="2" />
+            </Grid>
+        </Grid>
+        <Grid Grid.Column="1">
+            <DataGrid x:Name="dataGrid"  Margin="5"
+                      ItemsSource="{Binding TypesList}"
+                      >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="الكود" Binding="{Binding Code, Mode=OneWay}"/>
+                    <DataGridTextColumn Header="الرمز"  Binding="{Binding Description, Mode=OneWay}"
+                                        Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
         </Grid>
     </Grid>
 </UserControl>
