@@ -57,7 +57,8 @@
                 </Grid.RowDefinitions>
                 <xceed:WatermarkTextBox Watermark="السنة" Grid.Row="0"/>
                 <ListBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionMode="Single" 
-                         ItemsSource="{Binding CurrenYearPayments}" IsSynchronizedWithCurrentItem="True" Grid.Row="1">
+                         ItemsSource="{Binding CurrenYearPayments}" IsSynchronizedWithCurrentItem="True"
+                         Grid.Row="1" SelectedItem="{Binding SelectedPayment}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">

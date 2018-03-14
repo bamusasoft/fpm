@@ -28,7 +28,8 @@ namespace FlopManager.PaymentsModule.ViewModels
         {
             if (logger == null) throw new ArgumentNullException(nameof(logger));
             _logger = logger;
-            Initialize();
+            CanClose = true;
+            Title = ViewModelsTitles.CREATE_PAYMENT;
         }
 
         #region "Fields"
@@ -47,8 +48,7 @@ namespace FlopManager.PaymentsModule.ViewModels
         private PaymentSequence _selectedSequence;
         private bool _posted;
         private ICollectionView _currnetYearPayments;
-        private bool _selectedLoanFiredOnInitialzation;
-
+        private Payment _selectedPayment;
         #endregion
 
         #region "Properties"
@@ -152,7 +152,15 @@ namespace FlopManager.PaymentsModule.ViewModels
             get { return _currnetYearPayments; }
             set { SetProperty(ref _currnetYearPayments, value); }
         }
-
+        public Payment SelectedPayment
+        {
+            get { return _selectedPayment; }
+            set
+            {
+                _selectedPayment = value;
+                OnSelectedPaymentChanged();
+            }
+        }
         #endregion
 
         #region "Base"
@@ -171,6 +179,7 @@ namespace FlopManager.PaymentsModule.ViewModels
                         _repository.Add(payment);
                     }
                     _unitOfWork.SaveChanges();
+                    OnStateChanged(ViewModelState.Saved);
                 }
             }
             catch (Exception ex)
@@ -231,6 +240,7 @@ namespace FlopManager.PaymentsModule.ViewModels
                 case ViewModelState.InEdit:
                     break;
                 case ViewModelState.Saved:
+                    LoadCurrentYearPayments(CurrentYear);
                     break;
                 case ViewModelState.Deleted:
                     break;
@@ -295,13 +305,10 @@ namespace FlopManager.PaymentsModule.ViewModels
 
         #region "Helper"
 
-        protected  override void Initialize()
+        protected override void Initialize()
         {
             try
             {
-                _selectedLoanFiredOnInitialzation = true;
-                CanClose = true;
-                Title = ViewModelsTitles.CREATE_PAYMENT;
                 _unitOfWork = new FamilyContext();
                 _repository = _unitOfWork.Payments;
                 Errors = new Dictionary<string, List<string>>();
@@ -321,24 +328,21 @@ namespace FlopManager.PaymentsModule.ViewModels
 
         private void LoadCurrentYearPayments(PeriodYear currentYear)
         {
-            if (CurrenYearPayments != null) CurrenYearPayments.CurrentChanged -= OnSelectedLoanChanged;
+           
             var currentYearPayments = _repository.Where(p => p.Year == currentYear.Year);
             var list = new ObservableCollection<Payment>(currentYearPayments);
             CurrenYearPayments = new ListCollectionView(list);
-            CurrenYearPayments.CurrentChanged += OnSelectedLoanChanged;
+            
         }
 
-        private void OnSelectedLoanChanged(object sender, EventArgs e)
+        private void OnSelectedPaymentChanged()
         {
-            if (!_selectedLoanFiredOnInitialzation) //If fired during initialization do not react to it.
+            if (SelectedPayment != null) //If fired during initialization do not react to it.
             {
-                var selected = CurrenYearPayments.CurrentItem as Payment;
-                MapFrom(selected);
+                
+                MapFrom(SelectedPayment);
             }
-            else
-            {
-                _selectedLoanFiredOnInitialzation = false;
-            }
+           
         }
 
 
@@ -362,7 +366,7 @@ namespace FlopManager.PaymentsModule.ViewModels
 
         private ObservableCollection<PeriodYear> GetYears()
         {
-            return new ObservableCollection<PeriodYear>(_unitOfWork.PeriodYears);
+            return new ObservableCollection<PeriodYear>(_unitOfWork.PeriodYears.Where(x => x.Status == YearStatus.Present)); 
         }
 
         /// <summary>
@@ -451,7 +455,10 @@ namespace FlopManager.PaymentsModule.ViewModels
                     PaymentNo = currentYearPortion + DecorateNo(incrementedNo);
                 }
             }
-            PaymentNo = Helper.StartNewIncrement(currentYearPortion).ToString(CultureInfo.InvariantCulture);
+            else
+            {
+                PaymentNo = Helper.StartNewIncrement(currentYearPortion).ToString(CultureInfo.InvariantCulture);
+            }
         }
 
         #endregion
@@ -473,6 +480,7 @@ namespace FlopManager.PaymentsModule.ViewModels
         public void MapFrom(Payment entity)
         {
             PaymentNo = entity.PaymentNo;
+            PaymentDate = entity.PaymentDate;
             SelectedYear = entity.PeriodYear;
             SelectedSequence = entity.PaymentSequence;
             PaymentAmount = entity.Amount;

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Data.Entity;
 using System.Linq;
+using System.Windows.Data;
 using System.Windows.Input;
 using FlopManager.Domain;
 using FlopManager.Domain.EF;
@@ -25,8 +27,8 @@ namespace FlopManagerLoanModule.ViewModels
         public LoanTypesViewModel(ILogger logger)
         {
             _logger = logger;
-            Initialize();
-
+            Title = ViewModelsTitles.LOAN_TYPES;
+            CanClose = true;
         }
 
         #region "Fields"
@@ -37,10 +39,8 @@ namespace FlopManagerLoanModule.ViewModels
         DbSet<LoanType> _repository;
         private readonly IEventAggregator _eventAggregator;
         private ICollectionView _typesList;
-        
+        private LoanType _selectedType;
         #endregion
-
-
 
 
         #region "Properties"
@@ -63,25 +63,39 @@ namespace FlopManagerLoanModule.ViewModels
             }
         }
         public ICollectionView TypesList
-       
+        {
+            get { return _typesList; }
+            set
+            {
+                SetProperty(ref _typesList, value);
+            }
+        }
+        public LoanType SelectedType
+        {
+            get { return _selectedType; }
+            set
+            {
+                _selectedType = value;
+                ChageSelection();
+            }
+        }
         #endregion
+
         #region "Helpers"
-        
+
 
         protected override void Initialize()
         {
-            Title = ViewModelsTitles.LOAN_TYPES;
-            CanClose = true;
+            
+            
             _unitOfWork = new FamilyContext();
             _repository = _unitOfWork.LoanTypes;
             Errors = new Dictionary<string, List<string>>();
+            LoadTypesList();
         }
 
         
         #endregion
-
-
-
 
         #region "Base"
 
@@ -164,6 +178,7 @@ namespace FlopManagerLoanModule.ViewModels
                 case ViewModelState.InEdit:
                     break;
                 case ViewModelState.Saved:
+                    LoadTypesList();
                     break;
                 case ViewModelState.Deleted:
                     break;
@@ -206,8 +221,25 @@ namespace FlopManagerLoanModule.ViewModels
             Code = 0;
             Description = string.Empty;
         }
-
+        private void LoadTypesList()
+        {
+            _repository = _unitOfWork.LoanTypes;
+            var list = new ObservableCollection<LoanType>(_repository.ToList());
+            TypesList = new ListCollectionView(list);
+        }
+        
+        void ChageSelection()
+        {
+            if (SelectedType != null)
+            {
+               Code = SelectedType.Code;
+               Description = SelectedType.LoanDescription;
+               OnStateChanged(ViewModelState.Saved);
+            }
+            
+        }
         #endregion
+
         #region IEntityMapper
         public void MapTo(LoanType entity, bool ignoreKey)
         {
