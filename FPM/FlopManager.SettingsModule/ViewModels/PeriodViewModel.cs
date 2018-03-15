@@ -193,6 +193,28 @@ namespace FlopManager.SettingsModule.ViewModels
         {
             return ++_sequenceNo;
         }
+        private bool IsPresentYearExist()
+        {
+            bool presentYearExist = false;
+            //Get fresh copy
+            _repository = _unitOfWork.PeriodYears;
+            PeriodYear inEditPeriodYear = _repository.Find(Year);
+            if(inEditPeriodYear == null)
+            {
+                var presentYear = _repository.SingleOrDefault(x => x.Status == YearStatus.Present);
+                if(presentYear != null)
+                {
+                    presentYearExist = true;
+                }
+            }
+            var otherPeriodYear = _repository.SingleOrDefault
+                (x => x.Year != Year && x.Status == YearStatus.Present);
+            if(otherPeriodYear != null)
+            {
+                presentYearExist = true;
+            }
+            return presentYearExist;
+        }
 
         #endregion
 
@@ -338,8 +360,8 @@ namespace FlopManager.SettingsModule.ViewModels
             }
             if (SelectedStatus.Key == YearStatus.Present)
             {
-                var presentYear = _repository.SingleOrDefault(x => x.Status == YearStatus.Present);
-                if (presentYear != null)
+               
+                if (IsPresentYearExist())
                 {
                     AddError(nameof(YearStatuses), ValidationErrorsMessages.CAN_NOT_HAVE_MORE_THAN_ONE_PRESENT_YEAR);
                     isValid = false;
@@ -349,6 +371,7 @@ namespace FlopManager.SettingsModule.ViewModels
                     RemoveError(nameof(YearStatuses), ValidationErrorsMessages.CAN_NOT_HAVE_MORE_THAN_ONE_PRESENT_YEAR);
                 }
             }
+
             if (YearSequences.Count < 1)
             {
                 AddError(nameof(YearSequences), ValidationErrorsMessages.YEAR_MUST_HAVE_AT_LEAST_ONE_SEQUENCE);
@@ -361,6 +384,7 @@ namespace FlopManager.SettingsModule.ViewModels
 
             return isValid;
         }
+
 
         #endregion
         #region IEntityMapper
@@ -375,6 +399,7 @@ namespace FlopManager.SettingsModule.ViewModels
              Year = entity.Year;
             SelectedStatus = YearStatuses.SingleOrDefault(x => x.Key == entity.Status);
             YearSequences = new ObservableCollection<PaymentSequence>(entity.PaymentSequences);
+            _sequenceNo = YearSequences.Count;
             OnStateChanged(ViewModelState.Saved);
         }
 

@@ -260,7 +260,7 @@ namespace FlopManager.SettingsModule.ViewModels
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
         {
-            throw new NotImplementedException();
+            
         }
 
         public override void OnStateChanged(ViewModelState state)

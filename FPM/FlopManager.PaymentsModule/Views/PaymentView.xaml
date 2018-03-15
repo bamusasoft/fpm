@@ -9,7 +9,7 @@
              xmlns:local="clr-namespace:FlopManager.PaymentsModule.Views"
              xmlns:xceed="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" FlowDirection="RightToLeft">
+             d:DesignWidth="300" FlowDirection="RightToLeft">
     <i:Interaction.Triggers>
         <prism:InteractionRequestTrigger SourceObject="{Binding ConfirmationRequest, Mode=OneWay}">
             <custom:MyPopupWindowAction IsModal="True" />
@@ -18,7 +18,7 @@
             <custom:MyPopupWindowAction IsModal="True"/>
         </prism:InteractionRequestTrigger>
     </i:Interaction.Triggers>
-    
+
     <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -26,10 +26,16 @@
         </Grid.RowDefinitions>
         <ToolBarTray Grid.Row="0" Orientation="Horizontal" >
             <ToolBar BorderThickness="0" SnapsToDevicePixels="True" >
+                <Button Command="{Binding AddNewCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                    <StackPanel Orientation="Horizontal">
+                        <ContentControl Content="{StaticResource AddNewImage}"  Margin="0,0,5,0"/>
+                        <TextBlock Text="جديد"/>
+                    </StackPanel>
+                </Button>
                 <Button Command="{Binding SaveCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                     <StackPanel Orientation="Horizontal">
                         <ContentControl Content="{StaticResource EnSaveImage}"  Margin="0,0,5,0"/>
-                        <TextBlock Text="جديد"/>
+                        <TextBlock Text="حفظ"/>
                     </StackPanel>
                 </Button>
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey} }"/>
@@ -42,7 +48,7 @@
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey} }"/>
             </ToolBar>
         </ToolBarTray>
-        
+
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.2*"/>
@@ -82,30 +88,34 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
+
                 </Grid.ColumnDefinitions>
-                <TextBlock Margin="10" TextWrapping="Wrap" Text="الرقم" Grid.Row="0" Grid.Column="0"/>
-                <TextBox Margin="10" Text="{Binding PaymentNo, UpdateSourceTrigger=LostFocus}" Grid.Row="0" Grid.Column="1">
+                <TextBlock Margin="5" TextWrapping="Wrap" Text="الرقم" Grid.Row="0" Grid.Column="0"/>
+                <TextBox Margin="5" Text="{Binding PaymentNo, UpdateSourceTrigger=LostFocus}" Grid.Row="1">
                     <TextBox.InputBindings>
                         <KeyBinding Command="{Binding GeneratePaymentNoCommand}" Key="Enter"/>
                     </TextBox.InputBindings>
                 </TextBox>
-                <TextBlock Grid.Row="1" Grid.Column="0" Margin="10" TextWrapping="Wrap" Text="التاريخ" />
-                <xceed:MaskedTextBox Grid.Row="1" Grid.Column="1" Margin="10" Text="{Binding PaymentDate, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateMaskConvter}}" Mask="##/ ## /####" 
-                                     TextOptions.TextFormattingMode="Display" AutoSelectBehavior="OnFocus"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="التاريخ" />
+                <xceed:MaskedTextBox Grid.Row="3" Margin="5" Text="{Binding PaymentDate, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateMaskConvter}}" Mask="##/ ## /####" 
+                                     TextOptions.TextFormattingMode="Display" AutoSelectBehavior="OnFocus" d:LayoutOverrides="VerticalAlignment"/>
 
-                <TextBlock Grid.Row="2" Grid.Column="0" Margin="10" TextWrapping="Wrap" Text="السنة"/>
-                <ComboBox Grid.Row="2" Grid.Column="1" Margin="10" ItemsSource="{Binding Years}"  SelectedItem="{Binding SelectedYear}" DisplayMemberPath="Year"/>
+                <TextBlock Grid.Row="4" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="السنة"/>
+                <ComboBox Grid.Row="5" Margin="5" ItemsSource="{Binding Years}"  SelectedItem="{Binding SelectedYear}" DisplayMemberPath="Year"/>
 
-                <TextBlock Grid.Row="3" Grid.Column="0"  Margin="10" TextWrapping="Wrap" Text="رقم الصرفية" />
-                <ComboBox Grid.Row="3" Grid.Column="1" Margin="10"  ItemsSource="{Binding PaymentSequences}"  SelectedItem="{Binding SelectedSequence}" DisplayMemberPath="SequenceDescription"/>
+                <TextBlock Grid.Row="6" Grid.Column="0"  Margin="5" TextWrapping="Wrap" Text="رقم الصرفية" />
+                <ComboBox Grid.Row="7" Margin="5"  ItemsSource="{Binding PaymentSequences}"  SelectedItem="{Binding SelectedSequence}" DisplayMemberPath="SequenceDescription"/>
 
-                <TextBlock Grid.Row="4" Grid.Column="0"  Margin="10" TextWrapping="Wrap" Text="مبلغ الصرفية" />
-                <TextBox Grid.Row="4" Grid.Column="1"  Margin="10,10,300,10" Text="{Binding PaymentAmount, StringFormat=F2, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Grid.Row="8" Grid.Column="0"  Margin="5" TextWrapping="Wrap" Text="مبلغ الصرفية" />
+                <TextBox Grid.Row="9"  Margin="5" Text="{Binding PaymentAmount, StringFormat=F2, UpdateSourceTrigger=PropertyChanged}" d:LayoutOverrides="HorizontalAlignment"/>
             </Grid>
         </Grid>
 

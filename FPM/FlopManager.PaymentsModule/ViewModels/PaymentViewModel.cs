@@ -87,7 +87,7 @@ namespace FlopManager.PaymentsModule.ViewModels
 
         private void UpdatePaymentSequences(PeriodYear selectedYear)
         {
-            PaymentSequences = new ObservableCollection<PaymentSequence>(GetValidSequences(selectedYear));
+            PaymentSequences = new ObservableCollection<PaymentSequence>(GetSequences(selectedYear));
         }
 
         public PaymentSequence SelectedSequence
@@ -215,11 +215,12 @@ namespace FlopManager.PaymentsModule.ViewModels
 
         protected override void AddNew()
         {
+            if (CanExit())
+            {
+                ClearView();
+                OnStateChanged(ViewModelState.AddNew);
+            }
         }
-
-        
-
-        
 
         public override bool IsNavigationTarget(NavigationContext navigationContext)
         {
@@ -280,6 +281,15 @@ namespace FlopManager.PaymentsModule.ViewModels
             {
                 RemoveError(nameof(SelectedYear), ValidationErrorsMessages.YEAR_MUST_SUPPLIED);
             }
+            if (AllPastPaymentsPosted(SelectedYear))
+            {
+                AddError(nameof(SelectedYear), ValidationErrorsMessages.PAST_PAYMENTS_MUST_POSTED);
+                isValid = false;
+            }
+            else
+            {
+                RemoveError(nameof(SelectedYear), ValidationErrorsMessages.PAST_PAYMENTS_MUST_POSTED);
+            }
             if (SelectedSequence == null)
             {
                 AddError(nameof(SelectedSequence), ValidationErrorsMessages.SEQUENCE_MUST_SUPPLIED);
@@ -288,6 +298,15 @@ namespace FlopManager.PaymentsModule.ViewModels
             else
             {
                 RemoveError(nameof(SelectedSequence), ValidationErrorsMessages.SEQUENCE_MUST_SUPPLIED);
+            }
+            if (!SequenceNotAlreadyPaid(SelectedSequence))
+            {
+                AddError(nameof(SelectedSequence), ValidationErrorsMessages.SEQUENCE_MUST_NOT_ALREADY_PAID);
+                isValid = false;
+            }
+            else
+            {
+                RemoveError(nameof(SelectedSequence), ValidationErrorsMessages.SEQUENCE_MUST_NOT_ALREADY_PAID);
             }
             if (PaymentAmount <= 0)
             {
@@ -341,6 +360,7 @@ namespace FlopManager.PaymentsModule.ViewModels
             {
                 
                 MapFrom(SelectedPayment);
+                OnStateChanged(ViewModelState.Saved);
             }
            
         }
@@ -369,31 +389,42 @@ namespace FlopManager.PaymentsModule.ViewModels
             return new ObservableCollection<PeriodYear>(_unitOfWork.PeriodYears.Where(x => x.Status == YearStatus.Present)); 
         }
 
-        /// <summary>
-        ///     By valid sequence we mean that the sequence is
-        ///     1 belongs the selected year.
-        ///     2 did not used to create payment befor. This is obivous becuase you cannot create Sequence No.2 twice in a year for
-        ///     example.
-        /// </summary>
-        /// <param name="selectedYear"></param>
-        /// <returns></returns>
-        private ObservableCollection<PaymentSequence> GetValidSequences(PeriodYear selectedYear)
+       
+        private ObservableCollection<PaymentSequence> GetSequences(PeriodYear selectedYear)
         {
             var yearSeqeunces =
                 _unitOfWork.PaymentSequences.Where(ps => ps.PeriodYear.Year == selectedYear.Year).ToList();
-            var payments = _repository.Where(p => p.Year == selectedYear.Year);
-            if (!payments.Any()) //If we did not create any payments for the selected year, just return all sequences.
-            {
-                return new ObservableCollection<PaymentSequence>(yearSeqeunces);
-            }
-            foreach (var payment in payments)
-            {
-                var invalidPaymentSequence = payment.PaymentSequence;
-                yearSeqeunces.Remove(invalidPaymentSequence);
-            }
+            
             return new ObservableCollection<PaymentSequence>(yearSeqeunces);
         }
+        /// <summary>
+        /// Check whether Selected Sequece is not already paid.
+        /// </summary>
+        /// <param name="periodYear"></param>
+        /// <returns>True is already withdrawled otherwise false.</returns>
+        private bool SequenceNotAlreadyPaid(PaymentSequence selectedSequence)
+        {
+            if (selectedSequence == null) return false;
+            var payments = _repository.Where(p => p.Year == selectedSequence.PeriodYear.Year);
+            return payments.Any(p => p.PaymentSequence.Id == selectedSequence.Id);
+        }
+        private bool AllPastPaymentsPosted(PeriodYear currentYear)
+        {
+            if (currentYear == null) return false;
+            var payments = _repository.Where(p => p.PeriodYear.Year == currentYear.Year);
+            return !(payments.Any(p => p.Posted));
+        }
+        private void ClearView()
+        {
+            PaymentNo = "";
+            PaymentDate = "";
+            SelectedYear = null;
+            SelectedSequence = null;
+            PaymentAmount = 0.00m;
+            CurrenYearPayments.MoveCurrentToPosition(-1);
+            
 
+        }
         #endregion
 
         #region Commands

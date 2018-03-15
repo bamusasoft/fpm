@@ -22,6 +22,8 @@ namespace FlopManager.Services
         public const string LOAN_DESCR_MUST_SUPPLIED = "ادخل وصف مختصر";
         public const string AMOUNT_MUST_SUPPLIED = "ادخل المبلغ";
         public const string PAYMENT_NO_MUST_SUPPLIED = "ادخل رقم الصرفية";
+        public const string SEQUENCE_MUST_NOT_ALREADY_PAID = "الصرفية المحددة سبق صرفها";
+        public  const string PAST_PAYMENTS_MUST_POSTED = "توجد دفعات سابقة لم ترحل";
 
         public const string INVALID_DATE = "التاريخ غير صحيح";
 
