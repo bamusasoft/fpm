@@ -68,7 +68,10 @@ namespace FlopManager.PaymentsModule.ViewModels
         private KeyValuePair<Sex, string> _selectedGender;
         private bool _endableGenderFilter;
         private bool _enableUi;
-
+        private string _searchedPaymentNo;
+        private bool _isSearchEnabled;
+        private string _paymentStatus;
+     
         #endregion
 
         #region "Properties"
@@ -158,6 +161,14 @@ namespace FlopManager.PaymentsModule.ViewModels
             set { SetProperty(ref _enableUi, value); }
         }
 
+        public string PaymentStatus
+        {
+            get { return _paymentStatus; }
+            set
+            {
+                SetProperty(ref _paymentStatus, value);
+            }
+        }
         #endregion
 
         #region Commands
@@ -528,7 +539,18 @@ namespace FlopManager.PaymentsModule.ViewModels
 
         protected override void Search(object criteria)
         {
-            throw new NotImplementedException();
+            if (criteria == null) return;
+            var payment = _unitOfWork.Payments.Find(criteria);
+            if(payment != null)
+            {
+                PaymentNo = payment.PaymentNo;
+                PaymentYear = payment.Year;
+                PaymentSequence = payment.PaySequence.ToString();
+                PaymentStatus = payment.Posted ? "مرحلة" : "غير مرحلة";
+
+            }
+
+
         }
 
         #endregion
