@@ -21,10 +21,19 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <ToolBarTray Grid.Row="0" Orientation="Horizontal">
             <ToolBar BorderThickness="0" SnapsToDevicePixels="True">
+                <TextBox Style="{StaticResource {x:Static ToolBar.TextBoxStyleKey} }" MinWidth="100"/>
+                <Button Command="{Binding SearchPayment}" IsEnabled="{Binding EnableSearchPayment}">
+                    <StackPanel Orientation="Horizontal">
+                        <ContentControl Content="{StaticResource EnSearchImage}" Margin="0,0,5,0" />
+                        <TextBlock Text="بحث" />
+                    </StackPanel>
+                </Button>
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey} }" />
                 <Button Command="{Binding SaveCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                         IsEnabled="{Binding EnableSave}">
                     <StackPanel Orientation="Horizontal">
@@ -55,34 +64,41 @@
             </ToolBar>
         </ToolBarTray>
 
-        <Grid Grid.Row="1" IsEnabled="{Binding EnableUi}">
+        <Grid Grid.Row="2" IsEnabled="{Binding EnableUi}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" MinWidth="81" />
-                <ColumnDefinition Width="192*" />
-                <ColumnDefinition Width="Auto" MinWidth="55" />
-                <ColumnDefinition Width="188*" />
-                <ColumnDefinition Width="Auto" MinWidth="51" />
-                <ColumnDefinition Width="185*" />
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Grid.Row="0" Text="رقم الصرفية"/>
+                <ColumnDefinition Width="*"  />
+                <ColumnDefinition Width="*" />
 
-            <TextBox x:Name="PaymentNoTextBox" Grid.Column="1" Grid.Row="0" Text="{Binding PaymentNo, UpdateSourceTrigger=LostFocus}" Margin="10"
-                     VerticalContentAlignment="Center">
-                <TextBox.InputBindings>
-                    <KeyBinding Command="{Binding GeneratePaymentTransCommand}" CommandParameter="{Binding ElementName=PaymentNoTextBox, Path=Text}" Key="Enter"/>
-                </TextBox.InputBindings>
-            </TextBox>
-            <TextBlock Grid.Column="2" Grid.Row="0" Text="الدفعة" HorizontalAlignment="Right" Width="26"
-                       VerticalAlignment="Center" />
-            <TextBox Grid.Column="3" Grid.Row="0" Text="{Binding PaymentSequence}" Margin="10"
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="رقم الصرفية" HorizontalAlignment="Center" Width="26"
+                       VerticalAlignment="Center" Margin="3" />
+            <TextBox Grid.Row="1" Text="{Binding PaymentSequence}" Margin="3"
                      VerticalContentAlignment="Center" IsEnabled="False" IsReadOnly="True" />
-            <TextBlock Grid.Column="4" Grid.Row="0" Text="لعام" HorizontalAlignment="Right" Width="17"
-                       VerticalAlignment="Center" />
-            <TextBox Grid.Column="5" Grid.Row="0" Text="{Binding PaymentYear}" Margin="10,10,75,10"
+            <TextBlock Text="لعام" HorizontalAlignment="Center" Width="17"
+                       VerticalAlignment="Center" Margin="3" Grid.Row="2" />
+            <TextBox Grid.Row="3" Text="{Binding PaymentYear}" Margin="3"
                      VerticalContentAlignment="Center" IsEnabled="False" IsReadOnly="True" />
+            <TextBlock Text="المبلغ"
+                VerticalAlignment="Center" Margin="3" Grid.Column="1" HorizontalAlignment="Center" />
+            <TextBox Grid.Row="1" Text="{Binding PaymentSequence}" Margin="3"
+                VerticalContentAlignment="Center" IsEnabled="False" IsReadOnly="True" Grid.Column="1" />
+            <TextBlock Grid.Row="2" Text="الحالة"
+                VerticalAlignment="Center" Margin="3" Grid.Column="1" HorizontalAlignment="Center" />
+            <TextBox Grid.Row="3" Text="{Binding PaymentSequence}" Margin="3"
+                VerticalContentAlignment="Center" IsEnabled="False" IsReadOnly="True" Grid.Column="1" />
+            <Button x:Name="button" Content="عرض" Grid.Column="1" Margin="0,3,3,3" Grid.Row="4" Command="{Binding GeneratePaymentTransCommand}"
+                    d:LayoutOverrides="Height" HorizontalAlignment="Right" Width="63.54"/>
 
         </Grid>
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
@@ -91,7 +107,7 @@
             <TextBlock   Grid.Column="1"  Text="{Binding ProgCurrent, UpdateSourceTrigger=PropertyChanged}" />
 
         </Grid>
-        <DataGrid Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False" CanUserAddRows="False" 
+        <DataGrid Grid.Row="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False" CanUserAddRows="False" 
                   ItemsSource="{Binding UiReport}" Margin="0,10,0,0" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="رقم المستحق"

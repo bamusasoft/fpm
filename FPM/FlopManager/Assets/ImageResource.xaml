@@ -6,4 +6,5 @@
     <Image x:Key="EnPostImage" Source="Images/EnPost.png"/>
     <Image x:Key="EnDeleteImage" Source="Images/EnDel.png"/>
     <Image x:Key="EnPrintImage" Source="Images/EnPrint.png"/>
+    <Image x:Key="EnSearchImage" Source="Images/Search.png"/>
 </ResourceDictionary>
