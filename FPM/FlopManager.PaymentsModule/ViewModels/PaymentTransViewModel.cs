@@ -67,8 +67,6 @@ namespace FlopManager.PaymentsModule.ViewModels
         private KeyValuePair<Sex, string> _selectedGender;
         private bool _endableGenderFilter;
         private bool _enableUi;
-        private string _searchedPaymentNo;
-        private bool _isSearchEnabled;
         private string _paymentStatus;
         private decimal _paymentAmount;
         private bool _showProgress;
@@ -182,6 +180,7 @@ namespace FlopManager.PaymentsModule.ViewModels
                 SetProperty(ref _showProgress, value);
             }
         }
+        
         #endregion
 
         #region Commands
@@ -481,7 +480,7 @@ namespace FlopManager.PaymentsModule.ViewModels
                     EnableGenderFilter = false;
                     EnableUi = true;
                     EnablePrint = false;
-                    EnableSearch = true;
+                    base.EnableSearch = true;
                     ShowProgress = false;
                     break;
                 case ViewModelState.InEdit:
@@ -490,7 +489,7 @@ namespace FlopManager.PaymentsModule.ViewModels
                     EnableGenderFilter = false;
                     EnableUi = false;
                     EnablePrint = false;
-                    EnableSearch = false;
+                    base.EnableSearch = false;
                     ShowProgress = false;
                     break;
                 case ViewModelState.Busy:
@@ -499,7 +498,7 @@ namespace FlopManager.PaymentsModule.ViewModels
                     EnableGenderFilter = false;
                     EnableUi = false;
                     EnablePrint = false;
-                    EnableSearch = false;
+                    base.EnableSearch = false;
                     ShowProgress = true;
                     break;
                 case ViewModelState.Saved:
@@ -508,7 +507,7 @@ namespace FlopManager.PaymentsModule.ViewModels
                     EnableGenderFilter = true;
                     EnableUi = false;
                     EnablePrint = true;
-                    EnableSearch = false;
+                    base.EnableSearch = false;
                     ShowProgress = false;
                     break;
                 case ViewModelState.Deleted:
@@ -519,7 +518,7 @@ namespace FlopManager.PaymentsModule.ViewModels
                     _uiReportList.Clear();
                     UiReport.Refresh();
                     EnableUi = false;
-                    EnableSearch = false;
+                    base.EnableSearch = false;
                     ShowProgress = false;
                     break;
                 default:
@@ -539,7 +538,7 @@ namespace FlopManager.PaymentsModule.ViewModels
             ExcelFileProperties prop = new ExcelFileProperties();
             prop.PrintDirectly = false;
             prop.Path = path;
-            prop.StartRowIndex = 2;
+            prop.StartRowIndex = 3;
             prop.StartcolumnIndex = 1;
             prop.Source = PaymentDetailsReport.FillData(_uiReportList);
             try
@@ -567,8 +566,6 @@ namespace FlopManager.PaymentsModule.ViewModels
                 PaymentStatus = Payment.Posted ? "مرحلة" : "غير مرحلة";
 
             }
-
-
         }
 
         #endregion

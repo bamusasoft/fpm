@@ -47,7 +47,7 @@ namespace FlopManager.OfficePrintingService.Excel
             {
                 for (int colIndex = 0; colIndex < table.Columns.Count; colIndex++)
                 {
-                    int cellRowIndex = startCol + rowIndex;
+                    int cellRowIndex = startRow + rowIndex;
                     int celColIndex = startCol + colIndex;
                     object value = table.Rows[rowIndex].ItemArray[colIndex];
                     //excelSheet.Cells[startRow + rowIndex, startCol + colIndex] = table.Rows[rowIndex].ItemArray[colIndex]; //table.Rows[nRow].Cells[nCol].Value;

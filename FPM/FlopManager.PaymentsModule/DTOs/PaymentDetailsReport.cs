@@ -25,6 +25,17 @@ namespace FlopManager.Services.Helpers
         public object NetPayments { get; }
         public object PayMethod { get; }
         public object BankDocNo { get; }
+        public object MemberSex
+        {
+            get
+            {
+                if(Sex == Sex.Female)
+                {
+                    return "سيدات";
+                }
+                return "رجال";
+            }
+        }
 
         public PaymentDetailsReport(int detailNo, object memberCode, object shareHolderName, object paymentYear,
                                     object paymentSeqeuence, object paymentAmount, object shareNo,
@@ -100,6 +111,11 @@ namespace FlopManager.Services.Helpers
             DataColumn c12 = new DataColumn("NetPayments");
             table.Columns.Add(c12);
 
+            DataColumn c13 = new DataColumn("PayMethod");
+            table.Columns.Add(c13);
+            DataColumn c14 = new DataColumn("MemberSex");
+            table.Columns.Add(c14);
+
         }
 
         public static DataTable FillData(List<PaymentDetailsReport> data)
@@ -120,6 +136,9 @@ namespace FlopManager.Services.Helpers
                 row.SetField<object>("LoanRemarks", report.LoanRemarks);
                 row.SetField<object>("LoansTotal", report.LoansTotal);
                 row.SetField<object>("NetPayments", report.NetPayments);
+                row.SetField<object>("PayMethod", report.PayMethod);
+                row.SetField<object>("MemberSex", report.MemberSex);
+
                 table.Rows.Add(row);
                 row.AcceptChanges();
             }
