@@ -27,6 +27,7 @@ namespace FlopManager.SettingsModule.Views
     {
         #region Fields
         private static readonly Uri SyncMembersViewUri = new Uri("/SyncMembersView", UriKind.Relative);
+        private static readonly Uri MemeberInfoViewUri = new Uri("/MemberInfoView", UriKind.Relative);
         private static readonly Uri PeriodViewViewUri = new Uri("/PeriodView", UriKind.Relative);
         private static readonly Uri OptionsViewUri = new Uri("/OptionsView", UriKind.Relative);
         [Import]
@@ -50,6 +51,10 @@ namespace FlopManager.SettingsModule.Views
         {
             RegionManager.RequestNavigate(RegionNames.MAIN_CONTENT_REGION, OptionsViewUri);
         }
-        
+        private void OnNavigateToMemberInfo(object sender, RoutedEventArgs e)
+        {
+            RegionManager.RequestNavigate(RegionNames.MAIN_CONTENT_REGION, MemeberInfoViewUri);
+        }
+
     }
 }

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using FlopManager.SettingsModule.ViewModels;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,14 +17,21 @@ using System.Windows.Shapes;
 
 namespace FlopManager.SettingsModule.Views
 {
-    /// <summary>
-    /// Interaction logic for MemberInfoView.xaml
-    /// </summary>
+  
+    [Export("MemberInfoView")]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class MemberInfoView : UserControl
     {
         public MemberInfoView()
         {
             InitializeComponent();
+        }
+
+        [Import]
+        public MemberInfoViewModel ViewModel
+        {
+            get { return DataContext as MemberInfoViewModel; }
+            set { DataContext = value; }
         }
     }
 }

@@ -9,7 +9,9 @@
 
     <TreeViewItem Header="إعدادات"  Margin="0,0,0,5">
         <RadioButton x:Name="NavigateToSycMembers" Content="مزامنة المستحقين" Click="OnNavigateToSyncMember"/>
+        <RadioButton x:Name="NavigateToMemberInfo" Content="بيانات مستحق" Click="OnNavigateToMemberInfo"/>
         <RadioButton x:Name="NavigateToPeriod" Content="الفترات" Click="OnNavigateToPeriod"/>
         <RadioButton x:Name="NavigateToOptions" Content="خيارات" Click="OnNavigateToOptions"/>
+        
     </TreeViewItem>
 </UserControl>

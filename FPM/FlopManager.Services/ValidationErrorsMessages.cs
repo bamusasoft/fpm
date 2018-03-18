@@ -25,6 +25,8 @@ namespace FlopManager.Services
         public const string SEQUENCE_MUST_NOT_ALREADY_PAID = "الصرفية المحددة سبق صرفها";
         public  const string PAST_PAYMENTS_MUST_POSTED = "توجد دفعات سابقة لم ترحل";
 
+        public const string PAY_METHOD_NOT_SELECTED = "يجب تحديد طريقة الدفع";
+
         public const string INVALID_DATE = "التاريخ غير صحيح";
 
 

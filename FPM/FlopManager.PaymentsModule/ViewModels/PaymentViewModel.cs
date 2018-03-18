@@ -123,7 +123,11 @@ namespace FlopManager.PaymentsModule.ViewModels
         public string PaymentDate
         {
             get { return _paymentDate; }
-            set { SetProperty(ref _paymentDate, value); }
+            set
+            {
+                SetProperty(ref _paymentDate, value);
+                OnStateChanged(ViewModelState.InEdit);
+            }
         }
         public bool Posted
         {

@@ -31,7 +31,8 @@
                         <TextBlock Text="جديد"/>
                     </StackPanel>
                 </Button>
-                <Button Command="{Binding SaveCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                <Button Command="{Binding SaveCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                        IsEnabled="{Binding EnableSave}">
                     <StackPanel Orientation="Horizontal">
                         <ContentControl Content="{StaticResource EnSaveImage}"  Margin="0,0,5,0"/>
                         <TextBlock Text="حفظ"/>
@@ -53,11 +54,19 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0" Text="رقم المستحق" Margin="5"/>
-            <TextBox Grid.Column="0" Grid.Row="1" Text="{Binding MemeberCode}" Margin="5"/>
+            <TextBox Grid.Column="0" Grid.Row="1" Name="txtMemberCode" Margin="5" IsEnabled="{Binding EnableMemberCode}">
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Return"
+                                Command="{Binding SearchCommand}" CommandParameter="{Binding ElementName=txtMemberCode, Path=Text}"/>
+                </TextBox.InputBindings>
+            </TextBox>
             <TextBlock Grid.Column="0" Grid.Row="2" Text="اسم المستحق" Margin="5"/>
-            <TextBox Grid.Column="0" Grid.Row="3" Text="{Binding MemberName}" Margin="5"/>
+            <TextBox Grid.Column="0" Grid.Row="3" Text="{Binding MemberName}" Margin="5" IsEnabled="False"/>
             <TextBlock Grid.Column="0" Grid.Row="4" Text="طريقة الدفع" Margin="5"/>
-            <ComboBox Grid.Column="0" Grid.Row="5" Text="{Binding MemeberCode}" Margin="5"/>
+            <ComboBox Grid.Column="0" Grid.Row="5" Margin="5"
+                      ItemsSource="{Binding PayMethods}" SelectedItem="{Binding SelectedPayMethod}" 
+                      SelectedValuePath="Key" DisplayMemberPath="Value" IsSynchronizedWithCurrentItem="True"
+                      />
         </Grid>
     </Grid>
 </UserControl>
