@@ -52,7 +52,6 @@ namespace FlopManager.PaymentsModule.ViewModels
         private List<LoanPayment> _loanPayments;
         private FamilyContext _unitOfWork;
         private PaymentDetailsFilter _criteria;
-        private string _paymentNo;
         private string _paymentSequence;
         private string _paymentYear;
         private string _progCurrent;
@@ -61,7 +60,7 @@ namespace FlopManager.PaymentsModule.ViewModels
         private int _maxLoanPaymentsKey;
         private int _checkSerial;
         private int _trasferSerial;
-        private DelegateCommand<string> _generatePaymentTransCommand;
+        private DelegateCommand _generatePaymentTransCommand;
         private CollectionView _uiReport;
         private List<PaymentDetailsReport> _uiReportList;
         private Dictionary<Sex, string> _membersGenders;
@@ -71,7 +70,8 @@ namespace FlopManager.PaymentsModule.ViewModels
         private string _searchedPaymentNo;
         private bool _isSearchEnabled;
         private string _paymentStatus;
-     
+        private decimal _paymentAmount;
+        private bool _showProgress;
         #endregion
 
         #region "Properties"
@@ -81,11 +81,8 @@ namespace FlopManager.PaymentsModule.ViewModels
             get { return _criteria ?? (_criteria = new PaymentDetailsFilter()); }
         }
 
-        public string PaymentNo
-        {
-            get { return _paymentNo; }
-            set { SetProperty(ref _paymentNo, value); }
-        }
+        public Payment Payment { get; private set; }
+       
 
         public string PaymentYear
         {
@@ -169,6 +166,22 @@ namespace FlopManager.PaymentsModule.ViewModels
                 SetProperty(ref _paymentStatus, value);
             }
         }
+        public decimal PaymentAmount
+        {
+            get { return _paymentAmount; }
+            set
+            {
+                SetProperty(ref _paymentAmount, value);
+            }
+        }
+        public bool ShowProgress
+        {
+            get { return _showProgress; }
+            set
+            {
+                SetProperty(ref _showProgress, value);
+            }
+        }
         #endregion
 
         #region Commands
@@ -178,35 +191,32 @@ namespace FlopManager.PaymentsModule.ViewModels
             get
             {
                 return _generatePaymentTransCommand ??
-                       (_generatePaymentTransCommand = new DelegateCommand<string>(GeneratePaymentTransactions));
+                       (_generatePaymentTransCommand = new DelegateCommand(GeneratePaymentTransactions));
             }
         }
 
-        private async void GeneratePaymentTransactions(string paymentNo)
+        private async void GeneratePaymentTransactions()
         {
-            if (string.IsNullOrEmpty(paymentNo)) return;
+            if (Payment == null) return;
             try
             {
                 OnStateChanged(ViewModelState.Busy);
-                var payment = GetPayment(paymentNo);
 
-                if (payment != null)
-                {
-                    if (PaymentHasTransactions(payment))
+                    if (PaymentHasTransactions(Payment))
                     {
-                        _paymentTransactions = GetPaymentTransactions(payment);
-                        _loanPayments = GetPaymentLoanPayments(payment);
+                        _paymentTransactions = GetPaymentTransactions(Payment);
+                        _loanPayments = GetPaymentLoanPayments(Payment);
                         ShowUiReport();
                         OnStateChanged(ViewModelState.Saved);
                     }
                     else
                     {
-                        var t = GeneratePaymentTransactionsAsync(payment);
+                        var t = GeneratePaymentTransactionsAsync(Payment);
                         await t;
                         ShowUiReport();
                         OnStateChanged(ViewModelState.InEdit);
                     }
-                }
+                
             }
             catch (Exception ex)
             {
@@ -471,6 +481,8 @@ namespace FlopManager.PaymentsModule.ViewModels
                     EnableGenderFilter = false;
                     EnableUi = true;
                     EnablePrint = false;
+                    EnableSearch = true;
+                    ShowProgress = false;
                     break;
                 case ViewModelState.InEdit:
                     EnableSave = true;
@@ -478,7 +490,8 @@ namespace FlopManager.PaymentsModule.ViewModels
                     EnableGenderFilter = false;
                     EnableUi = false;
                     EnablePrint = false;
-
+                    EnableSearch = false;
+                    ShowProgress = false;
                     break;
                 case ViewModelState.Busy:
                     EnableSave = false;
@@ -486,7 +499,8 @@ namespace FlopManager.PaymentsModule.ViewModels
                     EnableGenderFilter = false;
                     EnableUi = false;
                     EnablePrint = false;
-
+                    EnableSearch = false;
+                    ShowProgress = true;
                     break;
                 case ViewModelState.Saved:
                     EnableSave = false;
@@ -494,7 +508,8 @@ namespace FlopManager.PaymentsModule.ViewModels
                     EnableGenderFilter = true;
                     EnableUi = false;
                     EnablePrint = true;
-
+                    EnableSearch = false;
+                    ShowProgress = false;
                     break;
                 case ViewModelState.Deleted:
                     EnableSave = false;
@@ -504,6 +519,8 @@ namespace FlopManager.PaymentsModule.ViewModels
                     _uiReportList.Clear();
                     UiReport.Refresh();
                     EnableUi = false;
+                    EnableSearch = false;
+                    ShowProgress = false;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(state), state, null);
@@ -540,13 +557,14 @@ namespace FlopManager.PaymentsModule.ViewModels
         protected override void Search(object criteria)
         {
             if (criteria == null) return;
-            var payment = _unitOfWork.Payments.Find(criteria);
-            if(payment != null)
+            var tempPayment = _unitOfWork.Payments.Find(criteria);
+            if(tempPayment != null)
             {
-                PaymentNo = payment.PaymentNo;
-                PaymentYear = payment.Year;
-                PaymentSequence = payment.PaySequence.ToString();
-                PaymentStatus = payment.Posted ? "مرحلة" : "غير مرحلة";
+                Payment = tempPayment;
+                PaymentYear = Payment.Year;
+                PaymentSequence = Payment.PaymentSequence.SequenceDescription;
+                PaymentAmount = Payment.Amount;
+                PaymentStatus = Payment.Posted ? "مرحلة" : "غير مرحلة";
 
             }
 

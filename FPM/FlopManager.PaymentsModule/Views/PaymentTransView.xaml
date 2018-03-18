@@ -80,23 +80,24 @@
 
             </Grid.ColumnDefinitions>
 
-            <TextBlock Text="رقم الصرفية" HorizontalAlignment="Center" 
+            <TextBlock Text="رقم الصرفية" HorizontalAlignment="Left" 
                        VerticalAlignment="Center" Margin="3" />
             <TextBox Grid.Row="1" Text="{Binding PaymentSequence}" Margin="3"
                      VerticalContentAlignment="Center" IsEnabled="False" IsReadOnly="True" />
-            <TextBlock Text="لعام" HorizontalAlignment="Center" 
+            <TextBlock Text="لعام" HorizontalAlignment="Left" 
                        VerticalAlignment="Center" Margin="3" Grid.Row="2" />
             <TextBox Grid.Row="3" Text="{Binding PaymentYear}" Margin="3"
                      VerticalContentAlignment="Center" IsEnabled="False" IsReadOnly="True" />
             <TextBlock Text="المبلغ"
-                VerticalAlignment="Center" Margin="3" Grid.Column="1" HorizontalAlignment="Center" />
-            <TextBox Grid.Row="1" Text="{Binding PaymentSequence}" Margin="3"
+                VerticalAlignment="Center" Margin="3" Grid.Column="1" HorizontalAlignment="Left" />
+            <TextBox Grid.Row="1" Text="{Binding PaymentAmount ,StringFormat=F2, Converter={StaticResource NumToEmptyConverter}}" Margin="3"
                 VerticalContentAlignment="Center" IsEnabled="False" IsReadOnly="True" Grid.Column="1" />
             <TextBlock Grid.Row="2" Text="الحالة"
-                VerticalAlignment="Center" Margin="3" Grid.Column="1" HorizontalAlignment="Center" />
-            <TextBox Grid.Row="3" Text="{Binding PaymentSequence}" Margin="3"
+                VerticalAlignment="Center" Margin="3" Grid.Column="1" HorizontalAlignment="Left" />
+            <TextBox Grid.Row="3" Text="{Binding PaymentStatus}" Margin="3"
                 VerticalContentAlignment="Center" IsEnabled="False" IsReadOnly="True" Grid.Column="1" />
-            <Button x:Name="button" Content="عرض" Grid.Column="1" Margin="0,3,3,3" Grid.Row="4" Command="{Binding GeneratePaymentTransCommand}"
+            <Button x:Name="button" Content="عرض" Grid.Column="1" Margin="0,3,3,3" Grid.Row="4" 
+                    Command="{Binding GeneratePaymentTransCommand}"
                     d:LayoutOverrides="Height" HorizontalAlignment="Right" Width="63.54"/>
 
         </Grid>
@@ -105,8 +106,13 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <ProgressBar Grid.Column="0" Value="{Binding ProgressCounter}" Maximum="100" Minimum="0" HorizontalAlignment="Stretch" Height="35" Margin="5" VerticalAlignment="Stretch"  />
-            <TextBlock   Grid.Column="1"  Text="{Binding ProgCurrent, UpdateSourceTrigger=PropertyChanged}" />
+            <ProgressBar Grid.Column="0" Value="{Binding ProgressCounter}" 
+                         Maximum="100" Minimum="0" HorizontalAlignment="Stretch" Height="35" Margin="5" 
+                         VerticalAlignment="Stretch" 
+                         Visibility="{Binding ShowProgress, Converter={StaticResource Bool2VisibilityConverter}}"/>
+            <TextBlock   Grid.Column="1"  Text="{Binding ProgCurrent, UpdateSourceTrigger=PropertyChanged}" 
+                         Visibility="{Binding ShowProgress, Converter={StaticResource Bool2VisibilityConverter}}"
+                         />
 
         </Grid>
         <DataGrid Grid.Row="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False" CanUserAddRows="False" 
