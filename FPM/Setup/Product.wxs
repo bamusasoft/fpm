@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?define FlopManager_TargetDir=$(var.FlopManager.TargetDir)?>
+  <?define FlopManager.Domain_TargetDir=$(var.FlopManager.TargetDir)?>
+  <?define FlopManager.Services_TargetDir=$(var.FlopManager.TargetDir)?>
+  <?define FamilyAppService_TargetDir=$(var.FlopManager.TargetDir)?>
+  <?define FlopManager.OfficePrintingService_TargetDir=$(var.FlopManager.TargetDir)?>
+  <?define FlopManager.Infrastructure_TargetDir=$(var.FlopManager.TargetDir)?>
+  <?define FlopManager.PaymentsModule_TargetDir=$(var.FlopManager.TargetDir)?>
+  <?define FlopManager.SettingsModule_TargetDir=$(var.FlopManager.TargetDir)?>
+  <?define FlopManagerLoanModule_TargetDir=$(var.FlopManager.TargetDir)?>
+  <?define MAINEXE=$(var.FlopManager.TargetFileName)?>
+  <?define APPVERSION=!(bind.FileVersion.$(var.MAINEXE))?>
+	<Product Id="*" Name="FPM" Language="1033" 
+           Version="$(var.APPVERSION)" 
+           Manufacturer="Waqf Al-Sharif Ghalib" 
+           UpgradeCode="1f877a0f-f7ce-4790-a82f-e15067576b93">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+    <Icon Id="fpmicon.ico" SourceFile="$(var.ProjectDir)fpmicon.ico"/>
+    <Property Id="ARPRODUCTICON" Value="fpmicon.ico"/>
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate EmbedCab="no" />
+    <UIRef Id="WixUI_Minimal" />
+		<Feature Id="ProductFeature" Title="FPM" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+			<ComponentGroupRef Id="Templates_files" />
+      <ComponentRef Id="ApplicationShortcut"/>
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="FPM">
+				  <Directory Id="Templates" Name="Templates" />
+				</Directory>
+			</Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="FPM"/>
+      </Directory>
+		</Directory>
+	</Fragment>
+  <Fragment>
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="ApplicationShortcut" Guid="7B26D9B1-0C5B-4D35-8146-7DABF2A4D468">
+        <Shortcut Id="ApplicationStartMenuShortcut"
+                  Name="FPM"
+                  Description ="Managing Family Payments"
+                  Target="[#FlopManager.exe]"
+                  WorkingDirectory="APPLICATIONROOTDIRECTORY"
+                  Icon="fpmicon.ico"
+                  />
+        <RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\Microsoft\FPM" Name="installed" Type="integer"
+                       Value="1" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+		<Component Id="FlopManager.exe" Guid="34e8aae6-cd06-434e-9fc2-a5afb8019a4b">
+		  <File Id="FlopManager.exe" Name="FlopManager.exe" Source="$(var.FlopManager_TargetDir)FlopManager.exe" />
+		</Component>
+		<Component Id="FlopManager.exe.config" Guid="47556b75-556f-4933-9cfd-35835f013d47">
+		  <File Id="FlopManager.exe.config" Name="FlopManager.exe.config" Source="$(var.FlopManager_TargetDir)FlopManager.exe.config" />
+		</Component>
+		<Component Id="EntityFramework.dll" Guid="1822e364-827d-4c0f-8a38-d9d7567eebd4">
+		  <File Id="EntityFramework.dll" Name="EntityFramework.dll" Source="$(var.FlopManager_TargetDir)EntityFramework.dll" />
+		</Component>
+		<Component Id="EntityFramework.SqlServer.dll" Guid="4aa5b1c0-2639-497f-a2be-409f68ffe988">
+		  <File Id="EntityFramework.SqlServer.dll" Name="EntityFramework.SqlServer.dll" Source="$(var.FlopManager_TargetDir)EntityFramework.SqlServer.dll" />
+		</Component>
+		<Component Id="Microsoft.Practices.ServiceLocation.dll" Guid="aed97bbc-12ac-4bdc-bce1-d5394993ab1a">
+		  <File Id="Microsoft.Practices.ServiceLocation.dll" Name="Microsoft.Practices.ServiceLocation.dll" Source="$(var.FlopManager_TargetDir)Microsoft.Practices.ServiceLocation.dll" />
+		</Component>
+		<Component Id="Prism.dll" Guid="dba78095-284c-40d8-9a75-f752fdd88571">
+		  <File Id="Prism.dll" Name="Prism.dll" Source="$(var.FlopManager_TargetDir)Prism.dll" />
+		</Component>
+		<Component Id="Prism.Mef.Wpf.dll" Guid="c117d54f-c950-47dc-9751-ed705a7b7a29">
+		  <File Id="Prism.Mef.Wpf.dll" Name="Prism.Mef.Wpf.dll" Source="$(var.FlopManager_TargetDir)Prism.Mef.Wpf.dll" />
+		</Component>
+		<Component Id="Prism.Wpf.dll" Guid="a8c2a7c6-e05b-4ed0-a6f9-bc1f1b5581ca">
+		  <File Id="Prism.Wpf.dll" Name="Prism.Wpf.dll" Source="$(var.FlopManager_TargetDir)Prism.Wpf.dll" />
+		</Component>
+		<Component Id="System.Windows.Controls.Input.Toolkit.dll" Guid="8227170d-e387-4bdd-8f61-0fc9912851f2">
+		  <File Id="System.Windows.Controls.Input.Toolkit.dll" Name="System.Windows.Controls.Input.Toolkit.dll" Source="$(var.FlopManager_TargetDir)System.Windows.Controls.Input.Toolkit.dll" />
+		</Component>
+		<Component Id="System.Windows.Controls.Layout.Toolkit.dll" Guid="c9f90555-fa29-42c1-a8c8-0af96cea43b2">
+		  <File Id="System.Windows.Controls.Layout.Toolkit.dll" Name="System.Windows.Controls.Layout.Toolkit.dll" Source="$(var.FlopManager_TargetDir)System.Windows.Controls.Layout.Toolkit.dll" />
+		</Component>
+		<Component Id="System.Windows.Interactivity.dll" Guid="5565c200-9696-44ac-83d2-f0026d55c952">
+		  <File Id="System.Windows.Interactivity.dll" Name="System.Windows.Interactivity.dll" Source="$(var.FlopManager_TargetDir)System.Windows.Interactivity.dll" />
+		</Component>
+		<Component Id="Xceed.Wpf.AvalonDock.dll" Guid="91eaf9b7-bb4d-4cc5-9126-8137871cdce4">
+		  <File Id="Xceed.Wpf.AvalonDock.dll" Name="Xceed.Wpf.AvalonDock.dll" Source="$(var.FlopManager_TargetDir)Xceed.Wpf.AvalonDock.dll" />
+		</Component>
+		<Component Id="Xceed.Wpf.AvalonDock.Themes.Aero.dll" Guid="12ee7358-71f4-4130-a982-f57921913085">
+		  <File Id="Xceed.Wpf.AvalonDock.Themes.Aero.dll" Name="Xceed.Wpf.AvalonDock.Themes.Aero.dll" Source="$(var.FlopManager_TargetDir)Xceed.Wpf.AvalonDock.Themes.Aero.dll" />
+		</Component>
+		<Component Id="Xceed.Wpf.AvalonDock.Themes.Metro.dll" Guid="54cb9cf3-5e39-4d83-a5d2-c456d2179f16">
+		  <File Id="Xceed.Wpf.AvalonDock.Themes.Metro.dll" Name="Xceed.Wpf.AvalonDock.Themes.Metro.dll" Source="$(var.FlopManager_TargetDir)Xceed.Wpf.AvalonDock.Themes.Metro.dll" />
+		</Component>
+		<Component Id="Xceed.Wpf.AvalonDock.Themes.VS2010.dll" Guid="c2a2da46-1a64-4323-b3c9-c63313e37f0c">
+		  <File Id="Xceed.Wpf.AvalonDock.Themes.VS2010.dll" Name="Xceed.Wpf.AvalonDock.Themes.VS2010.dll" Source="$(var.FlopManager_TargetDir)Xceed.Wpf.AvalonDock.Themes.VS2010.dll" />
+		</Component>
+		<Component Id="Xceed.Wpf.DataGrid.dll" Guid="0577954c-bbef-4ffe-b4a7-7914def099ed">
+		  <File Id="Xceed.Wpf.DataGrid.dll" Name="Xceed.Wpf.DataGrid.dll" Source="$(var.FlopManager_TargetDir)Xceed.Wpf.DataGrid.dll" />
+		</Component>
+		<Component Id="Xceed.Wpf.Toolkit.dll" Guid="fc9892dc-30fe-4b87-8d6e-72894d175da3">
+		  <File Id="Xceed.Wpf.Toolkit.dll" Name="Xceed.Wpf.Toolkit.dll" Source="$(var.FlopManager_TargetDir)Xceed.Wpf.Toolkit.dll" />
+		</Component>
+		<Component Id="WPFToolkit.dll" Guid="ebd4fcd7-5102-4bf9-9d77-6492fc6e50bc">
+		  <File Id="WPFToolkit.dll" Name="WPFToolkit.dll" Source="$(var.FlopManager_TargetDir)WPFToolkit.dll" />
+		</Component>
+		<Component Id="FlopManager.Domain.dll" Guid="3f1c7d6a-99a1-4ad2-8293-7f57f2c1e916">
+		  <File Id="FlopManager.Domain.dll" Name="FlopManager.Domain.dll" Source="$(var.FlopManager.Domain_TargetDir)FlopManager.Domain.dll" />
+		</Component>
+		<Component Id="FlopManager.Services.dll" Guid="d869fc8c-5941-4f16-b29f-9d52c05e0980">
+		  <File Id="FlopManager.Services.dll" Name="FlopManager.Services.dll" Source="$(var.FlopManager.Services_TargetDir)FlopManager.Services.dll" />
+		</Component>
+		<Component Id="FamilyAppService.dll" Guid="4a0c6c8e-6393-4191-8c02-0893491a12da">
+		  <File Id="FamilyAppService.dll" Name="FamilyAppService.dll" Source="$(var.FamilyAppService_TargetDir)FamilyAppService.dll" />
+		</Component>
+		<Component Id="FlopManager.OfficePrintingService.dll" Guid="5b8fe4ae-3719-4e30-8f28-7662676f3b8e">
+		  <File Id="FlopManager.OfficePrintingService.dll" Name="FlopManager.OfficePrintingService.dll" Source="$(var.FlopManager.OfficePrintingService_TargetDir)FlopManager.OfficePrintingService.dll" />
+		</Component>
+		<Component Id="FlopManager.Infrastructure.dll" Guid="c5034535-5d61-4ae3-8a77-b4bf7871c96e">
+		  <File Id="FlopManager.Infrastructure.dll" Name="FlopManager.Infrastructure.dll" Source="$(var.FlopManager.Infrastructure_TargetDir)FlopManager.Infrastructure.dll" />
+		</Component>
+		<Component Id="FlopManager.PaymentsModule.dll" Guid="d51eedf9-4b4b-4900-a41b-030b9887194f">
+		  <File Id="FlopManager.PaymentsModule.dll" Name="FlopManager.PaymentsModule.dll" Source="$(var.FlopManager.PaymentsModule_TargetDir)FlopManager.PaymentsModule.dll" />
+		</Component>
+		<Component Id="FlopManager.SettingsModule.dll" Guid="2d842e4c-b29e-4979-af2f-27e03360492a">
+		  <File Id="FlopManager.SettingsModule.dll" Name="FlopManager.SettingsModule.dll" Source="$(var.FlopManager.SettingsModule_TargetDir)FlopManager.SettingsModule.dll" />
+		</Component>
+		<Component Id="FlopManagerLoanModule.dll" Guid="aeff4995-8989-40be-a041-aa6bff5edc1c">
+		  <File Id="FlopManagerLoanModule.dll" Name="FlopManagerLoanModule.dll" Source="$(var.FlopManagerLoanModule_TargetDir)FlopManagerLoanModule.dll" />
+		</Component>
+			
+		</ComponentGroup>
+	</Fragment>
+	<Fragment>
+	  <ComponentGroup Id="Templates_files" Directory="Templates">
+	    <Component Id="Templates_PaymReport.xltx" Guid="f4cc2225-25d7-4256-abe9-7f739024b967">
+	      <File Id="Templates_PaymReport.xltx" Name="PaymReport.xltx" Source="$(var.FlopManager_TargetDir)Templates\PaymReport.xltx" />
+	    </Component>
+	  </ComponentGroup>
+	</Fragment>
+</Wix>

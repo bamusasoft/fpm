@@ -3,12 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>3.9</ProductVersion>
-    <ProjectGuid>8ae8d1dc-b203-4e75-97ff-de891b72ceed</ProjectGuid>
+    <ProductVersion>3.10</ProductVersion>
+    <ProjectGuid>3ca6c0b6-2f20-4f9f-8545-d24253915871</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>FpmSetup</OutputName>
+    <OutputName>Setup</OutputName>
     <OutputType>Package</OutputType>
-    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\WiX Toolset\v4\wix.targets</WixTargetsPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <OutputPath>bin\$(Configuration)\</OutputPath>
@@ -23,7 +22,18 @@
     <Compile Include="Product.wxs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="FpmSetup.wax" />
+    <WixExtension Include="WixUtilExtension">
+      <HintPath>..\..\..\Program Files (x86)\WiX Toolset v3.11\bin\WixUtilExtension.dll</HintPath>
+      <Name>WixUtilExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>..\..\..\Program Files (x86)\WiX Toolset v3.11\bin\WixUIExtension.dll</HintPath>
+      <Name>WixUIExtension</Name>
+    </WixExtension>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fpmicon.ico" />
+    <Content Include="Setup.wax" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FlopManager\FlopManager.csproj">
@@ -35,19 +45,10 @@
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <WixExtension Include="WixUtilExtension">
-      <HintPath>..\..\..\Program Files (x86)\WiX Toolset v3.11\bin\WixUtilExtension.dll</HintPath>
-      <Name>WixUtilExtension</Name>
-    </WixExtension>
-    <WixExtension Include="WixUIExtension">
-      <HintPath>..\..\..\Program Files (x86)\WiX Toolset v3.11\bin\WixUIExtension.dll</HintPath>
-      <Name>WixUIExtension</Name>
-    </WixExtension>
-  </ItemGroup>
-  <Import Project="$(WixTargetsPath)" Condition=" Exists('$(WixTargetsPath)') " />
-  <Target Name="EnsureWixToolsetInstalled" Condition=" !Exists('$(WixTargetsPath)') ">
-    <Error Text="The WiX Toolset v4 build tools must be installed to build this project. To download the WiX Toolset v4, see http://wixtoolset.org/releases/" />
+  <Import Project="$(WixTargetsPath)" Condition=" '$(WixTargetsPath)' != '' " />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets" Condition=" '$(WixTargetsPath)' == '' AND Exists('$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets') " />
+  <Target Name="EnsureWixToolsetInstalled" Condition=" '$(WixTargetsImported)' != 'true' ">
+    <Error Text="The WiX Toolset v3.11 (or newer) build tools must be installed to build this project. To download the WiX Toolset, see http://wixtoolset.org/releases/" />
   </Target>
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.

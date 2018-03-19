@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Windows;
 using FlopManager.Domain.EF;
 using AppSettings =FlopManager.Properties.Settings;
@@ -13,6 +15,7 @@ namespace FlopManager
         {
             Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
             CheckUpgrade();
+            CheckReportingTemplatesSettings();
             if (!e.Args.Any())
             {
                 ConnectionString.ServerName = ".";
@@ -22,6 +25,7 @@ namespace FlopManager
                 ConnectionString.ServerName = e.Args[0];
             }
             AppSettings.Default.Save();
+            
             //Logger.LogFilePath = AppSettings.Default.LogFilePath;
             //GlobalConst.CurrentYear = AppSettings.Default.CurrentYear;
             //base.OnStartup(e);
@@ -36,6 +40,17 @@ namespace FlopManager
                 AppSettings.Default.UpgradedVersion = false;
                 AppSettings.Default.Save();
             }
+        }
+        private void CheckReportingTemplatesSettings()
+        {
+            string templatesDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Templates";
+            string paymentTransTemplate = templatesDirectory + "\\PaymReport.xltx";
+            if (File.Exists(paymentTransTemplate))
+            {
+                AppSettings.Default.PaymReportPath = paymentTransTemplate;
+                AppSettings.Default.Save();
+            }
+           
         }
         private void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {

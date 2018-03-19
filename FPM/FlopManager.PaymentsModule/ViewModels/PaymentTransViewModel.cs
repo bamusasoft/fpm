@@ -534,7 +534,7 @@ namespace FlopManager.PaymentsModule.ViewModels
 
         protected override void Print()
         {
-            string path =(string) _settings.Get(SettingsNames.MEMBER_STATEMENT_PATH);
+            string path =(string) _settings.Get(SettingsNames.PAYM_REPORT_PATH);
             ExcelFileProperties prop = new ExcelFileProperties();
             prop.PrintDirectly = false;
             prop.Path = path;
