@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,14 +16,14 @@ using System.Windows.Shapes;
 
 namespace FlopManager.PaymentsModule.Views
 {
-    /// <summary>
-    /// Interaction logic for MemberStatmentView.xaml
-    /// </summary>
+   [Export("MemberStatmentView")]
+   [PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class MemberStatmentView : UserControl
     {
         public MemberStatmentView()
         {
             InitializeComponent();
         }
+
     }
 }

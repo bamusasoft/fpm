@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.27428.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FamilyAppService", "FamilyAppService\FamilyAppService.csproj", "{63FCF390-F805-4D0F-9CBC-E3F20DC17DB3}"
 EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "FbmSetup", "FbmSetup\FbmSetup.wixproj", "{A7473910-87CE-4637-A5C2-A3E6C99992F5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlopManager.Domain", "FlopManager.Domain\FlopManager.Domain.csproj", "{02BDDF57-1EEE-4651-A6F5-BFAF9FE851E7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlopManager.Services", "FlopManager.Services\FlopManager.Services.csproj", "{185DBD7F-C555-4477-934B-D004401FCF9C}"
@@ -22,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlopManager.Infrastructure", "FlopManager.Infrastructure\FlopManager.Infrastructure.csproj", "{99440485-E4BB-40E2-9DD6-3154FAE754F7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlopManager.OfficePrintingService", "FlopManager.OfficePrintingService\FlopManager.OfficePrintingService.csproj", "{7A1D80B5-640D-4AA9-AF21-429493336A05}"
+EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "FpmSetup", "FpmSetup\FpmSetup.wixproj", "{8AE8D1DC-B203-4E75-97FF-DE891B72CEED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,15 +43,6 @@ Global
 		{63FCF390-F805-4D0F-9CBC-E3F20DC17DB3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{63FCF390-F805-4D0F-9CBC-E3F20DC17DB3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{63FCF390-F805-4D0F-9CBC-E3F20DC17DB3}.Release|x86.ActiveCfg = Release|Any CPU
-		{A7473910-87CE-4637-A5C2-A3E6C99992F5}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{A7473910-87CE-4637-A5C2-A3E6C99992F5}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{A7473910-87CE-4637-A5C2-A3E6C99992F5}.Debug|x86.ActiveCfg = Debug|x86
-		{A7473910-87CE-4637-A5C2-A3E6C99992F5}.Debug|x86.Build.0 = Debug|x86
-		{A7473910-87CE-4637-A5C2-A3E6C99992F5}.Release|Any CPU.ActiveCfg = Release|x86
-		{A7473910-87CE-4637-A5C2-A3E6C99992F5}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{A7473910-87CE-4637-A5C2-A3E6C99992F5}.Release|Mixed Platforms.Build.0 = Release|x86
-		{A7473910-87CE-4637-A5C2-A3E6C99992F5}.Release|x86.ActiveCfg = Release|x86
-		{A7473910-87CE-4637-A5C2-A3E6C99992F5}.Release|x86.Build.0 = Release|x86
 		{02BDDF57-1EEE-4651-A6F5-BFAF9FE851E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{02BDDF57-1EEE-4651-A6F5-BFAF9FE851E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02BDDF57-1EEE-4651-A6F5-BFAF9FE851E7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -148,47 +139,21 @@ Global
 		{7A1D80B5-640D-4AA9-AF21-429493336A05}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{7A1D80B5-640D-4AA9-AF21-429493336A05}.Release|x86.ActiveCfg = Release|Any CPU
 		{7A1D80B5-640D-4AA9-AF21-429493336A05}.Release|x86.Build.0 = Release|Any CPU
+		{8AE8D1DC-B203-4E75-97FF-DE891B72CEED}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{8AE8D1DC-B203-4E75-97FF-DE891B72CEED}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{8AE8D1DC-B203-4E75-97FF-DE891B72CEED}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{8AE8D1DC-B203-4E75-97FF-DE891B72CEED}.Debug|x86.ActiveCfg = Debug|x86
+		{8AE8D1DC-B203-4E75-97FF-DE891B72CEED}.Debug|x86.Build.0 = Debug|x86
+		{8AE8D1DC-B203-4E75-97FF-DE891B72CEED}.Release|Any CPU.ActiveCfg = Release|x86
+		{8AE8D1DC-B203-4E75-97FF-DE891B72CEED}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{8AE8D1DC-B203-4E75-97FF-DE891B72CEED}.Release|Mixed Platforms.Build.0 = Release|x86
+		{8AE8D1DC-B203-4E75-97FF-DE891B72CEED}.Release|x86.ActiveCfg = Release|x86
+		{8AE8D1DC-B203-4E75-97FF-DE891B72CEED}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {371D6353-1DD5-48AB-9D5A-7C70A6E53BC0}
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 11
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://abdullahbamusa.visualstudio.com/
-		SccProjectUniqueName0 = FlopManager.Services\\FlopManager.Services.csproj
-		SccProjectName0 = FlopManager.Services
-		SccLocalPath0 = FlopManager.Services
-		SccProjectUniqueName1 = FlopManagerLoanModule\\FlopManagerLoanModule.csproj
-		SccProjectName1 = FlopManagerLoanModule
-		SccLocalPath1 = FlopManagerLoanModule
-		SccProjectUniqueName2 = FlopManager.PaymentsModule\\FlopManager.PaymentsModule.csproj
-		SccProjectName2 = FlopManager.PaymentsModule
-		SccLocalPath2 = FlopManager.PaymentsModule
-		SccProjectUniqueName3 = FlopManager.SettingsModule\\FlopManager.SettingsModule.csproj
-		SccProjectName3 = FlopManager.SettingsModule
-		SccLocalPath3 = FlopManager.SettingsModule
-		SccProjectUniqueName4 = FlopManager.Infrastructure\\FlopManager.Infrastructure.csproj
-		SccProjectName4 = FlopManager.Infrastructure
-		SccLocalPath4 = FlopManager.Infrastructure
-		SccProjectUniqueName5 = FlopManager.OfficePrintingService\\FlopManager.OfficePrintingService.csproj
-		SccProjectName5 = FlopManager.OfficePrintingService
-		SccLocalPath5 = FlopManager.OfficePrintingService
-		SccLocalPath6 = .
-		SccProjectUniqueName7 = FamilyAppService\\FamilyAppService.csproj
-		SccProjectName7 = FamilyAppService
-		SccLocalPath7 = FamilyAppService
-		SccProjectUniqueName8 = FbmSetup\\FbmSetup.wixproj
-		SccProjectName8 = FbmSetup
-		SccLocalPath8 = FbmSetup
-		SccProjectUniqueName9 = FlopManager.Domain\\FlopManager.Domain.csproj
-		SccProjectName9 = FlopManager.Domain
-		SccLocalPath9 = FlopManager.Domain
-		SccProjectUniqueName10 = FlopManager\\FlopManager.csproj
-		SccProjectName10 = FlopManager
-		SccLocalPath10 = FlopManager
 	EndGlobalSection
 EndGlobal
