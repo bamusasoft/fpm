@@ -255,7 +255,7 @@ namespace FlopManager.SettingsModule.ViewModels
 
         public override bool IsNavigationTarget(NavigationContext navigationContext)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
