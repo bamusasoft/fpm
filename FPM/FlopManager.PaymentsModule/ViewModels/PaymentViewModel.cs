@@ -285,7 +285,7 @@ namespace FlopManager.PaymentsModule.ViewModels
             {
                 RemoveError(nameof(SelectedYear), ValidationErrorsMessages.YEAR_MUST_SUPPLIED);
             }
-            if (AllPastPaymentsPosted(SelectedYear))
+            if (!AllPastPaymentsPosted(SelectedYear))
             {
                 AddError(nameof(SelectedYear), ValidationErrorsMessages.PAST_PAYMENTS_MUST_POSTED);
                 isValid = false;
@@ -303,7 +303,7 @@ namespace FlopManager.PaymentsModule.ViewModels
             {
                 RemoveError(nameof(SelectedSequence), ValidationErrorsMessages.SEQUENCE_MUST_SUPPLIED);
             }
-            if (!SequenceNotAlreadyPaid(SelectedSequence))
+            if (SequenceAlreadyPaid(SelectedSequence))
             {
                 AddError(nameof(SelectedSequence), ValidationErrorsMessages.SEQUENCE_MUST_NOT_ALREADY_PAID);
                 isValid = false;
@@ -406,7 +406,7 @@ namespace FlopManager.PaymentsModule.ViewModels
         /// </summary>
         /// <param name="periodYear"></param>
         /// <returns>True is already withdrawled otherwise false.</returns>
-        private bool SequenceNotAlreadyPaid(PaymentSequence selectedSequence)
+        private bool SequenceAlreadyPaid(PaymentSequence selectedSequence)
         {
             if (selectedSequence == null) return false;
             var payments = _repository.Where(p => p.Year == selectedSequence.PeriodYear.Year);
@@ -489,6 +489,11 @@ namespace FlopManager.PaymentsModule.ViewModels
                     }
                     PaymentNo = currentYearPortion + DecorateNo(incrementedNo);
                 }
+                else
+                {
+                    PaymentNo = Helper.StartNewIncrement(currentYearPortion).ToString(CultureInfo.InvariantCulture);
+                }
+
             }
             else
             {
