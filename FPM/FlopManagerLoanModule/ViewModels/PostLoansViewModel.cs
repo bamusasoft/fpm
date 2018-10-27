@@ -60,6 +60,7 @@ namespace FlopManagerLoanModule.ViewModels
             WindowLoaded();
             ViewStateChanged += OnViewStateChanged;
             RulesViolations = new List<RuleViolation>();
+            Initialize();
 
         }
 

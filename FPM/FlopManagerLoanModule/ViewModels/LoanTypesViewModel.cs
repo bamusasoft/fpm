@@ -29,6 +29,7 @@ namespace FlopManagerLoanModule.ViewModels
             _logger = logger;
             Title = ViewModelsTitles.LOAN_TYPES;
             CanClose = true;
+            Initialize();
         }
 
         #region "Fields"

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Data.Entity;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -12,23 +13,31 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using FlopManager.Domain;
 using FlopManager.Domain.EF;
+using FlopManager.Services;
 using FlopManager.Services.DTOs;
 using FlopManager.Services.Helpers;
 using FlopManager.Services.ViewModelInfrastructure;
+using Prism.Commands;
+using Prism.Logging;
 using Prism.Regions;
 
 namespace FlopManager.PaymentsModule.ViewModels
 {
-    public class MemberPaymentViewModel:EditableViewModelBase
+    [Export]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
+    public class MemberPaymentViewModel : EditableViewModelBase
     {
         #region "Fields"
 
         private readonly DbSet<PaymentTransaction> _detailRepository;
-        private readonly DbSet<LoanPayment> _hisotryRepository;
+        private readonly DbSet<LoanPayment> _loanPaymentsRepository;
         private readonly DbSet<Loan> _loanRepository;
         private readonly DbSet<FamilyMember> _membersRepository;
         private readonly DbSet<Payment> _paymentRepository;
         private readonly FamilyContext _unitOfWork;
+        private readonly ILogger _logger;
+        private readonly ISettings _settings;
+        private readonly IResouece _resource;
         private decimal _loansTotals;
         //
         private int _memberCode;
@@ -50,46 +59,53 @@ namespace FlopManager.PaymentsModule.ViewModels
         //
         private bool ChangedFlage { get; set; }
         private bool _canEdit;
-
+        //Commands
+        private DelegateCommand<object> _searchMemberCommand;
         #endregion
-        public MemberPaymentViewModel()
+        [ImportingConstructor]
+        public MemberPaymentViewModel(FamilyContext dbContext, ILogger logger, ISettings settings, IResouece resouece)
         {
-            _unitOfWork = new FamilyContext();
+            _unitOfWork = dbContext;
+            _logger = logger;
+            _settings = settings;
+            _resource = resouece;
             _paymentRepository = _unitOfWork.Payments;
             _detailRepository = _unitOfWork.PaymentTransactions;
             _loanRepository = _unitOfWork.Loans;
-            _hisotryRepository = _unitOfWork.LoanPayments;
+            _loanPaymentsRepository = _unitOfWork.LoanPayments;
             _membersRepository = _unitOfWork.FamilyMembers;
             LoansHistory = new List<LoanPayment>();
-            WindowLoaded();
             Initialize();
         }
 
         #region "Events"
 
-        private void MemberCodeKeyDown()
+        private void MemberCodeKeyDown(object code)
         {
-            //if (e.Key == Key.Enter || e.Key == Key.Return)
-            //{
-            //    SearchCommand.Execute(null);
-            //}
+            Search(code);
         }
 
-        private void WindowLoaded()
+
+        public ICommand SearchMemberCommand
         {
-            //txtMemberCode.Focus();
+            get { return _searchMemberCommand ?? (_searchMemberCommand = new DelegateCommand<object>(MemberCodeKeyDown)); }
         }
+
+
 
         protected override void Initialize()
         {
             MemberLoans = new ObservableCollection<MemberLoan>();
             MemberLoans.CollectionChanged += MemberLoansChanged;
             CanEdit = true;
+            Errors = new Dictionary<string, List<string>>();
+            Title = ViewModelsTitles.MEMBER_PAYMENT;
+            CanClose = true;
         }
 
         #endregion
 
-      
+
 
         #region "Properties"
         public int MemberCode
@@ -112,7 +128,7 @@ namespace FlopManager.PaymentsModule.ViewModels
             get { return _memberShares; }
             set
             {
-                SetProperty(ref _memberCode, value);
+                SetProperty(ref _memberShares, value);
             }
         }
 
@@ -187,15 +203,27 @@ namespace FlopManager.PaymentsModule.ViewModels
             set
             {
                 SetProperty(ref _selectedYear, value);
+                if (SelectedYear != null)
+                {
+                    UpdatePaymentSequences(SelectedYear);
+                }
+                OnStateChanged(ViewModelState.InEdit);
             }
         }
-
+        private void UpdatePaymentSequences(PeriodYear selectedYear)
+        {
+            PaymentSequences = new ObservableCollection<PaymentSequence>(LoadYearPayments(selectedYear));
+        }
         public PaymentSequence SelectedSeqeunce
         {
             get { return _selectedSeqeunce; }
             set
             {
                 SetProperty(ref _selectedSeqeunce, value);
+                if(SelectedSeqeunce != null)
+                {
+                    SeqeunceSelectionChnaged(SelectedYear, SelectedSeqeunce);
+                }
             }
         }
 
@@ -208,15 +236,15 @@ namespace FlopManager.PaymentsModule.ViewModels
             }
         }
 
-        
+
         #endregion
 
         #region "ICommonOperations"
 
-       
-        
 
-        
+
+
+
 
         public void SetState(ModelState state)
         {
@@ -237,7 +265,7 @@ namespace FlopManager.PaymentsModule.ViewModels
         {
             if (!ChangedFlage) return true;
             string msg = "";//Properties.Resources.PromptForSaveMsg;
-           return Helper.UserConfirmed(msg);
+            return Helper.UserConfirmed(msg);
         }
 
 
@@ -248,27 +276,55 @@ namespace FlopManager.PaymentsModule.ViewModels
             set { throw new NotImplementedException(); }
         }
 
-       
 
 
 
-       
+
+
 
         #endregion
 
         #region "Commands Methods"
 
-        private void Search()
+
+
+        protected override void Save()
         {
-            string s = "";//txtMemberCode.Text;
-            if (string.IsNullOrEmpty(s)) return;
-            int code;
-            if (int.TryParse(s, out code))
+            if (_viewState == ViewState.New) return;
+            try
             {
+                WriteValues();
+                _unitOfWork.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Helper.HandleUiException(ex, _logger, RaiseNotification);
+            }
+
+        }
+        protected override void Delete()
+        {
+            throw new NotImplementedException();
+        }
+        protected override void Print()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void Search(object criteria)
+        {
+
+            int code;
+            if (int.TryParse(criteria.ToString(), out code))
+            {
+
+                if (code < 1) return;
+
                 try
                 {
                     _selectedMember = _membersRepository.Single(mem => mem.Code == code);
                     MemberName = _selectedMember.FullName;
+                    MemberShares = _selectedMember.Shares;
                     IQueryable<IGrouping<string, PeriodYear>> result = _detailRepository.Where
                         (
                             x => x.FamilyMember.Code == _selectedMember.Code
@@ -283,77 +339,37 @@ namespace FlopManager.PaymentsModule.ViewModels
                         //foreach (PeriodYear key in items)
                         //{
                         Years.Add(k);
-                        OnPropertyChanged(nameof(Years));
+                        RaisePropertyChanged(nameof(Years));
                         //}
                     }
                 }
                 catch (Exception ex)
                 {
-                    Helper.LogAndShow(ex);
+                    Helper.HandleUiException(ex, _logger, RaiseNotification);
+
                 }
             }
-        }
-
-        protected override void Save()
-        {
-            if (_viewState == ViewState.New) return;
-            try
-            {
-                WriteValues();
-                _unitOfWork.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-
-                Helper.LogAndShow(ex);
-            }
 
         }
-
-        
-
-        protected override void Delete()
-        {
-            throw new NotImplementedException();
-        }
-
-       
-
-        protected override void Print()
-        {
-            throw new NotImplementedException();
-        }
-
-        
-
-        protected override void Search(object criteria)
-        {
-            throw new NotImplementedException();
-        }
-
-       
 
         protected override void AddNew()
         {
             throw new NotImplementedException();
         }
 
-
-       
-
         public override bool IsNavigationTarget(NavigationContext navigationContext)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
         {
-            throw new NotImplementedException();
+
         }
 
         public override void OnStateChanged(ViewModelState state)
         {
-            throw new NotImplementedException();
+            
         }
 
         protected override bool IsValid()
@@ -407,7 +423,7 @@ namespace FlopManager.PaymentsModule.ViewModels
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            OnPropertyChanged("");
+            RaisePropertyChanged("");
         }
         private void MemberLoansChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -434,7 +450,6 @@ namespace FlopManager.PaymentsModule.ViewModels
 
         private void OnMemeberLoanChanged(object sender, PropertyChangedEventArgs e)
         {
-
             UpdatePayments();
         }
 
@@ -447,36 +462,42 @@ namespace FlopManager.PaymentsModule.ViewModels
         }
 
 
-        private void YearSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private IList<PaymentSequence> LoadYearPayments(PeriodYear selectedYear)
         {
-            if (SelectedYear != null)
+            var yearPayments = new ObservableCollection<PaymentSequence>();
+            try
             {
-                LoadYearPayments(SelectedYear);
+                var result =
+                 _unitOfWork.Payments
+                            .Where(x => x.PeriodYear.Year == selectedYear.Year)
+                            .Select(x => x.PaymentSequence).ToList();
+                if (!result.Any())
+                {
+                    string msg = _resource["SelectedYearHasNoPayments"];
+                    RaiseNotification(msg);
+                    return yearPayments;
+                }
+                yearPayments = new ObservableCollection<PaymentSequence>(result);
             }
+            catch (Exception ex)
+            {
+
+                var exception = Helper.ProcessExceptionMessages(ex);
+                _logger.Log(exception.DetialsMsg, Category.Exception, Priority.High);
+                RaiseNotification(exception.UserMsg);
+            }
+            return yearPayments;
         }
 
-        private void LoadYearPayments(PeriodYear selectedYear)
+        private void SeqeunceSelectionChnaged(PeriodYear paymentYear, PaymentSequence paymentSequence)
         {
-            IQueryable<PaymentSequence> result =
-                _unitOfWork.Payments.Where(x => x.PeriodYear.Year == selectedYear.Year).Select(x => x.PaymentSequence);
-            if (!result.Any())
-            {
-                string msg = "";//Properties.Resources.MemberPaymentView_NoPaymentSequ;
-                Helper.ShowMessage(msg);
-                return;
-            }
-            PaymentSequences = new ObservableCollection<PaymentSequence>(result);
-        }
-
-        private void SeqeunceSelectionChnaged(object sender, SelectionChangedEventArgs e)
-        {
-            if (SelectedSeqeunce == null) return;
+            if (paymentSequence == null) return;
 
             _payment = _paymentRepository.Single
                 (
-                    pay => pay.PeriodYear.Year == SelectedYear.Year
+                    pay => pay.PeriodYear.Year == paymentYear.Year
                            &&
-                           pay.PaymentSequence.Id == SelectedSeqeunce.Id
+                           pay.PaymentSequence.Id == paymentSequence.Id
                 );
 
             _paymentDetail =
@@ -488,21 +509,21 @@ namespace FlopManager.PaymentsModule.ViewModels
                 );
 
             LoansHistory =
-                _hisotryRepository.Where
+                _loanPaymentsRepository.Where
                 (
                     hist => hist.PaymentTransaction.TransNo == _paymentDetail.TransNo
                 ).ToList();
 
             MemberLoans.Clear();
 
-            foreach (LoanPayment lohis in LoansHistory)
+            foreach (LoanPayment loanPayment in LoansHistory)
             {
-                //var memLoan = new MemberLoan
-                //                       (
-                //                         lohis.Id, lohis.Loan.LoanNo, lohis.AmountPaid,
-                //                         lohis.Loan.Description, lohis.Loan.Remarks
-                //                       );
-                //MemberLoans.Add(memLoan);
+                var memLoan = new MemberLoan
+                                       (
+                                         loanPayment.DocNo, loanPayment.Loan.LoanNo, loanPayment.AmountPaid,
+                                         loanPayment.Loan.Description, loanPayment.Loan.Remarks
+                                       );
+                MemberLoans.Add(memLoan);
             }
 
             MemberShares = _paymentDetail.ShareNumbers;
@@ -522,20 +543,20 @@ namespace FlopManager.PaymentsModule.ViewModels
         {
             foreach (MemberLoan memberLoan in MemberLoans)
             {
-                //LoanPayment hist = LoansHistory.Find(x => x.Id == memberLoan.Id);
-                //if (hist.AmountPaid == memberLoan.LoanAmount) continue;
-                //Loan loan = _loanRepository.Single(lo => lo.LoanNo == hist.Loan.LoanNo);
-                //SetLoanStatus(loan);
-                //hist.AmountPaid = memberLoan.LoanAmount;
-                //decimal newLoansTotal = MemberLoans.Sum(x => x.LoanAmount);
-                //_paymentDetail.AmountDue = newLoansTotal;
-                //_paymentDetail.NetPayments = (_payment.Amount * _paymentDetail.ShareNumbers) - newLoansTotal;
+                LoanPayment loanPayment = LoansHistory.Find(x => x.DocNo == memberLoan.DocNo);
+                if (loanPayment.AmountPaid == memberLoan.LoanAmount) continue;
+                Loan loan = _loanRepository.Single(lo => lo.LoanNo == loanPayment.Loan.LoanNo);
+                SetLoanStatus(loan);
+                loanPayment.AmountPaid = memberLoan.LoanAmount;
+                decimal newLoansTotal = MemberLoans.Sum(x => x.LoanAmount);
+                _paymentDetail.AmountDue = newLoansTotal;
+                _paymentDetail.NetPayments = (_payment.Amount * _paymentDetail.ShareNumbers) - newLoansTotal;
             }
         }
 
         private void SetLoanStatus(Loan loan)
         {
-           
+
             if (loan.Balance == 0.0M)
             {
                 loan.Status = LoanStatus.Paid;

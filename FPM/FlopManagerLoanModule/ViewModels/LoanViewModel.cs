@@ -14,6 +14,7 @@ namespace FlopManagerLoanModule.ViewModels
         {
             Title = ViewModelsTitles.LOANS;
             CanClose = true;
+            
         }
 
         #region "Fields"

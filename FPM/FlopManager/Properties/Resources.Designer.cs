@@ -69,5 +69,14 @@ namespace FlopManager.Properties {
                 return ((System.Drawing.Icon)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to السنة ليس لها دفعات.
+        /// </summary>
+        internal static string SelectedYearHasNoPayments {
+            get {
+                return ResourceManager.GetString("SelectedYearHasNoPayments", resourceCulture);
+            }
+        }
     }
 }

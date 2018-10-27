@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Text;
 using Microsoft.Office.Interop.Word;
+using Prism.Logging;
 
 namespace FlopManager.Services.Helpers
 {
@@ -222,6 +223,12 @@ namespace FlopManager.Services.Helpers
         public static void ShowMessage(string msg)
         {
             
+        }
+        public static void HandleUiException(Exception ex, ILogger logger, Action<string> notificationMethod)
+        {
+            var exception = ProcessExceptionMessages(ex);
+            logger.Log(exception.DetialsMsg, Prism.Logging.Category.Exception, Priority.High);
+            notificationMethod(exception.UserMsg);
         }
         
     }

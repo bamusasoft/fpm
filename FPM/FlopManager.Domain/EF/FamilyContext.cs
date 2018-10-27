@@ -1,12 +1,16 @@
-﻿using System.Data.Entity;
+﻿using System.ComponentModel.Composition;
+using System.Data.Entity;
 using System.Data.Entity.Core.EntityClient;
 using System.Data.SqlClient;
 using FlopManager.Services;
 
 namespace FlopManager.Domain.EF
 {
+    [Export]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public class FamilyContext : DbContext
     {
+        [ImportingConstructor]
         public FamilyContext():base(ConnectionString.FamilyConnection)
         {
         }

@@ -80,7 +80,7 @@ namespace FlopManager.Services.ViewModelInfrastructure
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            Initialize();
+            
         }
 
 

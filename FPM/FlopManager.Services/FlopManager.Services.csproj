@@ -89,6 +89,7 @@
     <Compile Include="CustomPopupActions\MyPopupWindowAction.cs" />
     <Compile Include="DTOs\MemberLoans.cs" />
     <Compile Include="ExceptionEncapsulation.cs" />
+    <Compile Include="IResource.cs" />
     <Compile Include="ValidationErrorsMessages.cs" />
     <Compile Include="GlobalConfigService.cs" />
     <Compile Include="Helpers\AppEnums.cs" />

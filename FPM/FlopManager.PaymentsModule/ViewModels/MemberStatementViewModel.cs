@@ -1,21 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.Data.Entity;
 using System.Linq;
 using FlopManager.Domain;
 using FlopManager.Domain.EF;
 using FlopManager.PaymentsModule.DTOs;
+using FlopManager.Services;
 using FlopManager.Services.Helpers;
 using FlopManager.Services.ViewModelInfrastructure;
 using Prism.Regions;
 
 namespace FlopManager.PaymentsModule.ViewModels
 {
-    internal class MemberStatementViewModel:ListViewModelBase
+    [Export]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
+    public class MemberStatementViewModel:ListViewModelBase
     {
         #region "Fields"
-        FamilyContext _unitOfWork;
+        FamilyContext _dbContext;
+        private ILogger _logger;
+        private ISettings _setting;
         DbSet<PeriodYear> _repoPeriodSetting;
 
         MemberStatmentReport _statment;
@@ -23,10 +29,17 @@ namespace FlopManager.PaymentsModule.ViewModels
         ObservableCollection<PeriodYear> _years;
         HashSet<MemberStatmentDetail> _internalStatementDetails;
         #endregion
-        public MemberStatementViewModel()
+        [ImportingConstructor]
+        public MemberStatementViewModel(FamilyContext dbContext, ILogger logger, ISettings settings)
         {
-            _unitOfWork = new FamilyContext();
-            _repoPeriodSetting = _unitOfWork.PeriodYears;
+
+            _dbContext = dbContext;
+            _logger = logger;
+            _setting = settings;
+            _repoPeriodSetting = _dbContext.PeriodYears;
+            CanClose = true;
+            Title = ViewModelsTitles.MEMBER_STATMENT;
+
             WindowLoaded();
         }
 
@@ -72,17 +85,17 @@ namespace FlopManager.PaymentsModule.ViewModels
 
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
-            throw new NotImplementedException();
+
         }
 
         public override bool IsNavigationTarget(NavigationContext navigationContext)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
         {
-            throw new NotImplementedException();
+            
         }
 
         protected override void Search(object term)
@@ -141,7 +154,7 @@ namespace FlopManager.PaymentsModule.ViewModels
             string searchedMemberName = null;
             decimal netTotals = 0.0M;
 
-            var yearPayments = _unitOfWork.Payments.Where(x => x.PeriodYear.Year == year.Year);
+            var yearPayments = _dbContext.Payments.Where(x => x.PeriodYear.Year == year.Year);
             int fieldsCounter = 0;
             foreach (var yearPayment in yearPayments)
             {
@@ -150,7 +163,7 @@ namespace FlopManager.PaymentsModule.ViewModels
                     statementYear = yearPayment.PeriodYear.Year;
                 }
 
-                var pymentDetails = _unitOfWork.PaymentTransactions.Where
+                var pymentDetails = _dbContext.PaymentTransactions.Where
                     (
                         x => x.Payment.PaymentNo == yearPayment.PaymentNo
                         &&

@@ -30,6 +30,8 @@ namespace FlopManager.PaymentsModule.ViewModels
             _logger = logger;
             CanClose = true;
             Title = ViewModelsTitles.CREATE_PAYMENT;
+            Initialize();
+            ValidationErrors = "HELLO";
         }
 
         #region "Fields"
@@ -49,6 +51,8 @@ namespace FlopManager.PaymentsModule.ViewModels
         private bool _posted;
         private ICollectionView _currnetYearPayments;
         private Payment _selectedPayment;
+        private bool _showValidation;
+        private string _validationErrors;
         #endregion
 
         #region "Properties"
@@ -165,6 +169,22 @@ namespace FlopManager.PaymentsModule.ViewModels
                 OnSelectedPaymentChanged();
             }
         }
+        public bool ShowValidation
+        {
+            get { return _showValidation; }
+            set
+            {
+              SetProperty(ref _showValidation ,value);
+            }
+        }
+        public string ValidationErrors
+        {
+            get { return _validationErrors; }
+            set
+            {
+               SetProperty(ref _validationErrors , value);
+            }
+        }
         #endregion
 
         #region "Base"
@@ -173,8 +193,19 @@ namespace FlopManager.PaymentsModule.ViewModels
         {
             try
             {
-                if (IsValid())
+                if (!IsValid())
                 {
+                    string msg = "";
+                    foreach (var item in Errors)
+                    {
+                        msg += item.Value[0] + Environment.NewLine;
+                    }
+                    ValidationErrors = msg;
+                    ShowValidation = true;
+                    return;
+                }
+                ValidationErrors = "";
+                ShowValidation = false;
                     var payment = _repository.Find(PaymentNo);
                     if (payment == null)
                     {
@@ -184,7 +215,7 @@ namespace FlopManager.PaymentsModule.ViewModels
                     }
                     _unitOfWork.SaveChanges();
                     OnStateChanged(ViewModelState.Saved);
-                }
+
             }
             catch (Exception ex)
             {
@@ -332,6 +363,7 @@ namespace FlopManager.PaymentsModule.ViewModels
         {
             try
             {
+                ShowValidation = false;
                 _unitOfWork = new FamilyContext();
                 _repository = _unitOfWork.Payments;
                 Errors = new Dictionary<string, List<string>>();
@@ -406,7 +438,7 @@ namespace FlopManager.PaymentsModule.ViewModels
         /// </summary>
         /// <param name="periodYear"></param>
         /// <returns>True is already withdrawled otherwise false.</returns>
-        private bool SequenceAlreadyPaid(PaymentSequence selectedSequence)
+        private bool SequenceAlreadyPaid( PaymentSequence selectedSequence)
         {
             if (selectedSequence == null) return false;
             var payments = _repository.Where(p => p.Year == selectedSequence.PeriodYear.Year);
@@ -426,6 +458,10 @@ namespace FlopManager.PaymentsModule.ViewModels
             SelectedSequence = null;
             PaymentAmount = 0.00m;
             CurrenYearPayments.MoveCurrentToPosition(-1);
+            //
+            ResetErrors();
+            ValidationErrors = "";
+            ShowValidation = false;
             
 
         }
@@ -453,6 +489,7 @@ namespace FlopManager.PaymentsModule.ViewModels
                 var current = _unitOfWork.Payments.Single(p => p.PaymentNo == PaymentNo);
                 current.Posted = true;
                 Posted = true;
+                
             }
         }
 

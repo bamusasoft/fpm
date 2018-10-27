@@ -6,17 +6,12 @@ namespace FlopManager.Services.DTOs
 {
     public class MemberLoan: INotifyPropertyChanged
     {
-        readonly Guid _id;
         string _loanNo;
         decimal _loanAmount;
         string _description;
         string _remarks;
 
-        public Guid Id
-        {
-            get { return _id; }
-            
-        }
+        public int DocNo { get; }
         public string LoanNo
         {
             get { return _loanNo; }
@@ -54,15 +49,14 @@ namespace FlopManager.Services.DTOs
                 RaisePropertyChanged();
             }
         }
-        public MemberLoan(Guid id, string loanNo, decimal loanAmount, string description, string remarks)
+        public MemberLoan(int id, string loanNo, decimal loanAmount, string description, string remarks)
         {
-            _id = id;
+            DocNo = id;
             _loanNo = loanNo;
             _loanAmount = loanAmount;
             _description = description;
             _remarks = remarks;
         }
-        public MemberLoan() : this(Guid.Empty,string.Empty, 0.00M, string.Empty, string.Empty) { }
 
         #region "INotifyPropertyChanged"
 

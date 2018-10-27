@@ -27,6 +27,8 @@ namespace FlopManagerLoanModule.ViewModels
             }
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<SaveCompletedEvent>().Subscribe(OnSaveCompleted);
+            Initialize();
+
         }
 
         #region Fields
@@ -75,7 +77,6 @@ namespace FlopManagerLoanModule.ViewModels
 
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
-            Initialize();
         }
 
         public override bool IsNavigationTarget(NavigationContext navigationContext)

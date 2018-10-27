@@ -160,6 +160,7 @@
     <Compile Include="AvalonDockRegionAdapter.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="FlopManagerSettings.cs" />
+    <Compile Include="FlopResoureces.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

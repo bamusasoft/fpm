@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using FlopManager.Domain.EF;
 using FlopManager.Services;
 using FlopManager.Services.ViewModelInfrastructure;
 using Prism.Logging;
@@ -29,6 +30,7 @@ namespace FlopManager
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(FlopManagerLoanModule.LoanModule).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(XmlLogger).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(PaymentsModule.PaymentModule).Assembly));
+            AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(FamilyContext).Assembly));
 
         }
         protected override IModuleCatalog CreateModuleCatalog()
@@ -60,6 +62,7 @@ namespace FlopManager
         protected override void ConfigureContainer()
         {
             base.ConfigureContainer();
+          
             //Create global settings
             Container.ComposeExportedValue(typeof(FlopManagerSettings));
             //Create global customer logger which log to xml fiel
@@ -68,6 +71,11 @@ namespace FlopManager
             var setting = Container.GetExport<ISettings>();
             var logfilePath = (string)setting?.Value["LogFilePath"];
             Container.ComposeExportedValue<string>("LogFilePath", logfilePath);
+            //Register Global Db Context
+            Container.ComposeExportedValue(typeof(FamilyContext));
+            //
+            Container.ComposeExportedValue(typeof(FlopResoureces));
+
 
 
 

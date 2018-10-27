@@ -1,5 +1,7 @@
-﻿using System;
+﻿using FlopManager.PaymentsModule.ViewModels;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,14 +17,20 @@ using System.Windows.Shapes;
 
 namespace FlopManager.PaymentsModule.Views
 {
-    /// <summary>
-    /// Interaction logic for MemberPaymentView.xaml
-    /// </summary>
+    [Export("MemberPaymentView")]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class MemberPaymentView : UserControl
     {
         public MemberPaymentView()
         {
             InitializeComponent();
+        }
+
+        [Import]
+        public MemberPaymentViewModel ViewModel
+        {
+            get { return DataContext as MemberPaymentViewModel; }
+            set { DataContext = value; }
         }
     }
 }

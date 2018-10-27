@@ -35,6 +35,8 @@ namespace FlopManager.PaymentsModule.Views
         private static readonly Uri PaymentOrderViewUri = new Uri("/PaymentOrdersView", UriKind.Relative);
         private static readonly Uri PaymentTransViewUri = new Uri("/PaymentTransView", UriKind.Relative);
         private static readonly Uri MembStatmViewUri = new Uri("/MemberStatmentView", UriKind.Relative);
+        private static readonly Uri MembPaymViewUri = new Uri("/MemberPaymentView", UriKind.Relative);
+
         [Import]
         public IRegionManager RegionManager;
         #endregion
@@ -55,6 +57,10 @@ namespace FlopManager.PaymentsModule.Views
         private void OnNavigateToMembStatm(object sender, RoutedEventArgs e)
         {
             RegionManager.RequestNavigate(RegionNames.MAIN_CONTENT_REGION, MembStatmViewUri);
+        }
+        private void OnNavigateToMembPaym(object sender, RoutedEventArgs e)
+        {
+            RegionManager.RequestNavigate(RegionNames.MAIN_CONTENT_REGION, MembPaymViewUri);
         }
     }
 }

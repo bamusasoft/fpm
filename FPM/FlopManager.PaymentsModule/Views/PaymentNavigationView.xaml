@@ -11,7 +11,9 @@
         <RadioButton x:Name="navigateToCreatePayment" Content="دفعة جديدة" Click="OnNavigateToCreatePayment"/>
         <RadioButton x:Name="navigateToPaymentOrder" Content="تعليمات الصرفية" Click="OnNavigateToPaymentOrder"/>
         <RadioButton x:Name="navigateToPaymentTrans" Content="تفاصيل الصرفية" Click="OnNavigateToPaymentTrans"/>
-        <!--<RadioButton x:Name="navigateToMembStatm" Content="كشف حساب" Click="OnNavigateToMembStatm"/>-->
+        <RadioButton x:Name="navigateToMembPaym" Content="كشف حساب" Click="OnNavigateToMembStatm"/>
+        <RadioButton x:Name="navigateToMembStatm" Content="صرفية مستحق" Click="OnNavigateToMembPaym"/>
+
     </TreeViewItem>
 
 </UserControl>

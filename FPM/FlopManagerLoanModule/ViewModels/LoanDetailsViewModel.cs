@@ -35,6 +35,7 @@ namespace FlopManagerLoanModule.ViewModels
             _selectedLoanFiredOnInitialzation = true;
             eventAggregator.GetEvent<LoanSelectedEvent>().Subscribe(OnLoanSelected);
             Errors = new Dictionary<string, List<string>>();
+            Initialize();   
            
 
         }

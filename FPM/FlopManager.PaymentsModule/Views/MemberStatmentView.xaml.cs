@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlopManager.PaymentsModule.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
@@ -23,6 +24,13 @@ namespace FlopManager.PaymentsModule.Views
         public MemberStatmentView()
         {
             InitializeComponent();
+        }
+
+        [Import]
+        public MemberStatementViewModel ViewModel
+        {
+            get { return DataContext as MemberStatementViewModel; }
+            set { DataContext = value; }
         }
 
     }

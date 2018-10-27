@@ -28,6 +28,7 @@ namespace FlopManager.PaymentsModule.ViewModels
             CanClose = true;
             Title = ViewModelsTitles.PAYMENT_ORDERS;
             Errors = new Dictionary<string, List<string>>();
+            Initialize();
 
         }
 

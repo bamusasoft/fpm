@@ -33,6 +33,7 @@ namespace FlopManager.PaymentsModule.ViewModels
             CanClose = true;
             Title = ViewModelsTitles.PAYMENT_TRANS;
             Errors = new Dictionary<string, List<string>>();
+            Initialize();
         }
 
         #region "Helper Methods"

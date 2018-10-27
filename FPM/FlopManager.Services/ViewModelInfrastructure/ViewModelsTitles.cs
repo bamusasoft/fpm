@@ -17,5 +17,8 @@ namespace FlopManager.Services.ViewModelInfrastructure
         public const string PAYMENT_ORDERS = "تعليمات الصرفية";
         public const string PAYMENT_TRANS = "كشف الصرفية";
         public const string MEMBER_INFO = "بيانات مستحق";
+        public const string MEMBER_STATMENT = "كشف حساب مستحق";
+        public const string MEMBER_PAYMENT = "بيانات صرفية مستحق";
+
     }
 }
