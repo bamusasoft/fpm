@@ -33,6 +33,7 @@ namespace FlopManagerLoanModule.ViewModels
             _settings = new GlobalConfigService(settings);
             _logger = logger;
             _selectedLoanFiredOnInitialzation = true;
+            _unitOfWork = new FamilyContext();
             eventAggregator.GetEvent<LoanSelectedEvent>().Subscribe(OnLoanSelected);
             Errors = new Dictionary<string, List<string>>();
             Initialize();   
@@ -73,8 +74,7 @@ namespace FlopManagerLoanModule.ViewModels
         ObservableCollection<PeriodYear> _years;
         ObservableCollection<PaymentSequence> _paymentSequences;
         ObservableCollection<Loan> _memberLoans;
-        FamilyContext _unitOfWork;
-        DbSet<Loan> _repository;
+        readonly FamilyContext _unitOfWork;
         const string Undefined = "لا يوجد";
         private LoanStatus _loanStatus;
         private DelegateCommand<string> _addMemberCommand;
@@ -280,7 +280,7 @@ namespace FlopManagerLoanModule.ViewModels
         {
             try
             {
-                string maxNo = _repository.Max(lon => lon.LoanNo);
+                string maxNo = _unitOfWork.Loans.Max(lon => lon.LoanNo);
                 LoanNo = Helper.GenerateLoanNo(_currentYear.Year, maxNo);
             }
             catch (Exception ex)
@@ -337,8 +337,6 @@ namespace FlopManagerLoanModule.ViewModels
         {
             try
             {
-                _unitOfWork = new FamilyContext();
-                _repository = _unitOfWork.Loans;
                 LoansTypes = GetLoansTypes();
                 Years = GetYears();
                 _currentYear = _unitOfWork.PeriodYears.Single(x => x.Status == YearStatus.Present);
@@ -361,12 +359,12 @@ namespace FlopManagerLoanModule.ViewModels
             {
                 try
                 {
-                    Loan loan = _repository.Find(LoanNo);
+                    Loan loan = _unitOfWork.Loans.Find(LoanNo);
                     if (loan == null)
                     {
                         loan = new Loan();
                         MapTo(loan, false);
-                        _repository.Add(loan);
+                        _unitOfWork.Loans.Add(loan);
                     }
                     else
                     {
@@ -388,7 +386,40 @@ namespace FlopManagerLoanModule.ViewModels
 
         protected override void Delete()
         {
-            throw new NotImplementedException();
+            if (!RaiseConfirmation(SettingsNames.CONFIRM_DELETE_MSG))
+            {
+                return;
+            }
+
+            try
+            {
+                var loanPayments = _unitOfWork.LoanPayments.Count(pay => pay.Loan.LoanNo == LoanNo);
+                if (loanPayments > 0)
+                {
+                    RaiseNotification(SettingsNames.LOAN_HAS_PAYMENTS);
+                    return;
+                }
+
+                var loan = _unitOfWork.Loans.Find(LoanNo);
+                if (loan != null)
+                {
+                    _unitOfWork.Loans.Remove(loan);
+                    _unitOfWork.SaveChanges();
+                    _eventAggregator.GetEvent<SaveCompletedEvent>().Publish(this);
+                    ClearView();
+                    OnStateChanged(ViewModelState.AddNew);
+                }
+                else
+                {
+                    RaiseNotification(SettingsNames.OPERATION_FAILED);
+                }
+            }
+            catch (Exception ex)
+            {
+                var exception = Helper.ProcessExceptionMessages(ex);
+                _logger.Log(exception.DetialsMsg, Category.Exception, Priority.High);
+                RaiseNotification(exception.UserMsg);
+            }
         }
 
         
@@ -531,10 +562,11 @@ namespace FlopManagerLoanModule.ViewModels
             {
                 entity.LoanNo = LoanNo;
             }
-            entity.FamilyMember = Member;
-            entity.LoanType = SelectedLoanType;
-            entity.PeriodYear = SelectedLoanYear;
-            entity.PaymentSequence = SelectedSequence;
+
+            entity.MemberCode = Member.Code;
+            entity.LoanTypeCode = SelectedLoanType.Code;
+            entity.Year = SelectedLoanYear.Year;
+            entity.PaySeqDue = SelectedSequence.Id;
             entity.Amount = Amount;
             entity.Description = Description;
             entity.Remarks = Remarks;

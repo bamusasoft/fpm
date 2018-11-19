@@ -11,12 +11,15 @@
         public const string CHECK_IN_ARABIC = "شيك";
         public const string TRANSFER_IN_ARABIC = "حوالة";
         public const string CONFIRM_DELETE_MSG= "هل تريد حذف البيانات؟";
+        public const string LOAN_HAS_PAYMENTS = "لا يمكن حذف التزام عليه تسديدات";
         public const string MEMBER_STATEMENT_PATH = "MemberStatementPath";
         public const string LOAN_STATM_PATH = "LoanStatmPath";
         public const string PDF_FOLDER_PATH = "PdfFolderPath";
         public const string PAYM_REPORT_PATH = "PaymReportPath";
         public const string SHOW_REPORTS = "ShowReports";
         public const string LOG_FILE_PATH = "LogFilePath";
+        public const string OPERATION_FAILED = "غير قادر على إتمام العملية";
+
 
 
     }

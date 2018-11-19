@@ -35,7 +35,6 @@ namespace FlopManagerLoanModule.ViewModels
         private readonly IEventAggregator _eventAggregator;
         private ICollectionView _loans;
         private FamilyContext _unitOfWork;
-        private DbSet<Loan> _repository;
         #endregion
         #region Properties
 
@@ -51,7 +50,6 @@ namespace FlopManagerLoanModule.ViewModels
         private void Initialize()
         {
             _unitOfWork = new FamilyContext();
-            _repository = _unitOfWork.Loans;
             LoadLoans();
         }
 
@@ -66,7 +64,8 @@ namespace FlopManagerLoanModule.ViewModels
         private void LoadLoans()
         {
             if (Loans != null) Loans.CurrentChanged -= OnSelectedLoanChanged;
-            var list = new ObservableCollection<Loan>(_repository.ToList());
+            _unitOfWork = new FamilyContext();
+            var list = new ObservableCollection<Loan>(_unitOfWork.Loans.ToList());
             Loans = new ListCollectionView(list);
             Loans.CurrentChanged += OnSelectedLoanChanged;
         }
