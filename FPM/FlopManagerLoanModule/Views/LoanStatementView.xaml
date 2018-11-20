@@ -5,29 +5,61 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FlopManagerLoanModule.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" FlowDirection="RightToLeft">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="17*"/>
-                <ColumnDefinition Width="140*"/>
-            </Grid.ColumnDefinitions>
+         </Grid.RowDefinitions>
+        <ToolBarTray Grid.Row="0" Orientation="Horizontal" >
+            <ToolBar BorderThickness="0" SnapsToDevicePixels="True" >
+                
+                
+                <Button Command="{Binding SearchCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                    <StackPanel Orientation="Horizontal">
+                        <ContentControl Content="{StaticResource EnSearchImage}"  Margin="0,0,5,0"/>
+                        <TextBlock Text="بحث"/>
+                    </StackPanel>
+                </Button>
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey} }"/>
+                <Button Command="{Binding PrintCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                    <StackPanel Orientation="Horizontal">
+                        <ContentControl Content="{StaticResource EnPrintImage}"  Margin="0,0,5,0"/>
+                        <TextBlock Text="طباعة"/>
+                    </StackPanel>
+                </Button>
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey} }"/>
+            </ToolBar>
+        </ToolBarTray>
+        <GroupBox Grid.Row="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Margin="10" TextWrapping="Wrap" Text="رقم المستحق"/>
+                <TextBox Margin="10" TextWrapping="Wrap" Text="{Binding MemberCode}" Grid.Column="1"/>
+                <TextBlock Margin="10" TextWrapping="Wrap" Text="اسم المتسحق" Grid.Row="1" Grid.Column="0"/>
+                <TextBox Margin="10" TextWrapping="Wrap" Text="{Binding MemberName}" Grid.Column="1"/>
+            </Grid>
+            
+        </GroupBox>
+        <Grid Grid.Row="2">
+            
             <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
-                <RowDefinition Height="Auto"/>
+               
             </Grid.RowDefinitions>
-            <TextBlock Margin="10" TextWrapping="Wrap" Text="الإسم"/>
-            <TextBox Margin="10" TextWrapping="Wrap" Text="{Binding Statement.MemberName}" Grid.Column="1"/>
+           
 
-            <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" Margin="0" Grid.Row="1" Stroke="Black" Height="2"/>
-            <DataGrid Margin="10,10,10,0" Grid.Row="2" Grid.ColumnSpan="2" CanUserAddRows="False"
+          
+            <DataGrid Margin="10,10,10,0" Grid.Row="0" CanUserAddRows="False"
                       AutoGenerateColumns="False" ItemsSource="{Binding Statement.DetailsCollection}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding DateCreated, Mode=OneWay}" Header="التاريخ" Width="0.1*"/>
@@ -37,7 +69,7 @@
                     <DataGridTextColumn Binding="{Binding Balance, Mode=OneWay, StringFormat=F2}" Header="الرصيد" Width="0.2*"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <Grid Margin="350,0,10,10" Grid.Row="3" Grid.Column="1">
+            <Grid Margin="350,0,10,10" Grid.Row="1" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using FlopManagerLoanModule.ViewModels;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,11 +20,20 @@ namespace FlopManagerLoanModule.Views
     /// <summary>
     /// Interaction logic for LoanStatementView.xaml
     /// </summary>
+    [Export("LoanStatementView")]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class LoanStatementView : UserControl
     {
         public LoanStatementView()
         {
             InitializeComponent();
+        }
+
+        [Import]
+        public LoanStatementViewModel ViewModel
+        {
+            get { return DataContext as LoanStatementViewModel; }
+            set { DataContext = value; }
         }
     }
 }

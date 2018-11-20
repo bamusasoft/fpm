@@ -33,6 +33,7 @@ namespace FlopManagerLoanModule.Views
         #region Fields
         private static readonly Uri LoanViewUri= new Uri("/LoanView", UriKind.Relative);
         private static readonly Uri LoanTypesViewUri = new Uri("/LoanTypesView", UriKind.Relative);
+        private static readonly Uri MemberLoansViewUri = new Uri("/LoanStatementView", UriKind.Relative);
         [Import]
         public IRegionManager RegionManager;
         #endregion
@@ -44,6 +45,10 @@ namespace FlopManagerLoanModule.Views
         private void OnNavigateToLoanTypes(object sender, RoutedEventArgs e)
         {
             RegionManager.RequestNavigate(RegionNames.MAIN_CONTENT_REGION, LoanTypesViewUri);
+        }
+        private void OnNavigateToMemberLoans(object sender, RoutedEventArgs e)
+        {
+            RegionManager.RequestNavigate(RegionNames.MAIN_CONTENT_REGION, MemberLoansViewUri);
         }
     }
 }
