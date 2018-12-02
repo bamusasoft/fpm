@@ -545,30 +545,35 @@ namespace FlopManager.PaymentsModule.ViewModels
             {
                 LoanPayment loanPayment = LoansHistory.Find(x => x.DocNo == memberLoan.DocNo);
                 if (loanPayment.AmountPaid == memberLoan.LoanAmount) continue;
+
                 Loan loan = _loanRepository.Single(lo => lo.LoanNo == loanPayment.Loan.LoanNo);
-                SetLoanStatus(loan);
+
+
                 loanPayment.AmountPaid = memberLoan.LoanAmount;
+
+                SetLoanStatus(loan, loanPayment.AmountPaid);
+
+
                 decimal newLoansTotal = MemberLoans.Sum(x => x.LoanAmount);
-                _paymentDetail.AmountDue = newLoansTotal;
                 _paymentDetail.NetPayments = (_payment.Amount * _paymentDetail.ShareNumbers) - newLoansTotal;
             }
         }
 
-        private void SetLoanStatus(Loan loan)
+        private void SetLoanStatus(Loan loan, decimal amountPaid)
         {
-
-            if (loan.Balance == 0.0M)
+            if (loan.Amount == amountPaid)
             {
                 loan.Status = LoanStatus.Paid;
             }
-            //else if (loan.Paid == 0.0M)
-            //{
-            //    loan.LoanStatus = statusRepos.Single(x => x.Id == 1);
-            //}
-            else
+            else if (loan.Amount > amountPaid)
             {
                 loan.Status = LoanStatus.NotPaid;
             }
+            else
+            {
+                throw new InvalidOperationException("Amount paid cannot be greater than the loan amount");
+            }
+
         }
 
         #endregion

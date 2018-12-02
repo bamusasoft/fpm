@@ -14,15 +14,18 @@
          </Grid.RowDefinitions>
         <ToolBarTray Grid.Row="0" Orientation="Horizontal" >
             <ToolBar BorderThickness="0" SnapsToDevicePixels="True" >
-                
-                
-                <Button Command="{Binding SearchCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+
+                <TextBox Name="txSearchedPaymentNo" Style="{StaticResource {x:Static ToolBar.TextBoxStyleKey} }" MinWidth="100" 
+                         Text="{Binding MemberCode}" />
+                <Button Command="{Binding SearchCommand}" CommandParameter="{Binding Text, ElementName=txSearchedPaymentNo}"
+                        IsEnabled="{Binding EnableSearch}">
                     <StackPanel Orientation="Horizontal">
-                        <ContentControl Content="{StaticResource EnSearchImage}"  Margin="0,0,5,0"/>
-                        <TextBlock Text="بحث"/>
+                        <ContentControl Content="{StaticResource EnSearchImage}" Margin="0,0,5,0" />
+                        <TextBlock Text="بحث" />
                     </StackPanel>
                 </Button>
-                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey} }"/>
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey} }" />
+                
                 <Button Command="{Binding PrintCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                     <StackPanel Orientation="Horizontal">
                         <ContentControl Content="{StaticResource EnPrintImage}"  Margin="0,0,5,0"/>
@@ -32,20 +35,33 @@
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey} }"/>
             </ToolBar>
         </ToolBarTray>
-        <GroupBox Grid.Row="1">
+        <GroupBox Grid.Row="1" Header="البحث">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Margin="10" TextWrapping="Wrap" Text="رقم المستحق"/>
-                <TextBox Margin="10" TextWrapping="Wrap" Text="{Binding MemberCode}" Grid.Column="1"/>
-                <TextBlock Margin="10" TextWrapping="Wrap" Text="اسم المتسحق" Grid.Row="1" Grid.Column="0"/>
-                <TextBox Margin="10" TextWrapping="Wrap" Text="{Binding MemberName}" Grid.Column="1"/>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding MemberName}" />
+                <TextBlock Margin="10"  Text="السنة" Grid.Row="1" Grid.Column="0"/>
+                <ComboBox  Margin="10"  ItemsSource="{Binding Years}" DisplayMemberPath="Year" SelectedItem="{Binding SelectedYear}"  Grid.Row="1" Grid.Column="1"/>
+               
+                <TextBlock Margin="10"  Text="الدفعة" Grid.Row="2" Grid.Column="0"/>
+                <ComboBox  Margin="10"  Grid.Row="2" Grid.Column="1" ItemsSource="{Binding PaymentSequences}"
+                           DisplayMemberPath="Description" SelectedItem="{Binding SelecteSequence}"/>
+
+                <TextBlock Margin="10"  Text="إدراج المسدد" Grid.Row="1" Grid.Column="2"/>
+                <CheckBox Margin="10"  IsChecked="{Binding IncludePaidLoans}" Grid.Row="1" Grid.Column="3"/>
+                <Button Grid.Row="2" Grid.Column="3" Content="ابحث" />
             </Grid>
             
         </GroupBox>
@@ -60,10 +76,12 @@
 
           
             <DataGrid Margin="10,10,10,0" Grid.Row="0" CanUserAddRows="False"
-                      AutoGenerateColumns="False" ItemsSource="{Binding Statement.DetailsCollection}">
+                      AutoGenerateColumns="False" ItemsSource="{Binding LoanStatement}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding DateCreated, Mode=OneWay}" Header="التاريخ" Width="0.1*"/>
                     <DataGridTextColumn Binding="{Binding Description, Mode=OneWay}" Header="الوصف" Width="0.5*"/>
+                    <DataGridTextColumn Binding="{Binding Description, Mode=OneWay}" Header="السنة" Width="0.5*"/>
+                    <DataGridTextColumn Binding="{Binding Description, Mode=OneWay}" Header="الدفعة" Width="0.5*"/>
                     <DataGridTextColumn Binding="{Binding LoanAmount, Mode=OneWay, StringFormat=F2}" Header="مبلغ الإلتزام" Width="0.1*"/>
                     <DataGridTextColumn Binding="{Binding Paid, Mode=OneWay, StringFormat=F2}" Header="المسدد" Width="0.1*"/>
                     <DataGridTextColumn Binding="{Binding Balance, Mode=OneWay, StringFormat=F2}" Header="الرصيد" Width="0.2*"/>

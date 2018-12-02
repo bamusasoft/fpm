@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Windows.Input;
 using FlopManager.Domain;
 using FlopManager.Domain.EF;
+using FlopManager.Services;
 using FlopManager.Services.Helpers;
 using FlopManager.Services.ViewModelInfrastructure;
 using FlopManagerLoanModule.DTOs;
@@ -21,53 +23,59 @@ namespace FlopManagerLoanModule.ViewModels
     public class LoanStatementViewModel:ListViewModelBase
     {
         #region "Fields"
-
-        private FamilyContext _unitOfWork;
-        private DbSet<Loan> _repLoans;
-        private LoansStatementReport _statement;
-        
+        private readonly ILogger _logger;
+        private readonly ISettings _settings;
+        private string _memberCode;
+        private ObservableCollection<PaymentSequence> _paymentSequences;
+        private PaymentSequence _selectedSequence;
         private ObservableCollection<PeriodYear> _years;
         private PeriodYear _selectedYear;
+        private ObservableCollection<LoanStatementDto> _statement;
+        private bool _includePaidLoans;
 
         #endregion
 
-        public LoanStatementViewModel()
+        public LoanStatementViewModel(ILogger logger, ISettings settings)
         {
-            _unitOfWork = new FamilyContext();
-            _repLoans = _unitOfWork.Loans;
-            WindowLoaded();
-        }
+            _logger = logger;
+            _settings = settings;
 
-        private void WindowLoaded()
-        {
-            Years = LoadYears();
-        }
-
-        private ObservableCollection<PeriodYear> LoadYears()
-        {
-            var y = _unitOfWork.PeriodYears.ToList();
-            return new ObservableCollection<PeriodYear>(y);
         }
 
         #region "Proeprties"
 
+
+        public string MemberCode
+        {
+            get { return _memberCode; }
+            set { SetProperty(ref _memberCode, value); }
+        }
         public ObservableCollection<PeriodYear> Years
         {
             get { return _years; }
-            set { SetProperty(ref _years, value); }
-
+            set
+            {
+                SetProperty(ref _years, value);
+            }
         }
 
         public PeriodYear SelectedYear
         {
             get { return _selectedYear; }
-            set
-            {
-                SetProperty(ref _selectedYear, value);
-            }
+            set { SetProperty(ref _selectedYear, value); }
+        }
+        public ObservableCollection<PaymentSequence> PaymentSequences
+        {
+            get { return _paymentSequences; }
+            set { SetProperty(ref _paymentSequences, value); }
         }
 
-        public LoansStatementReport Statement
+        public PaymentSequence SelectedSequence
+        {
+            get { return _selectedSequence; }
+            set { SetProperty(ref _selectedSequence, value); }
+        }
+        public ObservableCollection<LoanStatementDto> Statement
         {
             get { return _statement; }
             set
@@ -76,6 +84,11 @@ namespace FlopManagerLoanModule.ViewModels
             }
         }
 
+        public bool IncludePaidLoans
+        {
+            get { return _includePaidLoans; }
+            set { SetProperty(ref _includePaidLoans, value); }
+        }
         #endregion
 
         #region "Commands"
@@ -104,44 +117,33 @@ namespace FlopManagerLoanModule.ViewModels
 
         protected override void Search(object term)
         {
-            string s = (string) term;
-            if (string.IsNullOrEmpty(s) || SelectedYear == null) return;
-
-            int code;
-            if (int.TryParse(s, out code))
+            try
             {
-                var result = _repLoans.Where(
-                    l => l.FamilyMember.Code == code
-                         &&
-                         l.PeriodYear.Year == SelectedYear.Year
-                    ).OrderBy(l => l.LoanNo);
-                int memberCode = 0;
-                string name = null;
-                decimal loansTotal = 0.0M;
-                decimal paidTotal = 0.0M;
-                decimal balanceTotal = 0.0M;
-                List<LoansStatementDetailes> details = new List<LoansStatementDetailes>();
-                int counter = 0;
-                foreach (var loan in result)
+                int code = (int) term;
+                FamilyContext db = new FamilyContext();
+                var member = db.FamilyMembers.Single(m => m.Code == code);
+                if (member != null)
                 {
-                    if (counter == 0)
+                    var yearsOfMemberLoans = db.Loans.Where(x => x.MemberCode == member.Code).Select(m =>
+                        new 
+                        {
+                            LoanYear = m.Year
+                        });
+                    foreach (var yearsOfMemberLoan in yearsOfMemberLoans)
                     {
-                        memberCode = loan.FamilyMember.Code;
-                        name = loan.FamilyMember.FullName;
-                        loansTotal = result.Sum(x => x.Amount);
-                        paidTotal = result.Sum(x => x.Paid);
-                        balanceTotal = result.Sum(x => x.Balance);
-                        counter++;
+                        var y = db.PeriodYears.SingleOrDefault(x => x.Year == yearsOfMemberLoan.LoanYear);
+                        if (y != null)
+                        {
+                            Years.Add(y);
+                        }
                     }
-                    LoansStatementDetailes d = new LoansStatementDetailes(
-                        "1433-01-01", loan.Description,
-                        loan.Amount, loan.Paid, loan.Balance);
-                    details.Add(d);
-
                 }
-                Statement = new LoansStatementReport(
-                    memberCode, name, loansTotal, paidTotal, balanceTotal, details);
             }
+            catch (Exception ex)
+            {
+                Helper.HandleUiException(ex, _logger, RaiseNotification);
+            }
+            
         }
 
         protected override bool CanSearch(object term)
@@ -156,12 +158,12 @@ namespace FlopManagerLoanModule.ViewModels
             WordMail wm = new WordMail();
             try
             {
-                wm.Send(Statement, fileName, pdf);
+                //wm.Send(Statement, fileName, pdf);
             }
             catch (Exception ex)
             {
 
-                Helper.LogAndShow(ex);
+                Helper.HandleUiException(ex, _logger, RaiseNotification);
             }
 
 
@@ -169,9 +171,59 @@ namespace FlopManagerLoanModule.ViewModels
 
         protected override bool CanPrint()
         {
-            return Statement != null && Statement.DetailsTable != null && Statement.DetailsTable.Rows.Count > 0;
+            return true;
         }
 
+        #endregion
+
+        #region SQL QUERIES
+
+        private static string _sqlQeury =
+            @"With P AS
+                (Select LoanPayments.LoanNo, Sum(LoanPayments.AmountPaid) As AmountPaid 
+                 FROM LoanPayments GROUP BY LoanPayments.LoanNo)	
+                 SELECT Loans.LoanNo, Loans.Description, Loans.MemberCode, FamilyMembers.FullName, Loans.LoanTypeCode, LoanTypes.LoanDescription,
+	                    Loans.Year, Loans.PaySeqDue, PaymentSequences.SequenceDescription,
+                        Loans.Amount, P.AmountPaid, Loans.Remarks, Loans.Status
+                FROM Loans
+                INNER JOIN FamilyMembers on Loans.MemberCode = FamilyMembers.Code
+                INNER JOIN PaymentSequences on Loans.PaySeqDue = PaymentSequences.Id
+                INNER JOIN LoanTypes on Loans.LoanTypeCode = LoanTypes.Code
+                INNER JOIN P on Loans.LoanNo = P.LoanNo";
+
+        private Dictionary<string, SqlParameter> BuildQuery()
+        {
+            Dictionary<String, SqlParameter> query = new Dictionary<string, SqlParameter>();
+            if (!string.IsNullOrEmpty(MemberCode))
+            {
+                query.Add("Loans.MemberCode = @MemberCode ", new SqlParameter("@MemberCode", MemberCode));
+            }
+            if (!string.IsNullOrEmpty(Year))
+            {
+                query.Add("Loans.Year = @Year", new SqlParameter("@Year", Year));
+
+            }
+            if (SelectedSequence != null)
+            {
+                query.Add("Loans.PaySeqDue = @PaySeqDue", new SqlParameter("@PaySeqDue", SelectedSequence.Id));
+            }
+            if (IncludePaidLoans)
+            {
+                query.Add("Loans.Status = @Status", new SqlParameter("@Status", 1));
+
+            }
+            else
+            {
+                query.Add("Loans.Status = @Status", new SqlParameter("@Status", 0));
+            }
+            return query;
+
+        }
+        private string BuildOrderBy()
+        {
+            string orderBy = " ORDER BY Loans.Year, Loans.PaySeqDue";
+            return orderBy;
+        }
         #endregion
 
 

@@ -137,7 +137,7 @@
                                     Binding="{Binding TotalPayment, StringFormat=F2, Converter={StaticResource NumToEmptyConverter}}"
                                     Width="Auto" CanUserSort="False"/>
                 <DataGridTextColumn Header="مبلغ الإلتزام"
-                                    Binding="{Binding LoanAmount, StringFormat=F2, Converter={StaticResource NumToEmptyConverter}}"
+                                    Binding="{Binding LoanAmount, StringFormat=F2}"
                                     Width="Auto" CanUserSort="False"/>
                 <DataGridTextColumn Header="وصف الإلتزام"
                                     Binding="{Binding LoanDescription}" Width="Auto" CanUserSort="False"/>

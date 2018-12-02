@@ -133,6 +133,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTOs\LoansStatementReport.cs" />
+    <Compile Include="DTOs\LoanStatementDto.cs" />
     <Compile Include="DTOs\PostLoan.cs" />
     <Compile Include="Events\LoanSelectedEvent.cs" />
     <Compile Include="LoanModule.cs" />

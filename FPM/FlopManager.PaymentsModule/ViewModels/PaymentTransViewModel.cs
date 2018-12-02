@@ -256,7 +256,7 @@ namespace FlopManager.PaymentsModule.ViewModels
                 paymentTransaction.TransNo, paymentTransaction.MemberCode,
                 paymentTransaction.FamilyMember.FullName,
                 paymentTransaction.Payment.Year, paymentTransaction.Payment.PaymentSequence.SequenceNo,
-                paymentTransaction.AmountDue, paymentTransaction.ShareNumbers,
+                PaymentAmount, paymentTransaction.ShareNumbers,
                 paymentTransaction.AmountDue, 0.00M,
                 string.Empty, string.Empty,
                 loansPaymentsTotal, paymentTransaction.NetPayments,
