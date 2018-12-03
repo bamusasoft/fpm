@@ -12,7 +12,11 @@ namespace FlopManager.Services.ViewModelInfrastructure
 {
     public abstract class ListViewModelBase : ViewModelBase, INavigationAware
     {
-
+        public ListViewModelBase()
+        {
+            ConfirmationRequest = new InteractionRequest<IConfirmation>();
+            NotificationRequest = new InteractionRequest<Notification>();
+        }
         #region Fields
         private DelegateCommand<object> _searchCommand;
         private DelegateCommand _printCommand;

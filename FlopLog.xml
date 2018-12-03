@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Logs>
+  <Log>
+    <DateAndTime>12/03/2018 11:02:48</DateAndTime>
+    <Message>
+ Exception: InvalidCastException
+ At method: Search
+ Details: Specified cast is not valid.</Message>
+    <Category>Exception</Category>
+    <Priority>High</Priority>
+  </Log>
+  <Log>
+    <DateAndTime>12/03/2018 11:06:01</DateAndTime>
+    <Message>
+ Exception: InvalidCastException
+ At method: Search
+ Details: Specified cast is not valid.</Message>
+    <Category>Exception</Category>
+    <Priority>High</Priority>
+  </Log>
+  <Log>
+    <DateAndTime>12/03/2018 11:15:48</DateAndTime>
+    <Message>
+ Exception: InvalidCastException
+ At method: Search
+ Details: Specified cast is not valid.</Message>
+    <Category>Exception</Category>
+    <Priority>High</Priority>
+  </Log>
+  <Log>
+    <DateAndTime>12/03/2018 11:16:04</DateAndTime>
+    <Message>
+ Exception: InvalidCastException
+ At method: Search
+ Details: Specified cast is not valid.</Message>
+    <Category>Exception</Category>
+    <Priority>High</Priority>
+  </Log>
+  <Log>
+    <DateAndTime>12/03/2018 11:28:35</DateAndTime>
+    <Message>
+ Exception: InvalidCastException
+ At method: Search
+ Details: Specified cast is not valid.</Message>
+    <Category>Exception</Category>
+    <Priority>High</Priority>
+  </Log>
+  <Log>
+    <DateAndTime>12/03/2018 14:56:36</DateAndTime>
+    <Message>
+ Exception: SqlException
+ At method: OnError
+ Details: Incorrect syntax near 'Loans'.</Message>
+    <Category>Exception</Category>
+    <Priority>High</Priority>
+  </Log>
+  <Log>
+    <DateAndTime>12/03/2018 14:59:16</DateAndTime>
+    <Message>
+ Exception: SqlException
+ At method: OnError
+ Details: The parameterized query '(@MemberCode nvarchar(5),@Status bigint)With P AS
+             ' expects the parameter '@Status', which was not supplied.</Message>
+    <Category>Exception</Category>
+    <Priority>High</Priority>
+  </Log>
+  <Log>
+    <DateAndTime>12/03/2018 15:18:15</DateAndTime>
+    <Message>
+ Exception: SqlException
+ At method: OnError
+ Details: The parameterized query '(@Status bigint)With P AS
+                (Select LoanPayments.' expects the parameter '@Status', which was not supplied.</Message>
+    <Category>Exception</Category>
+    <Priority>High</Priority>
+  </Log>
+  <Log>
+    <DateAndTime>12/03/2018 15:18:53</DateAndTime>
+    <Message>
+ Exception: SqlException
+ At method: OnError
+ Details: The parameterized query '(@MemberCode int,@Status bigint)With P AS
+                (Sele' expects the parameter '@Status', which was not supplied.</Message>
+    <Category>Exception</Category>
+    <Priority>High</Priority>
+  </Log>
+  <Log>
+    <DateAndTime>12/03/2018 15:23:24</DateAndTime>
+    <Message>
+ Exception: InvalidOperationException
+ At method: GetValue
+ Details: The cast to value type 'System.Decimal' failed because the materialized value is null. Either the result type's generic parameter or the query must use a nullable type.</Message>
+    <Category>Exception</Category>
+    <Priority>High</Priority>
+  </Log>
+  <Log>
+    <DateAndTime>12/03/2018 15:23:55</DateAndTime>
+    <Message>
+ Exception: InvalidOperationException
+ At method: Single
+ Details: Sequence contains no elements</Message>
+    <Category>Exception</Category>
+    <Priority>High</Priority>
+  </Log>
+  <Log>
+    <DateAndTime>12/03/2018 15:24:00</DateAndTime>
+    <Message>
+ Exception: InvalidOperationException
+ At method: GetValue
+ Details: The specified cast from a materialized 'System.Byte' type to the 'System.Int32' type is not valid.</Message>
+    <Category>Exception</Category>
+    <Priority>High</Priority>
+  </Log>
+  <Log>
+    <DateAndTime>12/03/2018 15:31:19</DateAndTime>
+    <Message>
+ Exception: SqlException
+ At method: OnError
+ Details: Incorrect syntax near the keyword 'WHERE'.</Message>
+    <Category>Exception</Category>
+    <Priority>High</Priority>
+  </Log>
+</Logs>

@@ -4,8 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FlopManagerLoanModule.Views"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:interactionRequest="http://prismlibrary.com/"
+             xmlns:customPopupActions="clr-namespace:FlopManager.Services.CustomPopupActions;assembly=FlopManager.Services"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" FlowDirection="RightToLeft">
+    <i:Interaction.Triggers>
+        <interactionRequest:InteractionRequestTrigger SourceObject="{Binding ConfirmationRequest, Mode=OneWay}">
+            <customPopupActions:MyPopupWindowAction IsModal="True" />
+        </interactionRequest:InteractionRequestTrigger>
+        <interactionRequest:InteractionRequestTrigger SourceObject="{Binding NotificationRequest, Mode=OneWay}">
+            <customPopupActions:MyPopupWindowAction IsModal="True"/>
+        </interactionRequest:InteractionRequestTrigger>
+    </i:Interaction.Triggers>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -51,17 +63,17 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding MemberName}" />
+                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding Member.FullName}" />
                 <TextBlock Margin="10"  Text="السنة" Grid.Row="1" Grid.Column="0"/>
                 <ComboBox  Margin="10"  ItemsSource="{Binding Years}" DisplayMemberPath="Year" SelectedItem="{Binding SelectedYear}"  Grid.Row="1" Grid.Column="1"/>
                
                 <TextBlock Margin="10"  Text="الدفعة" Grid.Row="2" Grid.Column="0"/>
                 <ComboBox  Margin="10"  Grid.Row="2" Grid.Column="1" ItemsSource="{Binding PaymentSequences}"
-                           DisplayMemberPath="Description" SelectedItem="{Binding SelecteSequence}"/>
+                           DisplayMemberPath="SequenceDescription" SelectedItem="{Binding SelectedSequence}"/>
 
                 <TextBlock Margin="10"  Text="إدراج المسدد" Grid.Row="1" Grid.Column="2"/>
                 <CheckBox Margin="10"  IsChecked="{Binding IncludePaidLoans}" Grid.Row="1" Grid.Column="3"/>
-                <Button Grid.Row="2" Grid.Column="3" Content="ابحث" />
+                <Button Grid.Row="2" Grid.Column="3" Content="ابحث" Command="{Binding ShowLoanStatementCommand}"/>
             </Grid>
             
         </GroupBox>
@@ -72,19 +84,22 @@
                 <RowDefinition Height="Auto"/>
                
             </Grid.RowDefinitions>
-           
-
-          
             <DataGrid Margin="10,10,10,0" Grid.Row="0" CanUserAddRows="False"
-                      AutoGenerateColumns="False" ItemsSource="{Binding LoanStatement}">
+                      AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding Statement}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding DateCreated, Mode=OneWay}" Header="التاريخ" Width="0.1*"/>
-                    <DataGridTextColumn Binding="{Binding Description, Mode=OneWay}" Header="الوصف" Width="0.5*"/>
-                    <DataGridTextColumn Binding="{Binding Description, Mode=OneWay}" Header="السنة" Width="0.5*"/>
-                    <DataGridTextColumn Binding="{Binding Description, Mode=OneWay}" Header="الدفعة" Width="0.5*"/>
-                    <DataGridTextColumn Binding="{Binding LoanAmount, Mode=OneWay, StringFormat=F2}" Header="مبلغ الإلتزام" Width="0.1*"/>
-                    <DataGridTextColumn Binding="{Binding Paid, Mode=OneWay, StringFormat=F2}" Header="المسدد" Width="0.1*"/>
-                    <DataGridTextColumn Binding="{Binding Balance, Mode=OneWay, StringFormat=F2}" Header="الرصيد" Width="0.2*"/>
+                    <DataGridTextColumn Binding="{Binding LoanNo}" Header="الرقم" Width="Auto"/>
+                    <DataGridTextColumn Binding="{Binding LoanDescription}" Header="النوع" Width="Auto"/>
+                    <DataGridTextColumn Binding="{Binding MemberCode}" Header="رقم المستحق" Width="Auto"/>
+                    <DataGridTextColumn Binding="{Binding Year}" Header="السنة" Width="Auto"/>
+                    <DataGridTextColumn Binding="{Binding SequenceDescription}" Header="الدفعة" Width="Auto"/>
+                    <DataGridTextColumn Binding="{Binding Amount, Mode=OneWay, StringFormat=F2}" Header="مبلغ الإلتزام" Width="Auto"/>
+                    <DataGridTextColumn Binding="{Binding Paid, Mode=OneWay, StringFormat=F2}" Header="المسدد" Width="Auto"/>
+                    <DataGridTextColumn Binding="{Binding Balance, Mode=OneWay, StringFormat=F2}" Header="الرصيد" Width="Auto"/>
+                    <DataGridTextColumn Binding="{Binding Description}" Header="الوصف" Width="Auto"/>
+                    <DataGridTextColumn Binding="{Binding Remarks}" Header="ملاحظات" Width="Auto"/>
+                    <DataGridTextColumn Binding="{Binding StatusArabic}" Header="الحالة" Width="Auto"/>
+
+
                 </DataGrid.Columns>
             </DataGrid>
             <Grid Margin="350,0,10,10" Grid.Row="1" >

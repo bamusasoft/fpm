@@ -9,12 +9,47 @@ namespace FlopManagerLoanModule.DTOs
 {
     public class LoanStatementDto
     {
-        public string DateCreated { get; set; }
+        public string LoanNo { get; set; }    
         public string Description { get; set; }
+        public  int MemberCode { get; set; }
+        public string FullName { get; set; }
+        public int LoanTypeCode { get; set; }
+        public string LoanDescription { get; set; }
         public string Year { get; set; }
-        public string PaySequence { get; set; }
+        public int PaySeqDue { get; set; }
+        public string SequenceDescription { get; set; }
         public decimal Amount { get; set; }
-        public decimal Paid { get; set; }
-        public decimal Balance { get; set; }
+        public decimal? AmountPaid { get; set; }
+
+        public decimal Balance
+        {
+            get
+            {
+                if (AmountPaid == null)
+                {
+                    return Amount;
+                }
+
+                return (decimal) (Amount - AmountPaid);
+            }
+        }
+        public string Remarks { get; set; }
+        public byte Status { get; set; }
+
+        public string StatusArabic
+        {
+            get
+            {
+                switch (Status)
+                {
+                    case 0:
+                        return "غير مسدد";
+                    case 1:
+                        return "مسدد";
+                    default:
+                        throw new InvalidOperationException("Undefined Status");
+                }
+            }
+        }
     }
 }

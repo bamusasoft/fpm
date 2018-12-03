@@ -240,12 +240,6 @@ namespace FlopManager.PaymentsModule.ViewModels
         #endregion
 
         #region "ICommonOperations"
-
-
-
-
-
-
         public void SetState(ModelState state)
         {
 
