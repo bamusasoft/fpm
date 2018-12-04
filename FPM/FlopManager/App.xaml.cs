@@ -2,14 +2,21 @@
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
+
 using FlopManager.Domain.EF;
+using Prism.Ioc;
+using Prism.Unity;
+using Prism.Regions;
+using Prism.Unity;
+using Prism.Ioc;
 using AppSettings =FlopManager.Properties.Settings;
 namespace FlopManager
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App : PrismApplication
     {
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -29,9 +36,20 @@ namespace FlopManager
             //Logger.LogFilePath = AppSettings.Default.LogFilePath;
             //GlobalConst.CurrentYear = AppSettings.Default.CurrentYear;
             //base.OnStartup(e);
-            Bootstrapper bootstrapper = new Bootstrapper();
-            bootstrapper.Run();
+            PrismApplication application = new Bootstrapper();
+            application.Run();
         }
+
+        protected override void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override Window CreateShell()
+        {
+            throw new System.NotImplementedException();
+        }
+
         private void CheckUpgrade()
         {
             if (AppSettings.Default.UpgradedVersion)

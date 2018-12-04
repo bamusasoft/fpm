@@ -1,25 +1,30 @@
-﻿    using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FlopManager.Services;
 using FlopManager.SettingsModule.Views;
-using Prism.Mef.Modularity;
+using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
 
 namespace FlopManager.SettingsModule
 {
-    [ModuleExport(typeof(SettingsModule))]
-    public class SettingsModule:IModule
+    public class SettingsModule : IModule
     {
-        [Import]
-        public IRegionManager RegionManager;
+        [Import] public IRegionManager RegionManager;
+
+        public void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnInitialized(IContainerProvider containerProvider)
+        {
+            var reegionManager = containerProvider.Resolve<IRegionManager>();
+            reegionManager.RegisterViewWithRegion(RegionNames.MAIN_NAVIGATION_REGION, typeof(SettingsNavigationView));
+        }
+
         public void Initialize()
         {
-            RegionManager.RegisterViewWithRegion(RegionNames.MAIN_NAVIGATION_REGION, typeof (SettingsNavigationView));
         }
     }
 }

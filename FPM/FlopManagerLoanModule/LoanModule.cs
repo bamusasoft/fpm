@@ -7,23 +7,33 @@ using System.Text;
 using System.Threading.Tasks;
 using FlopManager.Services;
 using FlopManagerLoanModule.Views;
-using Prism.Mef.Modularity;
+using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
 
 namespace FlopManagerLoanModule
 {
-    [ModuleExport(typeof(LoanModule))]
     public class LoanModule:IModule
     {
         [Import]
         public IRegionManager RegionManager;
         public void Initialize()
         {
-            RegionManager.RegisterViewWithRegion(RegionNames.MAIN_NAVIGATION_REGION, typeof (LoanNavigationView));
+            
+        }
 
-            RegionManager.RegisterViewWithRegion(RegionNames.LAONS_LIST_REGION, typeof(LoansListView));
-            RegionManager.RegisterViewWithRegion(RegionNames.LOAN_DETAILS_REGION, typeof(LoanDetailsView));
+        public void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+        }
+
+        public void OnInitialized(IContainerProvider containerProvider)
+        {
+
+            IRegionManager regionManager = containerProvider.Resolve<IRegionManager>();
+
+            regionManager.RegisterViewWithRegion(RegionNames.MAIN_NAVIGATION_REGION, typeof(LoanNavigationView));
+            regionManager.RegisterViewWithRegion(RegionNames.LAONS_LIST_REGION, typeof(LoansListView));
+            regionManager.RegisterViewWithRegion(RegionNames.LOAN_DETAILS_REGION, typeof(LoanDetailsView));
         }
     }
 }

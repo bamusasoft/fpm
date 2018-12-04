@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using FlopManager.Services;
 using FlopManager.Services.ViewModelInfrastructure;
-using Microsoft.Practices.ServiceLocation;
 using Prism.Regions;
 
 namespace FlopManagerLoanModule.ViewModels

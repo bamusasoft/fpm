@@ -21,12 +21,16 @@ namespace FlopManager
         {
         }
 
+        
+
         private IRegion _region;
         [Import(AllowRecomposition = false)]
         public IRegionManager RegionManager;
 
         [Import(AllowRecomposition = false)]
         public NavigationContext NavigationContext;
+        private object v;
+
         protected override void Adapt(IRegion region, DockingManager regionTarget)
         {
             _region = region;
