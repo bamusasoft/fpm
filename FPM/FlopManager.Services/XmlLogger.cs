@@ -9,8 +9,8 @@ using Prism.Logging;
 namespace FlopManager.Services
 {
   
-    [Export(typeof(ILogger))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    //[Export(typeof(ILogger))]
+    //[PartCreationPolicy(CreationPolicy.Shared)]
     public class XmlLogger:ILogger
     {
         private Action<string> _callback;
@@ -18,7 +18,7 @@ namespace FlopManager.Services
 
 
         [ImportingConstructor]
-        public XmlLogger([Import("LogFilePath")] string logFilePath)
+        public XmlLogger( /*[Import("LogFilePath")]*/ string logFilePath)
         {
             if (string.IsNullOrEmpty(logFilePath))
             {

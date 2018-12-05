@@ -23,35 +23,24 @@ namespace FlopManagerLoanModule.Views
     /// <summary>
     /// Interaction logic for LoanView.xaml
     /// </summary>
-    [Export("LoanView")]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
-    public partial class LoanView : UserControl
+   
+    public partial class Loan : UserControl
     {
-        public LoanView()
+        public Loan(IRegionManager regionManager)
         {
             InitializeComponent();
             Loaded += OnLoanViewLoaded;
-            
+            _regionManager = regionManager;
         }
 
         private void OnLoanViewLoaded(object sender, RoutedEventArgs e)
         {
-            RegionManager.RequestNavigate(RegionNames.LAONS_LIST_REGION, LoansListViewUri);
-            RegionManager.RequestNavigate(RegionNames.LOAN_DETAILS_REGION, LoanDeailsViewUri);
+            _regionManager.RequestNavigate(RegionNames.LAONS_LIST_REGION, _loansListView);
+            _regionManager.RequestNavigate(RegionNames.LOAN_DETAILS_REGION, _loanDeailsView);
         }
 
-        private static readonly Uri LoansListViewUri = new Uri("/LoansListView", UriKind.Relative);
-        private static readonly Uri LoanDeailsViewUri = new Uri("/LoanDetailsView", UriKind.Relative);
-
-        [Import]
-        public IRegionManager RegionManager;
-
-        [Import]
-        public LoanViewModel ViewModel
-        {
-            get { return DataContext as LoanViewModel;}
-            set { DataContext = value; }
-        }
-
+        private static readonly string _loansListView = "LoansListView";
+        private static readonly string _loanDeailsView = "LoanDetailsView";
+        private readonly IRegionManager _regionManager;
     }
 }

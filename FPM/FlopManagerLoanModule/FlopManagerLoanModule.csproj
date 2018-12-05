@@ -108,7 +108,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\LoanDetailsView.xaml">
+    <Page Include="Views\LoanDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -116,7 +116,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\LoansListView.xaml">
+    <Page Include="Views\LoansList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -124,11 +124,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\LoanTypesView.xaml">
+    <Page Include="Views\LoanTypes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\LoanView.xaml">
+    <Page Include="Views\Loan.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -163,23 +163,23 @@
     <Compile Include="ViewModels\LoanTypesViewModel.cs" />
     <Compile Include="ViewModels\LoanViewModel.cs" />
     <Compile Include="ViewModels\PostLoansViewModel.cs" />
-    <Compile Include="Views\LoanDetailsView.xaml.cs">
-      <DependentUpon>LoanDetailsView.xaml</DependentUpon>
+    <Compile Include="Views\LoanDetails.xaml.cs">
+      <DependentUpon>LoanDetails.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoanNavigationView.xaml.cs">
       <DependentUpon>LoanNavigationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\LoansListView.xaml.cs">
-      <DependentUpon>LoansListView.xaml</DependentUpon>
+    <Compile Include="Views\LoansList.xaml.cs">
+      <DependentUpon>LoansList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoanStatementView.xaml.cs">
       <DependentUpon>LoanStatementView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\LoanTypesView.xaml.cs">
-      <DependentUpon>LoanTypesView.xaml</DependentUpon>
+    <Compile Include="Views\LoanTypes.xaml.cs">
+      <DependentUpon>LoanTypes.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\LoanView.xaml.cs">
-      <DependentUpon>LoanView.xaml</DependentUpon>
+    <Compile Include="Views\Loan.xaml.cs">
+      <DependentUpon>Loan.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PostLoansView.xaml.cs">
       <DependentUpon>PostLoansView.xaml</DependentUpon>

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition.Primitives;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,27 +13,32 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using FlopManager.Services;
 using FlopManagerLoanModule.ViewModels;
-using System.ComponentModel.Composition;
+using Prism.Regions;
 
 namespace FlopManagerLoanModule.Views
 {
     /// <summary>
-    /// Interaction logic for LoanTypesView.xaml
+    /// Interaction logic for LoanDetailsView.xaml
     /// </summary>
-    [Export("LoanTypesView")]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
-    public partial class LoanTypesView : UserControl
+    
+    public partial class LoanDetails : UserControl
     {
-        public LoanTypesView()
+        private readonly IRegionManager _regionManager;
+
+        public LoanDetails(IRegionManager regionManager)
         {
             InitializeComponent();
+            Unloaded += OnLoanDetailsUnloaded;
+            _regionManager = regionManager;
         }
-        [Import]
-        public LoanTypesViewModel ViewModel
+
+        private void OnLoanDetailsUnloaded(object sender, RoutedEventArgs e)
         {
-            get { return DataContext as LoanTypesViewModel;}
-            set { DataContext = value; }
+            _regionManager.Regions.Remove(RegionNames.LOAN_DETAILS_REGION);
         }
+
+       
     }
 }

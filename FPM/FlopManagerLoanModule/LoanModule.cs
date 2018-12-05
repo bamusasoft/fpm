@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Primitives;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FlopManager.Services;
+﻿using FlopManager.Services;
 using FlopManagerLoanModule.Views;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -15,15 +8,9 @@ namespace FlopManagerLoanModule
 {
     public class LoanModule:IModule
     {
-        [Import]
-        public IRegionManager RegionManager;
-        public void Initialize()
-        {
-            
-        }
-
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterForNavigation<LoanTypes>();
         }
 
         public void OnInitialized(IContainerProvider containerProvider)

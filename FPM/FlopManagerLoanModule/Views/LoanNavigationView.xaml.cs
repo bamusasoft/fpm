@@ -25,30 +25,36 @@ namespace FlopManagerLoanModule.Views
     [ViewSortHint("01")]
     public partial class LoanNavigationView : UserControl
     {
-       
-        public LoanNavigationView()
+        IRegionManager _regionManager;
+        public LoanNavigationView(IRegionManager regionManager)
         {
             InitializeComponent();
+            _regionManager = regionManager;
         }
         #region Fields
-        private static readonly Uri LoanViewUri= new Uri("/LoanView", UriKind.Relative);
-        private static readonly Uri LoanTypesViewUri = new Uri("/LoanTypesView", UriKind.Relative);
-        private static readonly Uri MemberLoansViewUri = new Uri("/LoanStatementView", UriKind.Relative);
-        [Import]
-        public IRegionManager RegionManager;
+        private static readonly string _loanView = "Loan";
+        private static readonly string _loanTypesView = "LoanTypes";
+        private static readonly string _loanStatemView = "LoanStatement";
+        private static readonly string _loanPaymentsView = "LoanPayments";
+
         #endregion
         private void OnNavigateToLoan(object sender, RoutedEventArgs e)
         {
-            RegionManager.RequestNavigate(RegionNames.MAIN_CONTENT_REGION, LoanViewUri);
+            _regionManager.RequestNavigate(RegionNames.MAIN_CONTENT_REGION, _loanView);
         }
 
         private void OnNavigateToLoanTypes(object sender, RoutedEventArgs e)
         {
-            RegionManager.RequestNavigate(RegionNames.MAIN_CONTENT_REGION, LoanTypesViewUri);
+            _regionManager.RequestNavigate(RegionNames.MAIN_CONTENT_REGION, _loanTypesView);
         }
-        private void OnNavigateToMemberLoans(object sender, RoutedEventArgs e)
+        private void OnNavigateToLoanStatement(object sender, RoutedEventArgs e)
         {
-            RegionManager.RequestNavigate(RegionNames.MAIN_CONTENT_REGION, MemberLoansViewUri);
+            _regionManager.RequestNavigate(RegionNames.MAIN_CONTENT_REGION, _loanStatemView);
+        }
+
+        private void OnNavigateToLoanPayments(object sender, RoutedEventArgs e)
+        {
+            _regionManager.RequestNavigate(RegionNames.MAIN_CONTENT_REGION, _loanStatemView);
         }
     }
 }

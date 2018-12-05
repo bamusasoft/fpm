@@ -19,11 +19,11 @@ using Prism.Regions;
 
 namespace FlopManagerLoanModule.ViewModels
 {
-    [Export]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
+    //[Export]
+    //[PartCreationPolicy(CreationPolicy.NonShared)]
     public class LoanTypesViewModel:EditableViewModelBase, IEntityMapper<LoanType>
     {
-        [ImportingConstructor]
+        //[ImportingConstructor]
         public LoanTypesViewModel(ILogger logger)
         {
             _logger = logger;

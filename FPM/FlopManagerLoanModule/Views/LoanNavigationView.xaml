@@ -9,6 +9,8 @@
     <TreeViewItem Header="التزامات المستحقين" Margin="0,0,0,5">
         <RadioButton x:Name="NavigateToLoanTypes" Content="أنواع الإلتزامات" Click="OnNavigateToLoanTypes"/>
         <RadioButton x:Name="NavigateToLoan" Content="إدخال التزام" Click="OnNavigateToLoan"/>
-        <RadioButton x:Name="NavigateToMemberLoan" Content="كشف التزامات مستحق" Click="OnNavigateToMemberLoans"/>
+        <RadioButton x:Name="NavigateToLoanStatement" Content="كشف التزامات مستحق" Click="OnNavigateToLoanStatement"/>
+        <RadioButton x:Name="NavigateToLoanPayment" Content="كشف التزامات مستحق" Click="OnNavigateToLoanPayments"/>
+
     </TreeViewItem>
 </UserControl>
